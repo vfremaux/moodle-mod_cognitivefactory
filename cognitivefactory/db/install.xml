@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="mod/cognitivefactory/db" VERSION="20080125" COMMENT="XMLDB file for Moodle mod/cognitivefactory"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="cognitivefactory" COMMENT="cognitivefactory table retrofitted from MySQL" NEXT="cognitivefactory_categories">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="course"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="course" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="name" NEXT="flowmode"/>
+        <FIELD NAME="flowmode" TYPE="char" LENGTH="16" NOTNULL="false" DEFAULT="parallel" SEQUENCE="false" ENUM="false" PREVIOUS="description" NEXT="seqaccesscollect"/>
+        <FIELD NAME="seqaccesscollect" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="flowmode" NEXT="seqaccessprepare"/>
+        <FIELD NAME="seqaccessprepare" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="true" DEFAULT="1" SEQUENCE="false" ENUM="false" PREVIOUS="seqaccesscollect" NEXT="seqaccessorganize"/>
+        <FIELD NAME="seqaccessorganize" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="seqaccessprepare" NEXT="seqaccessdisplay"/>
+        <FIELD NAME="seqaccessdisplay" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="seqaccessorganize" NEXT="seqaccessfeedback"/>
+        <FIELD NAME="seqaccessfeedback" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="seqaccessdisplay" NEXT="phase"/>
+        <FIELD NAME="phase" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="seqaccessfeedback" NEXT="privacy"/>
+        <FIELD NAME="privacy" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="phase" NEXT="numresponses"/>
+        <FIELD NAME="numresponses" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="privacy" NEXT="numresponsesinform"/>
+        <FIELD NAME="numresponsesinform" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="true" DEFAULT="1" SEQUENCE="false" ENUM="false" PREVIOUS="numresponses" NEXT="numcolumns"/>
+        <FIELD NAME="numcolumns" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="false" DEFAULT="1" SEQUENCE="false" ENUM="false" PREVIOUS="numresponsesinform" NEXT="oprequirementtype"/>
+        <FIELD NAME="oprequirementtype" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="numcolumns" NEXT="scale"/>
+        <FIELD NAME="scale" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="oprequirementtype" NEXT="singlegrade"/>
+        <FIELD NAME="singlegrade" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" ENUM="false" PREVIOUS="scale" NEXT="participationweight"/>
+        <FIELD NAME="participationweight" TYPE="number" LENGTH="4" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" ENUM="false" DECIMALS="2" PREVIOUS="singlegrade" NEXT="preparingweight"/>
+        <FIELD NAME="preparingweight" TYPE="number" LENGTH="4" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" ENUM="false" DECIMALS="2" PREVIOUS="participationweight" NEXT="organizeweight"/>
+        <FIELD NAME="organizeweight" TYPE="number" LENGTH="4" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" ENUM="false" DECIMALS="2" PREVIOUS="preparingweight" NEXT="feedbackweight"/>
+        <FIELD NAME="feedbackweight" TYPE="number" LENGTH="4" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" ENUM="false" DECIMALS="2" PREVIOUS="organizeweight" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="feedbackweight"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for cognitivefactory" />
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="cognitivefactory_categories" COMMENT="cognitivefactory_categories table retrofitted from MySQL" PREVIOUS="cognitivefactory" NEXT="cognitivefactory_operators">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="cognitivefactoryid"/>
+        <FIELD NAME="cognitivefactoryid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="cognitivefactoryid" NEXT="groupid"/>
+        <FIELD NAME="groupid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="userid" NEXT="title"/>
+        <FIELD NAME="title" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="groupid" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="title"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for cognitivefactory_categories"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="cognitivefactory_operators" COMMENT="cognitivefactory_operators table retrofitted from MySQL" PREVIOUS="cognitivefactory_categories" NEXT="cognitivefactory_operatordata">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="cognitivefactoryid"/>
+        <FIELD NAME="cognitivefactoryid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="operatorid"/>
+        <FIELD NAME="operatorid" TYPE="char" LENGTH="16" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="cognitivefactoryid" NEXT="configdata"/>
+        <FIELD NAME="configdata" TYPE="text" LENGTH="small" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="operatorid" NEXT="active"/>
+        <FIELD NAME="active" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="true" DEFAULT="1" SEQUENCE="false" ENUM="false" PREVIOUS="configdata"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for cognitivefactory_operators" NEXT="unique_operator"/>
+        <KEY NAME="unique_operator" TYPE="unique" FIELDS="cognitivefactoryid, operatorid" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="cognitivefactory_operatordata" COMMENT="cognitivefactory_operatordata table retrofitted from MySQL" PREVIOUS="cognitivefactory_operators" NEXT="cognitivefactory_responses">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="cognitivefactoryid"/>
+        <FIELD NAME="cognitivefactoryid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="cognitivefactoryid" NEXT="groupid"/>
+        <FIELD NAME="groupid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="userid" NEXT="operatorid"/>
+        <FIELD NAME="operatorid" TYPE="char" LENGTH="16" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="groupid" NEXT="itemsource"/>
+        <FIELD NAME="itemsource" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="operatorid" NEXT="itemdest"/>
+        <FIELD NAME="itemdest" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="itemsource" NEXT="intvalue"/>
+        <FIELD NAME="intvalue" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="itemdest" NEXT="floatvalue"/>
+        <FIELD NAME="floatvalue" TYPE="float" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" ENUM="false" PREVIOUS="intvalue" NEXT="blobvalue"/>
+        <FIELD NAME="blobvalue" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="floatvalue" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="blobvalue"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for cognitivefactory_operatordata" NEXT="unique_assignation"/>
+        <KEY NAME="unique_assignation" TYPE="unique" FIELDS="cognitivefactoryid, userid, operatorid, itemsource, itemdest, intvalue" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="cognitivefactory_responses" COMMENT="cognitivefactory_responses table retrofitted from MySQL" PREVIOUS="cognitivefactory_operatordata" NEXT="cognitivefactory_grades">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="cognitivefactoryid"/>
+        <FIELD NAME="cognitivefactoryid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="cognitivefactoryid" NEXT="groupid"/>
+        <FIELD NAME="groupid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="userid" NEXT="response"/>
+        <FIELD NAME="response" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="groupid" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="response"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for cognitivefactory_responses" />
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="cognitivefactory_grades" COMMENT="cognitivefactory_grades table retrofitted from MySQL" PREVIOUS="cognitivefactory_responses" NEXT="cognitivefactory_userdata">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="cognitivefactoryid"/>
+        <FIELD NAME="cognitivefactoryid" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" ENUM="false" PREVIOUS="cognitivefactoryid" NEXT="grade"/>
+        <FIELD NAME="grade" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" ENUM="false" PREVIOUS="userid" NEXT="gradeitem"/>
+        <FIELD NAME="gradeitem" TYPE="char" LENGTH="16" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="grade" NEXT="timeupdated"/>
+        <FIELD NAME="timeupdated" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" ENUM="false" PREVIOUS="gradeitem"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for cognitivefactory_grades"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="cognitivefactory_userdata" COMMENT="cognitivefactory_userdata table retrofitted from MySQL" PREVIOUS="cognitivefactory_grades">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="cognitivefactoryid"/>
+        <FIELD NAME="cognitivefactoryid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="cognitivefactoryid" NEXT="report"/>
+        <FIELD NAME="report" TYPE="text" LENGTH="small" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="userid" NEXT="reportformat"/>
+        <FIELD NAME="reportformat" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="report" NEXT="feedback"/>
+        <FIELD NAME="feedback" TYPE="text" LENGTH="small" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="reportformat" NEXT="feedbackformat"/>
+        <FIELD NAME="feedbackformat" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="feedback" NEXT="timeupdated"/>
+        <FIELD NAME="timeupdated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="feedbackformat"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for cognitivefactory_userdata"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>
