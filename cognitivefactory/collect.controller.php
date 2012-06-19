@@ -1,5 +1,6 @@
 <?php
 
+if (!defined('MOODLE_INTERNAL')) die('You cannot use this script directly');
 include_once "{$CFG->dirroot}/lib/uploadlib.php";
 
 
@@ -103,7 +104,8 @@ else if ($action == 'doimport'){
         $response->timemodified = time();
         foreach($ideas as $idea){
             $response->response = mb_convert_encoding($idea, 'UTF-8', 'auto');
-            if (! insert_record('cognitivefactory_responses', $response)) {
+            
+            if (! insert_record('cognitivefactory_responses', addslashes_object($response))) {
                 error("Could not save your cognitivefactory");
             }
         }

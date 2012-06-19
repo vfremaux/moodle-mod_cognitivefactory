@@ -33,24 +33,21 @@
 
 $mod_cognitivefactory_capabilities = array(
 
-    'mod/cognitivefactory:manage' => array(
-        'captype' => 'write',
+    'mod/cognitivefactory:seeallinputs' => array(
+        'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,
         'legacy' => array(
-            'student' => CAP_PREVENT,
-            'teacher' => CAP_PREVENT,
+            'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
             'admin' => CAP_ALLOW
         )
     ),
 
-    'mod/cognitivefactory:collect' => array(
+    'mod/cognitivefactory:manage' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_MODULE,
         'legacy' => array(
-            'student' => CAP_ALLOW,
-            'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
             'admin' => CAP_ALLOW
@@ -61,72 +58,10 @@ $mod_cognitivefactory_capabilities = array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_MODULE,
         'legacy' => array(
-            'student' => CAP_PREVENT,
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
             'admin' => CAP_ALLOW
-        )
-    ),
-
-    'mod/cognitivefactory:select' => array(
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_MODULE,
-        'legacy' => array(
-            'student' => CAP_ALLOW,
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW,
-            'admin' => CAP_ALLOW
-        )
-    ),
-
-    'mod/cognitivefactory:prepare' => array(
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_MODULE,
-        'legacy' => array(
-            'student' => CAP_ALLOW,
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW,
-            'admin' => CAP_ALLOW
-        )
-    ),
-
-    'mod/cognitivefactory:organize' => array(
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_MODULE,
-        'legacy' => array(
-            'student' => CAP_ALLOW,
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW,
-            'admin' => CAP_ALLOW
-        )
-    ),
-
-
-    'mod/cognitivefactory:display' => array(
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_MODULE,
-        'legacy' => array(
-            'student' => CAP_ALLOW,
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW,
-            'admin' => CAP_ALLOW
-        )
-    ),
-
-    'mod/cognitivefactory:report' => array(
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_MODULE,
-        'legacy' => array(
-            'student' => CAP_ALLOW,
-            'teacher' => CAP_PREVENT,
-            'editingteacher' => CAP_PREVENT,
-            'coursecreator' => CAP_PREVENT,
-            'admin' => CAP_PREVENT
         )
     ),
 
@@ -134,7 +69,6 @@ $mod_cognitivefactory_capabilities = array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_MODULE,
         'legacy' => array(
-            'student' => CAP_PREVENT,
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
@@ -147,9 +81,6 @@ $mod_cognitivefactory_capabilities = array(
         'contextlevel' => CONTEXT_MODULE,
         'legacy' => array(
             'student' => CAP_ALLOW,
-            'teacher' => CAP_PREVENT,
-            'editingteacher' => CAP_PREVENT,
-            'coursecreator' => CAP_PREVENT,
             'admin' => CAP_PREVENT
         )
     )

@@ -149,6 +149,16 @@ function xmldb_cognitivefactory_upgrade($oldversion=0) {
     /// Launch add field feedbackweight
         $result = $result && add_field($table, $field);
     }
+    
+    if ($oldversion < 2012061500) {
+    /// Define field collectrequirement to be added to cognitivefactory
+        $table = new XMLDBTable('cognitivefactory');
+        $field = new XMLDBField('collectrequirement');
+        $field->setAttributes(XMLDB_TYPE_TEXT, 'small', null, null, null, null, null, null, 'description');
+
+    /// Launch add field collectrequirement
+        $result = $result && add_field($table, $field);
+    }    
 
     return true;
 }

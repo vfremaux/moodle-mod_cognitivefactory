@@ -1,5 +1,7 @@
 <?php
 
+if (!defined('MOODLE_INTERNAL')) die('You cannot use this script directly');
+
 /********************************** Enable an operator ********************************/
 if ($action == 'enable'){
     $operatorid = required_param('operatorid', PARAM_ALPHA);

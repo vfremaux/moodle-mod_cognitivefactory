@@ -1,6 +1,15 @@
 <?php
 
-/********************************  Asked for collecting form *******************************/
+/**
+* Controller for feedback
+*
+* @usecase editreport
+* @usecase doreport
+*/
+
+if (!defined('MOODLE_INTERNAL')) die('You cannot use this script directly');
+
+/********************************  Asked for report form *******************************/
 if ($action == 'editreport'){
     $form->cmid = $cm->id;
     $form->report = get_field('cognitivefactory_userdata', 'report', 'cognitivefactoryid', $cognitivefactory->id, 'userid', $USER->id);
@@ -8,6 +17,7 @@ if ($action == 'editreport'){
     include 'report.html';
     return -1;
 }
+/********************************  Stores learner's report *******************************/
 if ($action == 'doreport'){
     $report = addslashes(required_param('report', PARAM_CLEANHTML));
     $reportformat = required_param('reportformat', PARAM_INT);
@@ -20,8 +30,7 @@ if ($action == 'doreport'){
         if (!update_record('cognitivefactory_userdata', $oldrecord)){
             error("Could not update report");
         }
-    }
-    else{
+    } else {
         $newrecord->cognitivefactoryid = $cognitivefactory->id;
         $newrecord->userid = $USER->id;
         $newrecord->report = $report;
@@ -32,6 +41,7 @@ if ($action == 'doreport'){
         if (!insert_record('cognitivefactory_userdata', $newrecord)){
             error("Could not insert report");
         }
+    	add_to_log($course->id, 'cognitivefactory', 'createreport', "/mod/cognitivefactory/view.php?id={$cm->id}", $cognitivefactory->id, $cm->id);
     }
 }
 ?>

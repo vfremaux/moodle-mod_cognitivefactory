@@ -9,8 +9,9 @@
 
 /********************************** Save categorization ********************************/
 if ($action == 'savecategorization'){
+	$behalfed = optional_param('behalfed', $USER->id, PARAM_INT);
     // first delete all old categorization - the fastest way to do it
-    if (!delete_records('cognitivefactory_operatordata', 'cognitivefactoryid', $cognitivefactory->id, 'userid', $USER->id, 'operatorid', 'categorize')){
+    if (!delete_records('cognitivefactory_operatordata', 'cognitivefactoryid', $cognitivefactory->id, 'userid', $behalfed, 'operatorid', 'categorize')){
         // NOT AN ERROR
     }
         
@@ -18,7 +19,7 @@ if ($action == 'savecategorization'){
     foreach($keys as $key){        
         preg_match("/^cat_(.*)/", $key, $matches);
         $catrecord->cognitivefactoryid = $cognitivefactory->id;
-        $catrecord->userid = $USER->id;
+        $catrecord->userid = $behalfed;
         $catrecord->groupid = $currentgroup;
         $catrecord->operatorid = 'categorize';
         $catrecord->itemsource = $matches[1];

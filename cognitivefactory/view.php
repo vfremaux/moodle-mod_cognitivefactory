@@ -1,4 +1,4 @@
-<?PHP  // $Id: view.php,v 1.3 2004/08/25 12:35:07 diml Exp $
+<?PHP  // $Id: view.php,v 1.2 2012-06-18 15:19:34 vf Exp $
 
     /**
     * @package mod_cognitivefactory
@@ -40,14 +40,15 @@
     $strcognitivefactory = get_string('modulename', 'cognitivefactory');
     $strcognitivefactorys = get_string('modulenameplural', 'cognitivefactory');
     
-    add_to_log($course->id, 'cognitivefactory', 'view', "view.php?id={$cm->id}", $cognitivefactory->id, $cm->id);
-
 /// get the master MVC control parameters
 
     // PART OF MVC Implementation
     $action = optional_param('what', '', PARAM_CLEAN); 
     $view = optional_param('view', '', PARAM_CLEAN); 
     $page = optional_param('page', '', PARAM_CLEAN); 
+
+	$logaction = (empty($page)) ? 'view' : $page ;
+    add_to_log($course->id, 'cognitivefactory', $logaction, "/mod/cognitivefactory/view.php?id={$cm->id}", $cognitivefactory->id, $cm->id);
 
     // memorizes current view - typical session switch
     if (!empty($view)){
@@ -67,6 +68,12 @@
     }
     $page = $_SESSION['currentpage'];
     // !PART OF MVC Implementation
+
+/// Get capabilities
+   
+   	$isstudent = has_capability('mod/cognitivefactory:gradable', $context, $USER->id, false);
+   	$ismanager = has_capability('mod/cognitivefactory:manage', $context);
+	$cangrade = has_capability('mod/cognitivefactory:grade', $context, $USER->id, false);
    
 /// Print the page header
 
@@ -91,12 +98,20 @@
 
     if ($groupmode = groupmode($course, $cm)) {   // Groups are being used
         $currentgroup = setup_and_print_groups($course, $groupmode, "view.php?id={$cm->id}");
-    } 
-    else {
+    } else {
         $currentgroup = 0;
     }
+
+    if ($ismanager){
+        if ($action != ''){
+            include "{$CFG->dirroot}/mod/cognitivefactory/phase.controller.php";
+        }
+    }
     
-    print_simple_box(text_to_html($cognitivefactory->description) , 'center');
+	echo '<br/>';
+    if (!empty($cognitivefactory->description)){
+    	print_box(text_to_html($cognitivefactory->description), 'center');
+    }
     
     ?>
     <table width="100%">
@@ -109,13 +124,7 @@
     $displaystr = get_string('display', 'cognitivefactory');
     $feedbackstr = get_string('feedback', 'cognitivefactory');
     $gradestr = get_string('grading', 'cognitivefactory');
-    
-    if (has_capability('mod/cognitivefactory:manage', $context)){
-        if ($action != ''){
-            include "{$CFG->dirroot}/mod/cognitivefactory/phase.controller.php";
-        }
-    }
-    
+        
 /// make flow control activators
 
     if ($cognitivefactory->flowmode == 'sequential'){ // make flow control table
@@ -129,7 +138,7 @@
         $organizeaccessclass = (!$cognitivefactory->seqaccessorganize) ? 'manager' : 'participant' ;
         $displayaccessclass = (!$cognitivefactory->seqaccessdisplay) ? 'manager' : 'participant' ;
         $feedbackaccessclass = (!$cognitivefactory->seqaccessfeedback) ? 'manager' : 'participant' ;
-        if (!has_capability('mod/cognitivefactory:manage', $context)){
+        if (!$ismanager){
             $collectbutton = "<div class=\"{$collectphaseclass} {$collectaccessclass}\">{$collectstr}</div>";
             $preparebutton = "<div class=\"{$preparephaseclass} {$prepareaccessclass}\">{$preparestr}</div>";
             $organizebutton = "<div class=\"{$organizephaseclass} {$organizeaccessclass}\">{$organizestr}</div>";
@@ -145,8 +154,7 @@
                 case PHASE_PREPARE:
                     if ($groupmode && !groups_is_member($currentgroup)){
                         $view = 'notmember';
-                    } 
-                    else {
+                    } else {
                         if ($cognitivefactory->seqaccessprepare){
                             $view = 'prepare';
                         }
@@ -155,8 +163,7 @@
                 case PHASE_ORGANIZE:
                     if ($groupmode && !groups_is_member($currentgroup)){
                         $view = 'notmember';
-                    } 
-                    else {
+                    } else {
                         if ($cognitivefactory->seqaccessorganize){
                             $view = 'organize';
                         }
@@ -175,15 +182,14 @@
                  default:
                     error("Unknown phase. Please report to developers.");
             }
-        }
-        else{
+        } else {
             $collectbutton = "<a href=\"view.php?id={$cm->id}&amp;what=switchphase&amp;phase=0\"><div class=\"{$collectphaseclass} {$collectaccessclass}\">{$collectstr}</div></a>";
             $preparebutton = "<a href=\"view.php?id={$cm->id}&amp;what=switchphase&amp;phase=1\"><div class=\"{$preparephaseclass} {$prepareaccessclass}\">{$preparestr}</div></a>";
             $organizebutton = "<a href=\"view.php?id={$cm->id}&amp;what=switchphase&amp;phase=2\"><div class=\"{$organizephaseclass} {$organizeaccessclass}\">{$organizestr}</div></a>";
             $displaybutton = "<a href=\"view.php?id={$cm->id}&amp;what=switchphase&amp;phase=3\"><div class=\"{$displayphaseclass} {$displayaccessclass}\">{$displaystr}</div></a>";
             $feedbackbutton = "<a href=\"view.php?id={$cm->id}&amp;what=switchphase&amp;phase=4\"><div class=\"{$feedbackphaseclass} {$feedbackaccessclass}\">{$feedbackstr}</div></a>";
         }
-        $gradebutton = (has_capability('mod/cognitivefactory:grade', $context)) ? "<a href=\"view.php?id={$cm->id}&amp;view=grade\"><div class=\"raised manager\">{$gradestr}</div></a>" : '' ;
+        $gradebutton = ($cangrade) ? "<a href=\"view.php?id={$cm->id}&amp;view=grade\"><div class=\"raised manager\">{$gradestr}</div></a>" : '' ;
     ?>
     <center>
     <table>
@@ -214,19 +220,33 @@
     
 /// main menu
 
-    if ($cognitivefactory->flowmode == 'parallel' || has_capability('mod/cognitivefactory:manage', $context)){ // make a first row of tabs
-        if (has_capability('mod/cognitivefactory:collect', $context))
+    if ($cognitivefactory->flowmode == 'parallel' || $ismanager){ // make a first row of tabs
+        if (!$isstudent || $cognitivefactory->seqaccesscollect){
             $rows[0][] = new tabobject('collect', "view.php?id={$cm->id}&amp;view=collect", $collectstr);
-        if (has_capability('mod/cognitivefactory:prepare', $context))
+        } else {
+            if ($view == 'collect') $view = 'prepare';
+        }
+        if (!$isstudent || $cognitivefactory->seqaccessprepare){
             $rows[0][] = new tabobject('prepare', "view.php?id={$cm->id}&amp;view=prepare", $preparestr);
-        if (has_capability('mod/cognitivefactory:organize', $context))
+        } else {
+            if ($view == 'prepare') $view = 'organize';
+        } 
+        if (!$isstudent || $cognitivefactory->seqaccessorganize) {
             $rows[0][] = new tabobject('organize', "view.php?id={$cm->id}&amp;view=organize", $organizestr);
-        if (has_capability('mod/cognitivefactory:display', $context))
+        } else {
+            if ($view == 'organize') $view = 'display';
+        }
+        if (!$isstudent || $cognitivefactory->seqaccessdisplay){
             $rows[0][] = new tabobject('display', "view.php?id={$cm->id}&amp;view=display", $displaystr);
-        if (has_capability('mod/cognitivefactory:report', $context))
+        } else {
+            if ($view == 'display') $view = 'feedback';
+        }
+        if (!$isstudent || $cognitivefactory->seqaccessfeedback){
             $rows[0][] = new tabobject('feedback', "view.php?id={$cm->id}&amp;view=feedback", $feedbackstr);
-        if (has_capability('mod/cognitivefactory:grade', $context))
-        	$rows[0][] = new tabobject('grade', "view.php?id={$cm->id}&amp;view=grade", $gradestr);   
+        }
+        if ($cangrade){
+        	$rows[0][] = new tabobject('grade', "view.php?id={$cm->id}&amp;view=grade", $gradestr);
+        }
     }
     
 /// submenus
@@ -245,13 +265,12 @@
             $operatorlist = cognitivefactory_get_operatorlist($operators, '|');
             if (empty($operatorlist)){
                 $page = 'select';
-            }
-            else if (!preg_match("/select|$operatorlist/", $page)) {
+            } else if (!preg_match("/select|$operatorlist/", $page)) {
                 $page = 'select';
             }
             
             /// prepare submenu
-            if (has_capability('mod/cognitivefactory:select', $context))
+            if (!$isstudent || $cognitivefactory->seqaccessprepare)
     		    $rows[1][] = new tabobject('select', "view.php?id={$cm->id}&amp;view=prepare&amp;page=select", get_string('select', 'cognitivefactory'));
     		foreach($operators as $operator){
     		    if (!$operator->active) continue;
@@ -263,9 +282,14 @@
             $operatorlist = cognitivefactory_get_operatorlist($operators, '|');
             if (empty($operatorlist)){
                 $page = 'summary';
-            }
-            else if (!preg_match("/select|$operatorlist/", $page)) {
-                $page = 'summary';
+            } else if (!preg_match("/select|$operatorlist/", $page)) {
+            	if (strstr('|', $operatorlist) !== false || $page == 'summary'){
+	                $page = 'summary';
+	            } else {
+	            	// force using the only operator page if only one selected
+	            	// this is nice for presenting a simplified "one simple process" interface.
+	                $page = $operatorlist;
+	            }
             }
     		$rows[1][] = new tabobject('summary', "view.php?id={$cm->id}&amp;view=organize&amp;page=summary", get_string('summary', 'cognitivefactory'));
     		foreach($operators as $operator){
@@ -278,8 +302,7 @@
             $operatorlist = cognitivefactory_get_operatorlist($operators, '|');
             if (empty($operatorlist)){
                 $page = 'summary';
-            }
-            else if (!preg_match("/summary|$operatorlist/", $page)) {
+            } else if (!preg_match("/summary|$operatorlist/", $page)) {
                 $page = 'summary';
             }
     		$rows[1][] = new tabobject('summary', "view.php?id={$cm->id}&amp;view=display&amp;page=summary", get_string('summary', 'cognitivefactory'));
@@ -307,15 +330,14 @@
     if (!empty($page)){
         $selected = $page;
         $activated = array($view);
-    }
-    else{
+    } else {
         $selected = $view;
     }
     
 /// if sequential, bring back second row to first row before printing tags
 
     if (isset($rows)){
-        if ($cognitivefactory->flowmode == 'sequential' && !has_capability('mod/cognitivefactory:manage', $context)){
+        if ($cognitivefactory->flowmode == 'sequential' && !$ismanager){
             $rows[0] = $rows[1];
             unset($rows[1]);
         }
@@ -334,89 +356,109 @@
     // echo "routing $view : $page : $action "; // for debug only
     
     if ($view == 'collect'){
-        $result = 0;
-        if ($action != ''){
-            $result = include 'collect.controller.php';
-        }
-        if ($result != -1){
-    	    include 'collect.php';
-    	}
+		if (!$isstudent || $cognitivefactory->seqaccesscollect){
+	        $result = 0;
+	        if ($action != ''){
+	            $result = include 'collect.controller.php';
+	        }
+	        if ($result != -1){
+	    	    include 'collect.php';
+	    	}
+	    } else {
+	    	error('no permissions to do this');
+	    }
     }
     if ($view == 'prepare'){
-        // here we call the local operator controller at a standard location if needed
-        $operator = optional_param('operator', '', PARAM_ALPHA);
-        $result = 0;
-        if ($operator && $action){
-            $result = include $CFG->dirroot."/mod/cognitivefactory/operators/{$operator}/prepare.controller.php";
-        }
-        if ($result != -1){
-            switch($page){
-                case 'select':
-            	    include 'select.php';
-            	    break;
-                default: 
-                    if (file_exists($CFG->dirroot."/mod/cognitivefactory/operators/{$page}/prepare.php")){
-            	        include $CFG->dirroot."/mod/cognitivefactory/operators/{$page}/prepare.php";
-                    }
-            	    break;
-            }
-        }
+		if (!$isstudent || $cognitivefactory->seqaccessprepare){
+	        // here we call the local operator controller at a standard location if needed
+	        $operator = optional_param('operator', '', PARAM_ALPHA);
+	        $result = 0;
+	        if ($operator && $action){
+	            $result = include $CFG->dirroot."/mod/cognitivefactory/operators/{$operator}/prepare.controller.php";
+	        }
+	        if ($result != -1){
+	            switch($page){
+	                case 'select':
+	            	    include 'select.php';
+	            	    break;
+	                default: 
+	                    if (file_exists($CFG->dirroot."/mod/cognitivefactory/operators/{$page}/prepare.php")){
+	            	        include $CFG->dirroot."/mod/cognitivefactory/operators/{$page}/prepare.php";
+	                    }
+	            	    break;
+	            }
+	        }
+	    } else {
+	    	error('no permissions to do this');
+	    }
     }
     if ($view == 'organize'){
-        // here we call the local operator controller at a standard location if needed
-        $operator = optional_param('operator', '', PARAM_ALPHA);
-        $result = 0;
-        if ($operator && $action){
-            $result = include $CFG->dirroot."/mod/cognitivefactory/operators/{$operator}/organize.controller.php";
-        }
-        if ($result != -1){
-            switch($page){
-                case 'summary':
-    	            include 'summary.php';
-        	        break;
-                default: 
-                    if (file_exists($CFG->dirroot."/mod/cognitivefactory/operators/{$page}/organize.php")){
-            	        include $CFG->dirroot."/mod/cognitivefactory/operators/{$page}/organize.php";
-                    }
-            	    break;
-            }
-    	}
+		if (!$isstudent || $cognitivefactory->seqaccessorganize){
+	        // here we call the local operator controller at a standard location if needed
+	        $operator = optional_param('operator', '', PARAM_ALPHA);
+	        $result = 0;
+	        if ($operator && $action){
+	            $result = include $CFG->dirroot."/mod/cognitivefactory/operators/{$operator}/organize.controller.php";
+	        }
+	        if ($result != -1){
+	            switch($page){
+	                case 'summary':
+	    	            include 'summary.php';
+	        	        break;
+	                default: 
+	                    if (file_exists($CFG->dirroot."/mod/cognitivefactory/operators/{$page}/organize.php")){
+	            	        include $CFG->dirroot."/mod/cognitivefactory/operators/{$page}/organize.php";
+	                    }
+	            	    break;
+	            }
+	    	}
+	    } else {
+	    	error('no permissions to do this');
+	    }
     }
     if ($view == 'display'){
-        $operator = optional_param('operator', '', PARAM_ALPHA);
-        $result = 0;
-        if ($operator && $action){
-            $result = include $CFG->dirroot."/mod/cognitivefactory/operators/{$operator}/display.controller.php";
-        }
-        if ($result != -1){
-            switch($page){
-                case 'summary':
-    	            include 'displaysummary.php';
-        	        break;
-                default: 
-                    if (file_exists($CFG->dirroot."/mod/cognitivefactory/operators/{$page}/display.php")){
-            	        include $CFG->dirroot."/mod/cognitivefactory/operators/{$page}/display.php";
-                    }
-            	    break;
-            }
-    	}
+		if (!$isstudent || $cognitivefactory->seqaccessdisplay){
+	        $operator = optional_param('operator', '', PARAM_ALPHA);
+	        $result = 0;
+	        if ($operator && $action){
+	            $result = include $CFG->dirroot."/mod/cognitivefactory/operators/{$operator}/display.controller.php";
+	        }
+	        if ($result != -1){
+	            switch($page){
+	                case 'summary':
+	    	            include 'displaysummary.php';
+	        	        break;
+	                default: 
+	                    if (file_exists($CFG->dirroot."/mod/cognitivefactory/operators/{$page}/display.php")){
+	            	        include $CFG->dirroot."/mod/cognitivefactory/operators/{$page}/display.php";
+	                    }
+	            	    break;
+	            }
+	    	}
+	    } else {
+	    	error('no permissions to do this');
+	    }
     }
     if ($view == 'feedback'){
-        $result = 0;
-        if ($action != ''){
-            $result = include $CFG->dirroot."/mod/cognitivefactory/feedback.controller.php";
-        }
-        if ($result != -1){
-            switch($page){
-                case 'report':
-    	            include 'report.php';
-    	            break;
-                case 'feedback':
-    	            include 'feedback.php';
-    	            break;
-    	        default:;
-    	    }
-    	}
+		if (!$isstudent || $cognitivefactory->seqaccessorganize){
+	        $result = 0;
+	        if ($action != ''){
+	            $result = include $CFG->dirroot."/mod/cognitivefactory/feedback.controller.php";
+	        }
+	        if ($result != -1){
+	            switch($page){
+	                case 'report':
+	    	            include 'report.php';
+	    	            break;
+	                case 'feedback':
+	    	            include 'feedback.php';
+	    	            break;
+	    	        default:;
+	    	    }
+	    	}
+	    } else {
+	    	error('no permissions to do this');
+	    }
     }
     if ($view == 'grade'){
         $result = 0;
@@ -446,5 +488,12 @@
     if (!empty($htmleditorneeded) and $usehtmleditor) {
         use_html_editor($editorfields);
     }
+    
+    $backtocoursestr = get_string('backtocourse', 'cognitivefactory');
+    $options['id'] = $course->id;
+    echo '<p><center>';
+	print_single_button("{$CFG->wwwroot}/course/view.php", $options, $backtocoursestr);
+    echo '</center></p>';
+    
     print_footer($course);
 ?>

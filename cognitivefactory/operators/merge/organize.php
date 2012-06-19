@@ -5,16 +5,17 @@
 * Operator : merge
 * @author Valery Fremaux
 * @package mod-cognitivefactory 
-* @date 10/01/2009*/
+* @date 10/01/2009
+*/
 include_once ($CFG->dirroot."/mod/cognitivefactory/operators/{$page}/locallib.php");
 include_once("$CFG->dirroot/mod/cognitivefactory/operators/operator.class.php");
 
 $current_operator = new BrainstormOperator($cognitivefactory->id, $page);
+
 $responsesnum = cognitivefactory_count_responses($cognitivefactory->id, 0, $currentgroup, false);
 if (!isset($current_operator->configdata->maxideasleft)){
     $current_operator->configdata->maxideasleft = $responsesnum;
-    notice(get_string('filterlimitundefined', 'cognitivefactory'));
-    
+    notice(get_string('filterlimitundefined', 'cognitivefactory'));    
 }
 
 $unassignedresponses = merge_get_unassigned($cognitivefactory->id, 0, $currentgroup, false, $current_operator->configdata);
@@ -43,8 +44,8 @@ print_heading("<img src=\"{$CFG->wwwroot}/mod/cognitivefactory/operators/{$page}
 <?php
 $intro = (isset($current_operator->configdata->requirement)) ? $current_operator->configdata->requirement . '<br/>' : '' ;
 $intro .= "<span id=\"leftcount\">".$toeliminate.'</span> '. get_string('responsestokeep', 'cognitivefactory');
-print_simple_box($intro);
-print_simple_box_start('center');
+print_box($intro);
+print_box_start('center');
 ?>
 <form name="mergeform" method="post" action="view.php">
 <input type="hidden" name="id" value="<?php p($cm->id) ?>" />
@@ -144,11 +145,12 @@ for($i = 0 ; $i < $current_operator->configdata->maxideasleft ; $i++){
         }
         $response = merge_get_customentries($cognitivefactory->id, $i, null, $currentgroup, false);
         $customchecked = '';
+        $mergedvalue = optional_param('merge_'.$i, '', PARAM_TEXT);
         if ($response){
             $customrecords = array_values($response);
             // watch the subtility of the === operator here.
             $customchecked = ($customrecords[0]->itemdest === '0') ? ' checked="checked" ' : '' ;
-            $mergedvalue = (!empty($customchecked)) ? $customrecords[0]->blobvalue : '' ;
+            $mergedvalue = (!empty($customchecked)) ? stripslashes($customrecords[0]->blobvalue) : '' ;
         }
 ?>
                             <tr>
@@ -192,6 +194,6 @@ if ($current_operator->configdata->allowreducesource){
 </table>
 </form>
 <?php
-print_simple_box_end();
+print_box_end();
 ?>
 </center>

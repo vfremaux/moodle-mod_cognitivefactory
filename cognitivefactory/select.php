@@ -8,6 +8,8 @@
 *
 */
 
+if (!defined('MOODLE_INTERNAL')) die('You cannot use this script directly');
+
 print_heading(get_string('chooseoperators', 'cognitivefactory'));
 ?>
 <center>

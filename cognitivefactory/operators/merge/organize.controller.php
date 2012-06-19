@@ -12,6 +12,7 @@ include_once ($CFG->dirroot."/mod/cognitivefactory/operators/{$page}/locallib.ph
 if ($action == 'assign'){
     $current_target = optional_param('to', null, PARAM_INT);
     /// first discard old assignation - the fastest way to do it
+    /*
     $select = "
         cognitivefactoryid = {$cognitivefactory->id} AND
         operatorid = 'merge' AND
@@ -21,6 +22,7 @@ if ($action == 'assign'){
     if (!delete_records_select('cognitivefactory_operatordata', $select)){
         // IS NOT AN ERROR ; nothing previously assigned to delete
     }
+    */
 
     /// mark new assignation
     $checks = array_keys(merge_get_dataset_from_query('choose_'));

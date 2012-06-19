@@ -5,7 +5,22 @@
 * Operator : merge
 * @author Valery Fremaux
 * @package mod-cognitivefactory 
-* @date 10/01/2009*/
+* @date 10/01/2009
+*/
+
+/**
+* Use of generic data model by merge operator
+*
+* Available predicates are available as "responses".
+* "operatordata" stores assignation of predicates to output
+* subgroup for each user. 
+* itemsoure : designates the response to assign
+* intvalue : designates the output subset
+* itemdest : stores the selected response as synthesis source
+* blobvalue : contains synthesis predicate for subset
+*
+* When an extra synthesis exists, an extra record with itemsoure and itemdest to 0 is added.
+*/
 
 /**
 *

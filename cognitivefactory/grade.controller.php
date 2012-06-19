@@ -7,6 +7,9 @@
 *
 * A special controller for switching phases in sequential mode
 */
+
+if (!defined('MOODLE_INTERNAL')) die('You cannot use this script directly');
+
 /**************************************** save a gradeset ***********************************/
 if ($action == 'savegrade'){
     $userid = required_param('for', PARAM_INT);

@@ -1,20 +1,17 @@
-<?PHP // $Id: cognitivefactory.php,v 1.2 2004/08/24 16:36:19 diml Exp $
+<?PHP // $Id: cognitivefactory.php,v 1.2 2012-06-18 15:19:36 vf Exp $
       // cognitivefactory.php - created with Moodle 1.8 development (2007122600)
 
 $string['addmoreresponses'] = 'Ajouter plus d\'idées ';
 $string['allopdata'] = 'Nombre de données d\'organisation ';
 $string['allresponses'] = 'Nombre de réponses données ';
 $string['allusersclear'] = 'Effacer pour tous les participants ';
+$string['backtocourse'] = 'Revenir au cours';
 $string['cognitivefactory:manage'] = 'Gérer l\'activité ';
-$string['cognitivefactory:collect'] = 'Poster des idées ';
-$string['cognitivefactory:prepare'] = 'Préparer les opérations ';
-$string['cognitivefactory:organize'] = 'Ranger ';
+$string['cognitivefactory:seeallinputs'] = 'Voir les entrées de tous';
 $string['cognitivefactory:grade'] = 'Evaluer ';
+$string['collectrequirement'] = 'Instructions de collecte';
 $string['cognitivefactory:gradable'] = 'Etre évalué ';
-$string['cognitivefactory:select'] = 'Choisir les opérations ';
-$string['cognitivefactory:display'] = 'Voir les résultats ';
 $string['cognitivefactory:import'] = 'Importer des idées ';
-$string['cognitivefactory:report'] = 'Rédiger une synthèse ';
 $string['cognitivefactoryname'] = 'Titre ';
 $string['cognitivefactorytext'] = 'Description ';
 $string['chooseoperatornotice'] = 'Pour activer ou désactiver un opérateur, cliquez simplement dessus. Vous pourrez définir des paramètres pour cet opérateur en cliquant dans le sous-menu proposé ci-dessus. Si vous désactivez un opérateur, vous ne perdez pas les derniers paramètres réglés pour cet opérateur.';
@@ -96,6 +93,7 @@ $string['saveconfig'] = 'Mémoriser la configuration ';
 $string['savemyresponse'] = 'Enregistrer mon idée';
 $string['scale'] = 'Valuation';
 $string['select'] = 'Choisir';
+$string['selfsequential'] = 'Progression séquentielle autonome';
 $string['sequential'] = 'Progression séquentielle (par phases)';
 $string['sequentialaccess'] = 'Attribution des phases (mode sequentiel) ';
 $string['singlegrade'] = 'Note unique ';

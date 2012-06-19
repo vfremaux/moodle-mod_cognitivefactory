@@ -1,26 +1,23 @@
-<?PHP // $Id: cognitivefactory.php,v 1.2 2004/08/24 16:36:19 diml Exp $
+<?PHP // $Id: cognitivefactory.php,v 1.2 2012-06-18 15:19:36 vf Exp $
       // cognitivefactory.php - created with Moodle 1.8 development (2007122600)
 
 $string['addmoreresponses'] = 'Add more ideas';
 $string['allopdata'] = 'Oranisation records (data for operators) ';
 $string['allresponses'] = 'Number of ideas ';
 $string['allusersclear'] = 'Clear for all participants';
+$string['backtocourse'] = 'Browse back to course';
 $string['cognitivefactory:manage'] = 'Manage the module ';
-$string['cognitivefactory:collect'] = 'Post some input ';
-$string['cognitivefactory:prepare'] = 'Prepare operators ';
-$string['cognitivefactory:organize'] = 'Organize data with operators ';
+$string['cognitivefactory:seeallinputs'] = 'See all inputs';
 $string['cognitivefactory:grade'] = 'Assess the work ';
 $string['cognitivefactory:gradable'] = 'Be assessed by a teacher ';
-$string['cognitivefactory:select'] = 'Select operators ';
-$string['cognitivefactory:display'] = 'Display results ';
 $string['cognitivefactory:import'] = 'Importer inputs from a file ';
-$string['cognitivefactory:report'] = 'Report and feedback ';
 $string['cognitivefactoryname'] = 'Title';
 $string['cognitivefactorytext'] = 'Description';
 $string['chooseoperatornotice'] = 'To activate or disable an operator, clic on the appropriate icon. You will be able to set parameters for each operator using the above submenu entries. When disabling an operator, you will keep the last value set for that operator.';
 $string['chooseoperators'] = 'Choose operators';
 $string['clearallprevious'] = 'Clear previous data';
 $string['collect'] = 'Collecting';
+$string['collectrequirement'] = 'Collection requirements';
 $string['collectingideas'] = 'Collecting ideas';
 $string['commands'] = 'Commmands';
 $string['data'] = 'Brainstorm data';
@@ -95,7 +92,8 @@ $string['saveconfig'] = 'Save the configuration ';
 $string['savemyresponse'] = 'Save my idea(s)';
 $string['scale'] = 'Scale';
 $string['select'] = 'Choose operators';
-$string['sequential'] = 'Sequential flow (phased)';
+$string['sequential'] = 'Teacher driven sequential flow';
+$string['selfsequential'] = 'Self driven sequential flow';
 $string['sequentialaccess'] = 'Phase assignation (sequential only) ';
 $string['singlegrade'] = 'Single/dissociated grade';
 $string['splittedgrade'] = 'Splitted grade';

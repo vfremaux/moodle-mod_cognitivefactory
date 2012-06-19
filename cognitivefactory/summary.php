@@ -4,7 +4,10 @@
 * Module Brainstorm V2
 * @author Valery Fremaux
 * @package mod-cognitivefactory 
-* @date 10/01/2009*/
+* @date 10/01/2009
+*/
+
+if (!defined('MOODLE_INTERNAL')) die('You cannot use this script directly');
 
 $allresponses = cognitivefactory_count_responses($cognitivefactory->id, 0, 0);
 $responsesinyourgroup = cognitivefactory_count_responses($cognitivefactory->id, 0, $currentgroup);

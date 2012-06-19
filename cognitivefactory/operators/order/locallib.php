@@ -109,6 +109,16 @@ function order_display(&$cognitivefactory, $userid, $groupid){
 <center>
 <style>
 .match { background-color : #54DE57 }
+.nomatch1 { background-color : #FFC0C0 }
+.nomatch2 { background-color : #FFB0B0 }
+.nomatch3 { background-color : #FFA0A0 }
+.nomatch4 { background-color : #FF9090 }
+.nomatch5 { background-color : #FF8080 }
+.nomatch6 { background-color : #FF7070 }
+.nomatch7 { background-color : #FF6060 }
+.nomatch8 { background-color : #FF5050 }
+.nomatch9 { background-color : #FF4040 }
+.nomatch10 { background-color : #FF3030 }
 </style>
 <table>
     <tr>
@@ -127,7 +137,21 @@ if ($responses){
     echo '<table cellspacing="10">';
     $myorderingkeys = array_keys($myordering);
     foreach($responses as $response){
-        $matchclass = ($response->id == @$myorderingkeys[$i]) ? 'match' : '';
+        if ($response->id == @$myorderingkeys[$i]){
+        	$matchclass = 'match';
+        } else {
+        	// fetch the absolute distance
+        	$d = -1;
+        	if (isset($myorderingkeys)){
+	        	for($j = 0; $j < count($myorderingkeys) ; $j++){
+	        		if ($response->id == @$myorderingkeys[$j]){
+	        			$d = min(abs($i - $j), 10);
+	        			break;
+	        		}
+	        	}
+	        }
+        	$matchclass = 'nomatch'.$d;
+        }
 ?>
                 <tr>
                     <th class="<?php echo $matchclass ?>">
@@ -154,7 +178,21 @@ if ($myordering){
     echo '<table cellspacing="10">';
     $responsekeys = array_keys($responses);
     foreach($myordering as $response){
-        $matchclass = ($response->id == @$responsekeys[$i]) ? 'match' : '';
+        if ($response->id == @$responsekeys[$i]){
+        	$matchclass = 'match';
+        } else {
+        	// fetch the absolute distance
+        	$d = -1;
+        	if (isset($responsekeys)){
+	        	for($j = 0; $j < count($responsekeys) ; $j++){
+	        		if ($response->id == @$responsekeys[$j]){
+	        			$d = min(abs($i - $j), 10);
+	        			break;
+	        		}
+	        	}
+	        }
+        	$matchclass = 'nomatch'.$d;
+        }
 ?>
                 <tr>
                     <th class="<?php echo $matchclass ?>">

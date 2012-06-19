@@ -1,4 +1,4 @@
-<?php //$Id: backuplib.php, v 1.2 2006/02/02 00:35:46 diml Exp $
+<?php //$Id: backuplib.php,v 1.2 2012-06-18 15:19:31 vf Exp $
     //This php script contains all the stuff to backup/restore
     //cognitivefactory mods
 
@@ -66,6 +66,7 @@
         fwrite ($bf, full_tag('MODTYPE', 4, false, 'cognitivefactory'));
         fwrite ($bf, full_tag('NAME', 4, false, $cognitivefactory->name));
         fwrite ($bf, full_tag('DESCRIPTION', 4, false, $cognitivefactory->description));
+        fwrite ($bf, full_tag('COLLECTREQUIREMENT', 4, false, $cognitivefactory->collectrequirement));
         fwrite ($bf, full_tag('FLOWMODE', 4, false, $cognitivefactory->flowmode));
         fwrite ($bf, full_tag('SEQACCESSCOLLECT', 4, false, $cognitivefactory->seqaccesscollect));  
         fwrite ($bf, full_tag('SEQACCESSPREPARE', 4, false, $cognitivefactory->seqaccessprepare));  

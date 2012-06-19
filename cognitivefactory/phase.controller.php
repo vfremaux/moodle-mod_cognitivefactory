@@ -7,6 +7,8 @@
 *
 * A special controller for switching phases in sequential mode
 */
+if (!defined('MOODLE_INTERNAL')) die('You cannot use this script directly');
+
 if ($action == 'switchphase'){
     $cognitivefactory->phase = required_param('phase', PARAM_INT);
     update_record('cognitivefactory', $cognitivefactory);

@@ -1,4 +1,4 @@
-<?php //$Id: restorelib.php,v 1.2 2006/02/02 00:35:46 gustav_delius Exp $
+<?php //$Id: restorelib.php,v 1.2 2012-06-18 15:19:34 vf Exp $
     //This php script contains all the stuff to backup/restore
     //cognitivefactory mods
 
@@ -54,6 +54,7 @@
             $cognitivefactory->course = $restore->course_id;
             $cognitivefactory->name = backup_todb($info['MOD']['#']['NAME']['0']['#']);
             $cognitivefactory->description = backup_todb($info['MOD']['#']['DESCRIPTION']['0']['#']);
+            $cognitivefactory->collectrequirement = backup_todb($info['MOD']['#']['COLLECTREQUIREMENT']['0']['#']);
             $cognitivefactory->flowmode = backup_todb($info['MOD']['#']['FLOWMODE']['0']['#']);
             $cognitivefactory->seqaccesscollect = backup_todb($info['MOD']['#']['SEQACCESSCOLLECT']['0']['#']); 
             $cognitivefactory->seqaccessprepare = backup_todb($info['MOD']['#']['SEQACCESSPREPARE']['0']['#']);

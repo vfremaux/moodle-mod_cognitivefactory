@@ -9,18 +9,40 @@
 include_once ($CFG->dirroot."/mod/cognitivefactory/operators/{$page}/locallib.php");
 include_once("$CFG->dirroot/mod/cognitivefactory/operators/operator.class.php");
 
+if (has_capability('mod/cognitivefactory:gradable', $context)){
+	// if i organize for my own if this ativity is open to students
+	$behalfed = $USER->id;
+	$categoryowner = $behalfed;
+} else {
+	$behalfed = optional_param('behalfed', $USER->id, PARAM_INT);
+	$categoryowner = 0;
+	// groups_print_course_menu($course, $CFG->wwwroot."/mod/cognitivefactory/view.php?id=$id&view=$view");
+	$currentgroupid = groups_get_course_group ($course, true);
+	$users = groups_get_members($currentgroupid);
+	$behalfedmenu = array();
+	foreach($users as $u){
+		if (has_capability('mod/cognitivefactory:gradable', $context, $u->id)){
+			$behalfedmenu[$u->id] = fullname($u);
+		}
+	}
+}
+
 print_heading("<img src=\"{$CFG->wwwroot}/mod/cognitivefactory/operators/{$page}/pix/enabled_small.gif\" align=\"left\" width=\"40\" /> " . get_string("organizing$page", 'cognitivefactory'));
-$categories = categorize_get_categories($cognitivefactory->id, 0, $currentgroup);
-$categorization = categorize_get_categoriesperresponses($cognitivefactory->id, null, $currentgroup);
-$responses = cognitivefactory_get_responses($cognitivefactory->id, 0, 0);
+$categories = categorize_get_categories($cognitivefactory->id, $categoryowner, $currentgroup);
+$categorization = categorize_get_categoriesperresponses($cognitivefactory->id, $behalfed, $currentgroup);
+// print_object($categorization);
+$responses = cognitivefactory_get_responses($cognitivefactory->id, $behalfed, $currentgroup);
 $current_operator = new BrainstormOperator($cognitivefactory->id, $page);
 
-foreach($categories as $category){
-  $category_menu[$category->id] = $category->title;
+$category_menu = array();
+if (!empty($categories)){
+	foreach($categories as $category){
+	  $category_menu[$category->id] = $category->title;
+	}
 }
 
 $matchgroup = (!$groupmode) ? 0 : $currentgroup ;
-$matchings = categorize_get_matchings($cognitivefactory->id, $USER->id, $matchgroup);
+$matchings = categorize_get_matchings($cognitivefactory->id, $behalfed, $matchgroup);
 $maxspan = 2;
 ?>
 <center>
@@ -28,13 +50,23 @@ $maxspan = 2;
 if (isset($current_operator->configdata->requirement))
     print_simple_box($current_operator->configdata->requirement);
 ?>
-<form name="categorizationform" method="post" action="view.php">
+<a name="theform"></a>
+<form name="categorizationform" method="post" action="view.php#theform">
 <input type="hidden" name="id" value="<?php p($cm->id) ?>" />
+<?php
+	if (!empty($behalfedmenu)){
+		print_string('behalfof', 'cognitivefactory');
+		choose_from_menu($behalfedmenu, 'behalfed', $behalfed);
+		echo "<input type=\"submit\" name=\"go_btn\" value=\"".get_string('changeuser', 'cognitivefactory').'" />';
+	}
+?>
 <input type="hidden" name="operator" value="<?php p($page) ?>"/>
-<input type="hidden" name="what" value="savecategorization" />
+<input type="hidden" name="what" value="" />
+<br/>
+<br/>
 <table width="90%" cellspacing="5">
 <?php
-if (count($responses)){
+if (!empty($responses)){
     $counts = array();
     foreach($responses as $response){
 ?>
@@ -45,9 +77,9 @@ if (count($responses)){
         <td align="left">
             <?php
             if (!@$current_operator->configdata->allowmultiple){
-                $categoryvalue = (!empty($categorization[$response->id]->categories)) ? $categorization[$response->id]->categories[0] : 0 ;
+                $categoryvalue = (isset($categorization[$response->id]->categories)) ? $categorization[$response->id]->categories[0] : 0 ;
                 $counts[$categoryvalue] = 0 + @$counts[$categoryvalue] + 1;
-                choose_from_menu($category_menu, 'cat_'.$response->id, $categoryvalue, 'choose', 'checkmaxrange(this)');            
+                choose_from_menu($category_menu, 'cat_'.$response->id, $categoryvalue, '', 'checkmaxrange(this)');            
             }
             else{
                 choose_multiple_from_menu($category_menu, 'cat_'.$response->id.'[]', @$categorization[$response->id]->categories, 'choose', '',
@@ -56,7 +88,7 @@ if (count($responses)){
             ?>
         </td>
 <?php
-        if (!@$current_operator->configdata->blindness){
+        if (!$cognitivefactory->privacy && !@$current_operator->configdata->blindness){
             $maxspan = 4;
 ?>
         <td align="left">
@@ -89,12 +121,19 @@ if (count($responses)){
     </tr>    
 <?php
     }
-}
 ?>
     <tr>
         <td colspan="<?php echo $maxspan ?>">
-            <br/><input type="submit" name="go_btn" value="<?php print_string('savecategorization', 'cognitivefactory') ?>" />
+            <br/><input onclick="document.categorizationform.what.value = 'savecategorization';" type="submit" name="go_btn" value="<?php print_string('savecategorization', 'cognitivefactory') ?>" />
         </td>
+    </tr>
+<?php
+} else {
+	if (!has_capability('mod/cognitivefactory:gradable', $context, $USER->id, false)){
+		notify(get_string('noanswers', 'cognitivefactory'));
+	}
+}
+?>
 </table>
 </form>
 <script type="text/javascript">
@@ -124,8 +163,7 @@ function checkmaxrange(listobj){
     }
 }
 <?php
-}
-else{
+} else {
 ?>
 function checkmaxrange(listobj){
 }

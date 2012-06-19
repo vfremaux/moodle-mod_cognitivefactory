@@ -1,4 +1,4 @@
-<?PHP // $Id: lib.php,v 1.2 2004/08/24 16:36:18 diml Exp $
+<?PHP // $Id: locallib.php,v 1.2 2012-06-18 15:19:33 vf Exp $
 
 /**
 * Module Brainstorm V2
@@ -92,6 +92,7 @@ function cognitivefactory_get_operators($cognitivefactoryid){
     
     $DIR = opendir($CFG->dirroot.'/mod/cognitivefactory/operators');
     while($opname = readdir($DIR)){
+    	if ($opname == 'CVS') continue;
         if (!is_dir($CFG->dirroot.'/mod/cognitivefactory/operators/'.$opname)) continue;
         if (ereg("^(\\.|!)", $opname)) continue; // allows masking unused or unimplemented operators
         unset($operator);
@@ -108,6 +109,7 @@ function cognitivefactory_get_operators($cognitivefactoryid){
         }
         $operators[$opname] = $operator;
     }
+    closedir($DIR);
     return $operators;
 }
 
@@ -167,8 +169,7 @@ function cognitivefactory_get_accessclauses($userid=null, $groupid=0, $excludemy
     $userClause = '';
     if ($excludemyself){
         $userClause = " AND od.userid != $USER->id " ;
-    }
-    else{
+    } else {
         $userClause = ($userid) ? " AND od.userid = $userid " : '' ;
     }
     $groupClause = ($groupid) ? " AND od.groupid = $groupid " : '' ;

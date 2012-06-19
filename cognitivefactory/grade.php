@@ -7,6 +7,11 @@
 * @date 10/01/2009*
 * this screen is used for grading student's work
 */
+
+if (!defined('MOODLE_INTERNAL')) die('You cannot use this script directly');
+
+require_capability('mod/cognitivefactory:grade', $context);
+
 include_once("$CFG->dirroot/mod/cognitivefactory/operators/operator.class.php");
 
 /// print participant selector
