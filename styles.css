@@ -1,0 +1,83 @@
+.cognitivefactory-errorbox{
+    margin-height : 10px;
+    color : #D00000 ;
+    border : 1px solid #FF0000;
+	border-radius:8px;
+    text-align : center;
+    padding:15px;
+    width:90%;
+}
+
+.cognitivefactory-formerror{
+   border : red 1px solid;
+   background-color : #FDD9D9;
+}
+
+.cognitivefactory-unvalidformdata{
+   border : 1px solid #FF0000;
+}
+
+.cognitivefactory-privateform{
+   border : 1px solid #800000;
+   filter : alpha(opacity=60);
+   opacity : 0.6
+}
+
+.cognitivefactory-pressed { 
+    border : inset 4px #A0A0A0; 
+    background-color : #C0C0C0 ;
+    padding : 5px ;
+}
+
+.cognitivefactory-raised { 
+    border : outset 4px #A0A0A0; 
+    background-color : #E0E0E0 ;
+    padding : 5px ;
+}
+
+.cognitivefactory-participant {
+    color : #008000 ;
+    background-color : #A0EF9C ;
+}
+
+.cognitivefactory-manager {
+    color : #800000 ;
+    background-color : #E6B5B5 ;
+}
+
+.cognitivefactory-notification{
+	color : #3D3E3C ;
+	border : 1px solid #919391;
+	border-radius:8px;
+	text-align : center;
+	padding:10px;
+	margin:5px;
+	width:90%;
+}
+
+.cognitivefactory-feedback{
+	color : #3D3E3C ;
+	border : 1px solid #8177AC;
+	border-radius:8px;
+	text-align : center;
+	padding:15px;
+	margin:5px;
+	width:90%;
+}
+
+table.cognitivefactory{
+	font-size:1em !important;
+}
+
+.cognitivefactory-phase {
+	width:60px;
+	display:inline;
+}
+
+.cognitivefactory-match { background-color : #54DE57 }
+.cognitivefactory-nomatch { background-color : #E6644D }
+.cognitivefactory-bargraph { background-color : #0080FF ; height : 12px }
+.cognitivefactory-bargraphneg { background-color : #FF8000 ; height : 12px }
+.cognitivefactory-barrange { background-color : #0080FF ; height : 4px }
+.cognitivefactory-barmid { background-color : #B000B0 ; height : 12px }
+

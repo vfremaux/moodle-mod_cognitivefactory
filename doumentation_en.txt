@@ -1,0 +1,227 @@
+Cognitive Factory Documentation
+===============================
+
+Overall Process
+---------------
+
+Cognition
+
+Cognition is the overal mechanisms the brain computation allied to memoization processes use to
+let us know and deal with our environment understanding. Our social culture deals with complex operations
+invoved in language onstrution and concept elaboration. This will use high level semantic and cultural
+operators. At the lowest level, all our high level thinking will overlay a set of basic logical
+computations which elementary object is a predicate. Most historical philosophers elaborated
+logical theories, some of them attempting to elaborate a formal representation of how
+ideas were working together (Witgenstein, Boole, Von Neumann). Although human thinking cannot
+be reduced to elementary logical rationalied operations, people lacking of such basic operators
+will present difficulties to adapt their outside pereption and thus behaviour to the "common
+logial sense" of living. These operators allow us to process predicates (or facts) in order
+to make a decision and build our own action path.    
+
+
+What is the cognitive factory ? 
+
+The cognitive factory is an activity that works around those elementary conceptual and logical
+operators, not the way a computer or calculation unit does, reducing ideas to some calculable
+encoding, but proposing high level idea processing operators that could be applied to ideas
+in order to organie them, filter them, elaborate variants, display them in some representations
+that favour new ideas emergence.
+
+The Cognitive Factory activity
+
+The Cognitive Factory activity has been designed to propose a rich cognitive toolbox capable to
+produce cognitive exerices adressing a contextualied pedagogical purpose of the teacher, as well 
+as providing activities for discovering the cognitive processes themselves. The module will be
+thus used either as an ativity generator or a cognitive demonstrator depending on the teacher's
+guidance and project.  
+
+The Cognitive Factory addresses several learning situations regarding attendants configuration,
+such as autonomy learning, group brainstorming, ideas and synthesis negociation, etc. 
+
+Construction of the Cognitive Factory
+-------------------------------------
+
+The Cognitive Factory drives a single cognitive process based on an initial collection
+of ideas by the learners or the teacher. This is usually the start point. From this point
+will be involved 5 activity phases, each being assignable to either the learner or the teacher.
+
+Depending of to whom each step is assigned will change the overall topology and application
+of the activity, generating a brand original exercice type.
+
+Phases are
+
+Phase 1 : Ideas collection
+
+Users provide textual predicates (ideas) to the factory. This might be done f.e. during some
+among of time, before going on next steps. Ideas can be fed in a "single user scope" process
+(each user bringing ideas in his own space whithout collective visibility) or in a group
+brainstorm process, sharing ideas with the group.
+
+Phase 2 : Operations selection and setup
+
+Once a pool of ideas has been collected, and enough stuff is available to "think" with, some
+applicable operators have to be choosen in order to build the cognitive exercice. Again, this
+can (usually) be done by the teacher, but there is sense the learners be asked to make this choice
+in some activity configuration. At the moment, this choice will be global to the activity instance.
+
+Phase 3 : Operation execution
+
+The users are asked to use the operators to process the initial set of ideas and propose an output.
+This outcome is always individual, but might be influenced by less or more information visible over
+what other people is doing aside.
+
+Phase 4 : Outcome display and confrontation
+
+In this phase is assumed sufficiant data has been input for results exploitation and matching or
+non macthing to make sense. The Display phase attemps to give users a panorama over complete responses
+which scope depends on overal or local privacy settings. The purpose of display layouts is to help
+some conclusion to emerge from the initial rough set of predicates.
+
+Phase 5 : Feedback and synthesis
+
+This is the last activity step that asks to participants to write a motivated synthesis over experimentation
+and outcoming conslusions. This step is reduced to a simple online text editor where to write report. 
+
+Extra phase : Evaluation
+
+When the module is used in an evaluated process, a grade can be elaborated by graders to participate to
+the gradebook compilation. The evaluation only can be used by teachers (graders). In the evaluation process can a 
+feedback be posted by teachers to users, that will display in the synthesis panel. 
+
+Phase scheduling
+
+Phases can be proposed sequentially or with parallel access. When used sequentially, the learner only
+can access to the currently enabled phase. The teachers has full control over which phase is being enabled
+for the whole activity instance. Note that there is no provision to enable a distinct phase per group. 
+
+Operators regarding phases
+
+Each operator must provide a local processing for the phases 2, 3 and 4. The setup parameters depend on
+the operator's meaning and algorithm. 
+
+The actual operation panel will provide the factory with a suitable interface adapted to what the operator 
+asks to do. Usually, the operation panel asks the user to proceed to his own proessing, generating answers
+belonging to him. This standard goal might be affected by the user's role, and the assignation of the phase
+(whether it has to be handled by learner or teacher). 
+
+The display provided by operators will trend to give some individual and collective representation of information,
+depending on the privacy settings. The usual interface required for an operator is 
+
+* first to give a summary of the user's position and choices, independantly to the surrounding community.
+* secondly to give some additional cognitive value that helps adding meaning to the choices or manipulations
+that were made in prior phase.
+* Finally, to compare and oppose individual results to collective trends and/or detailed results.
+
+Pedagogic situations and privacy
+================================
+
+This paragraph will deal with particular aspects of individualiation or collective use of the Cognitive Factory.
+
+Operators
+=========
+
+Operators are plugins, so an extension capability is provided to the Factory for further evolution.
+
+The basic set of operators are typical cognitive operations educated people makes thousands times
+a day. Some may be small variants or just another point of view (such as ordering and quantifying, reducing by
+elimination or by merging).
+
+Standard operators are:
+
+Categorizing :
+--------------
+
+Complexity level : 1 or 2 (2 if categories have to be identified)
+
+The purpose is to help people simplifying the understanding of a lot of dispersed ideas by joining
+them within a category. This reduction helps people in understanding abstraction and the "class" 
+logical process.
+
+Ordering :
+----------
+
+Complexity level : 1
+
+The ordering operator is the basic process of telling what is above or beneath in an absolute
+or relative order stack. This is important in terms of ation theory, as a tool of elicitation
+of priorities in life.
+
+Quantifying :
+-------------
+
+Complexity level : 2
+
+The quantifying operator adds an additional complexity level over ordering by asking to 
+tell what amount of distance separates items in a quantified way. This addresses evaluation
+of quantities, that may not be possible in all use cases.
+
+The outome of monodimensional quantification is to find a rational mean to group subsets
+by "proximity" of a valued quantified attribute. Given a "proximity radius", and applying
+this proximity range to the quantified objects, an "inside/outside" discrimination can be 
+operated, and some "isolated groups" can be discriminated with a high consistancy probability.  
+
+Reducing (by elimination) :
+---------------------------
+
+Complexity level : 3
+
+Information reduction is a cognitive process that we use apparently "instinctively". In fact a complex
+logical mental mechanism is involved in the elimination procedure. This mechanism needs first to order
+information and further determine a threshold of acceptability. If information can be quantified with
+an objective criteria, and the threshold can be determined without constraint (arbitrary), the operation
+of reduction is mechanical and remains easy. When the environement adds complex constraints such as 
+multicriteria influence, or cannot precisely and rationally determine threshold value, things get
+more difficult to solve.
+
+The redution by elimination does not provide a rational method to help processing redution on objketive
+basis. This is NOT the actual purpose of the operator. It will just define goals of redution, and let
+the user's cognitive process to solve the requirement.
+
+The operator will ask to keep a subset of the input set, with a more or less strict rule, and let the
+user choose the intellectual method that he will process.
+
+Reducing (by merging) :
+-----------------------
+
+Complexity level : 4
+
+In this operator, the goal is similar to the reduction by elimination operator, that is, getting an 
+discriminated subset of the incoming set. The exercice adds a level of complexity by allowing the reduction
+to generate new predicates (merged predicates) issued from a synthesis of a subset of the input predicates.
+Alternatively, "one of" the input predicates could also be choosen as reduction solution.
+
+Hierarchization :
+-----------------
+
+Complexity level : 3
+
+The hierarchization operator asks to arrange predicates into a hierarchy. Working with a hierarchy deals 
+with a simultaneous pair of operationw which are related to the two dimensions of the tree organiation : 
+dealing with the depth, and dealing with a choie of parent in the current subbranch. Mathematicians agree
+to say a tree organisation has a dimension a xxxxxxxx . The dimension of the organisation struture usually
+gives some evidences about the mental algorithm used by our brain. The tree organisation adds an extra 
+cognitive action wich is called "recursive" lookahead. 
+
+Tree based exerices are known as complex cognitive processing inthat way that some elements to be organized
+are also involved into the organisation struture, thus having dual existance.
+
+2D Mapping :
+------------
+
+Complexity level : 3
+
+2D mapping is a bidimensional extension of the Quantifying process. As the monodimensional quantifying 
+allows to discriminate and identify subsets sufficiently isolated from other samples, the bidimensional
+representation can use a circular "proximity radius" to process the same operation using two quantifying
+independant parameters. 
+
+Relationship Mapping :
+----------------------
+ 
+Complexity level : 5
+
+The relationship operator provides a powerfull tool for analysing crossdependancies and systemic
+feedback loops. The samples needs to be predicates used by a relationship function. A classical 
+example of systemic analysis could use price of macroeconomic indicators surch as promary products 
+and services market price such as sugar, oil, transportation, wheat, bread, milk, wood, etc. 
+and check interdpendancy factors of all these prices.
