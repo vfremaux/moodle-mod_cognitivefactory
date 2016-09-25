@@ -56,7 +56,8 @@ class restore_cognitivefactory_activity_task extends restore_activity_task {
         $contents[] = new restore_decode_content('cognitivefactory', array('intro'), 'cognitivefactory');
         $contents[] = new restore_decode_content('cognitivefactory_opdata', array('blobvalue'), 'cognitivefactory_opdata');
         $contents[] = new restore_decode_content('cognitivefactory_responses', array('response'), 'cognitivefactory_responses');
-        $contents[] = new restore_decode_content('cognitivefactory_userdata', array('report', 'feedback'), 'cognitivefactory_userdata');
+        $contents[] = new restore_decode_content('cognitivefactory_userdata', array('report'), 'cognitivefactory_userdata');
+        $contents[] = new restore_decode_content('cognitivefactory_userdata', array('feedback'), 'cognitivefactory_userdata');
 
         return $contents;
     }

@@ -16,7 +16,7 @@ class mod_cognitivefactory_mod_form extends moodleform_mod {
 //-------------------------------------------------------------------------------
         $mform->addElement('header', 'general', get_string('general', 'form'));
 
-        $mform->addElement('text', 'name', get_string('name'), array('size' => '64'));
+        $mform->addElement('text', 'name', get_string('name'), array('size'=>'64'));
         if (!empty($CFG->formatstringstriptags)) {
             $mform->setType('name', PARAM_TEXT);
         } else {
@@ -25,7 +25,7 @@ class mod_cognitivefactory_mod_form extends moodleform_mod {
         $mform->addRule('name', null, 'required', null, 'client');
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
 
-        $this->add_intro_editor(true, get_string('intro', 'cognitivefactory'));
+        $this->standard_intro_elements();
 
         $mform->addElement('textarea', 'collectrequirement', get_string('collectrequirement', 'cognitivefactory'), array('cols' => 60, 'rows' => 8));
         
