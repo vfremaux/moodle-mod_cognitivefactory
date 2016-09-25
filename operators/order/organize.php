@@ -11,14 +11,14 @@ include_once("$CFG->dirroot/mod/cognitivefactory/operators/operator.class.php");
 
 $responses = order_get_ordering($cognitivefactory->id, null, $currentgroup, false);
 $current_operator = new BrainstormOperator($cognitivefactory->id, $page);
-if (has_ordering_data($cognitivefactory->id, null, $currentgroup, false)){
+if (has_ordering_data($cognitivefactory->id, null, $currentgroup, false)) {
     $class = 'saved';
 }
 else{
     $class = 'unsaved';
 }
 
-if (!@$current_operator->configdata->blindness){
+if (!@$current_operator->configdata->blindness) {
     $otherorderings = order_get_otherorderings($cognitivefactory->id, array_keys($responses), $currentgroup);
 }
 
@@ -44,7 +44,7 @@ if (isset($current_operator->configdata->requirement))
 <input type="hidden" name="operator" value="<?php p($page) ?>" />
 <input type="hidden" name="what" value="saveorder" />
 <script type="text/javascript">
-function up(ix){
+function up(ix) {
     $fromelm = document.getElementById('row' + ix);
     $toelm = document.getElementById('row'+ (ix - 1));
 
@@ -57,7 +57,7 @@ function up(ix){
     markunsaved();
 }
 
-function down(ix){
+function down(ix) {
     nid = parseInt(ix) + 1;
     $fromelm = document.getElementById('row' + ix);
     $toelm = document.getElementById('row'+ nid);
@@ -71,8 +71,8 @@ function down(ix){
     markunsaved();
 }
 
-function markunsaved(){
-    for(i = 0 ; i < <?php echo count($responses) ?> ; i++){
+function markunsaved() {
+    for (i = 0 ; i < <?php echo count($responses) ?> ; i++) {
         elm = document.getElementById('num_' + i);
         elm.className = 'unsaved';
         elm = document.getElementById('others_agree_' + i);
@@ -84,9 +84,9 @@ function markunsaved(){
 </script>
 <table cellspacing="5" cellpadding="2" width="80%">
 <?php
-if ($responses){
+if ($responses) {
     $i = 0;
-    foreach($responses as $response){
+    foreach ($responses as $response) {
         $up = ($i) ? "<a href=\"javascript:up('{$i}')\"><img src=\"".$OUTPUT->pix_url('t/up').'"></a>' : '' ;
         $down = ($i < count($responses) - 1) ? "<a href=\"javascript:down('{$i}')\"><img src=\"".$OUTPUT->pix_url('t/down').'"></a>' : '' ;
         $field = "<input type=\"hidden\" name=\"order_{$i}\" value=\"{$response->id}\" />";
@@ -101,13 +101,13 @@ if ($responses){
                   <?php echo $response->response; ?>
             </td>
 <?php
-        if (!@$current_operator->configdata->blindness && $class == 'saved'){
+        if (!@$current_operator->configdata->blindness && $class == 'saved') {
             $totalspan += 2;
 ?>
             <td align="left" width="25%"><span id="others_agree_<?php p($i) ?>" class="visible">
                 <?php
-                if (!empty($otherorderings->agree)){
-                    if (array_key_exists($i, $otherorderings->agree)){
+                if (!empty($otherorderings->agree)) {
+                    if (array_key_exists($i, $otherorderings->agree)) {
                         if ($otherorderings->agree[$i] == 1)
                             print_string('agreewithyousingle', 'cognitivefactory', $otherorderings->agree[$i]);
                         else
@@ -118,8 +118,8 @@ if ($responses){
             </td>
             <td align="left" width="25%"><span id="others_disagree_<?php p($i) ?>" class="visible">
                 <?php
-                if (!empty($otherorderings->disagree)){
-                    if (array_key_exists($i, $otherorderings->disagree)){
+                if (!empty($otherorderings->disagree)) {
+                    if (array_key_exists($i, $otherorderings->disagree)) {
                         if ($otherorderings->disagree[$i] == 1)
                             print_string('disagreewithyousingle', 'cognitivefactory', $otherorderings->disagree[$i]);
                         else
@@ -140,8 +140,8 @@ if ($responses){
             &nbsp;<input type="button" name="clear_btn" value="<?php print_string('clearall', 'cognitivefactory') ?>" onclick="document.forms['orderform'].what.value='clearall';document.forms['orderform'].submit();" />
             &nbsp;<input type="button" name="startproc_btn" value="<?php print_string('startpaircompare', 'cognitiveoperator_order') ?>" onclick="confirmprocedure();" />
             <script language="">
-                function confirmprocedure(){
-                    if (confirm("<?php print_string('confirmpaircompare', 'cognitiveoperator_order') ?>")){
+                function confirmprocedure() {
+                    if (confirm("<?php print_string('confirmpaircompare', 'cognitiveoperator_order') ?>")) {
                         document.forms['orderform'].what.value='startpaircompare';
                         document.forms['orderform'].submit();                
                     }

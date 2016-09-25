@@ -80,6 +80,7 @@ $string['nofeedback'] = 'Pas de feedback';
 $string['editreport'] = 'Editer la synthèse';
 $string['noreportgiven'] = 'Pas de synthèse déposée';
 $string['notresponded'] = 'Aucune idée apportée';
+$string['nostudents'] = 'Aucun étudiant à évaluer';
 $string['numcolumns'] = 'Colonnes ';
 $string['numresponses'] = 'Idées par personne ';
 $string['numresponsesinform'] = 'Nombre d\'entrées dans le formulaire de collecte ';

@@ -9,7 +9,7 @@
 */
 if (!defined('MOODLE_INTERNAL')) die('You cannot use this script directly');
 
-if ($action == 'switchphase'){
+if ($action == 'switchphase') {
     $cognitivefactory->phase = required_param('phase', PARAM_INT);
     $DB->update_record('cognitivefactory', $cognitivefactory);
 }

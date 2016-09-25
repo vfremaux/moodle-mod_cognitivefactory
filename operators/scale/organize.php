@@ -26,9 +26,9 @@ if (isset($operator->configdata->requirement))
 <input type="hidden" name="what" value="savescalings" />
 <table cellspacing="5" width="80%" class="cognitiveoperator">
 <?php
-if ($responses){
+if ($responses) {
     $i = 0;
-    foreach($responses as $response){
+    foreach ($responses as $response) {
 ?>
     <tr valign="top">
         <th>
@@ -39,13 +39,13 @@ if ($responses){
         </td>
         <td align="left">
 <?php
-        switch(@$operator->configdata->quantifiertype){
+        switch(@$operator->configdata->quantifiertype) {
             case 'moodlescale':
                 break;
             case 'integer':
                 $value = (isset($scalings[$response->id])) ? $scalings[$response->id]->intvalue : '' ;
                 echo "<input type=\"text\" size=\"10\" name=\"iscale_{$response->id}\" id=\"iscale_{$response->id}\" value=\"{$value}\" />"; 
-            	scale_build_slider("scale_{$response->id}", 250, $operator->configdata->minrange, $operator->configdata->maxrange, $value, 1);
+                scale_build_slider("scale_{$response->id}", 250, $operator->configdata->minrange, $operator->configdata->maxrange, $value, 1);
                 break;
             default:
                 $value = (isset($scalings[$response->id])) ? sprintf("%.2f", $scalings[$response->id]->floatvalue) : '' ;
@@ -54,7 +54,7 @@ if ($responses){
 ?>
         </td>
 <?php    
-		$i++;    
+        $i++;    
     }
 ?>
     <tr>
@@ -78,11 +78,11 @@ if ($operator->configdata->absolute) {
 ?>
 var responsekeys = '<?php echo implode(",", array_keys($responses)) ?>';
 
-function checkabsolute(fieldobj){
+function checkabsolute(fieldobj) {
     resplist = responsekeys.split(/,/);
-    for (respid in resplist){
+    for (respid in resplist) {
         afield = document.forms['scaleform'].elements['scale_' + resplist[respid]];
-        if (afield.value == fieldobj.value && afield.name != fieldobj.name){
+        if (afield.value == fieldobj.value && afield.name != fieldobj.name) {
             alert("<?php print_string('absoluteconstraint', 'cognitiveoperator_'.$page) ?>");
             fieldobj.value = '';
             fieldobj.focus();
@@ -92,7 +92,7 @@ function checkabsolute(fieldobj){
 <?php
 } else {
 ?>
-function checkabsolute(fieldobj){
+function checkabsolute(fieldobj) {
 }
 <?php
 }

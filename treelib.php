@@ -16,17 +16,17 @@ id. The intvalue will serve as ordering
 
 /*** Index of functions **********************
 /// the function parameters may have some changes.
-function cognitivefactory_tree_delete($cognitivefactoryid, $userid, $groupid, $id){
-function tree_delete_rec($id){
-function cognitivefactory_tree_updateordering($cognitivefactoryid, $groupid, $userid, $id, $istree){
-function cognitivefactory_tree_up($cognitivefactoryid, $userid, $groupid, $id, $istree = 1){
-function cognitivefactory_tree_down($cognitivefactoryid, $userid, $groupid, $id, $istree=1){
-function cognitivefactory_tree_left($cognitivefactoryid, $userid, $groupid, $id){
-function cognitivefactory_tree_right($cognitivefactoryid, $userid, $groupid, $id){
-function cognitivefactory_get_subtree_list($table, $id){
-function cognitivefactory_count_subs($id){
-function cognitivefactory_tree_get_upper_branch($id, $includeStart = false, $returnordering = false){
-function cognitivefactory_tree_get_max_ordering($cognitivefactoryid, $userid=null, $groupid=0, $istree = false, $fatherid = 0){
+function cognitivefactory_tree_delete($cognitivefactoryid, $userid, $groupid, $id) {
+function tree_delete_rec($id) {
+function cognitivefactory_tree_updateordering($cognitivefactoryid, $groupid, $userid, $id, $istree) {
+function cognitivefactory_tree_up($cognitivefactoryid, $userid, $groupid, $id, $istree = 1) {
+function cognitivefactory_tree_down($cognitivefactoryid, $userid, $groupid, $id, $istree=1) {
+function cognitivefactory_tree_left($cognitivefactoryid, $userid, $groupid, $id) {
+function cognitivefactory_tree_right($cognitivefactoryid, $userid, $groupid, $id) {
+function cognitivefactory_get_subtree_list($table, $id) {
+function cognitivefactory_count_subs($id) {
+function cognitivefactory_tree_get_upper_branch($id, $includeStart = false, $returnordering = false) {
+function cognitivefactory_tree_get_max_ordering($cognitivefactoryid, $userid=null, $groupid=0, $istree = false, $fatherid = 0) {
 **********************************************/
 
 /**
@@ -36,44 +36,44 @@ function cognitivefactory_tree_get_max_ordering($cognitivefactoryid, $userid=nul
 * @param istree if istree is not set, considers table as a simple ordered list
 * @return an array of deleted ids
 */
-function cognitivefactory_tree_delete($cognitivefactoryid, $userid, $groupid, $id){
-		cognitivefactory_tree_updateordering($cognitivefactoryid, $userid, $groupid, $id, 1);
-		return tree_delete_rec($id);
+function cognitivefactory_tree_delete($cognitivefactoryid, $userid, $groupid, $id) {
+        cognitivefactory_tree_updateordering($cognitivefactoryid, $userid, $groupid, $id, 1);
+        return tree_delete_rec($id);
 }
 
 /**
 * deletes recursively a node and its subnodes. this is the recursion deletion
 * @return an array of deleted ids
 */
-function tree_delete_rec($id){
-	global $CFG, $DB;
+function tree_delete_rec($id) {
+    global $CFG, $DB;
 
     $deleted = array();
     if (empty($id)) return $deleted;    
 
-	// echo "deleting $id<br/>";
-	// getting all subnodes to delete if is tree.
-	if ($istree){
-    	$sql = "
-    	    SELECT 
-    	        id
-    	    FROM 
-    	        {{$table}cognitivefactory_opdata}
-    	    WHERE
-    	        operatorid = 'hierarchize' AND
-    	        itemdest = {$id}
-    	";
-    	// deleting subnodes if any
-    	if ($subs = $DB->get_record_sql($sql)) {
-    		foreach($subs as $aSub){
-    			$deleted = array_merge($deleted, tree_delete_rec($aSub->id));
-    		}
-    	}
+    // echo "deleting $id<br/>";
+    // getting all subnodes to delete if is tree.
+    if ($istree) {
+        $sql = "
+            SELECT 
+                id
+            FROM 
+                {{$table}cognitivefactory_opdata}
+            WHERE
+                operatorid = 'hierarchize' AND
+                itemdest = {$id}
+        ";
+        // deleting subnodes if any
+        if ($subs = $DB->get_record_sql($sql)) {
+            foreach ($subs as $aSub) {
+                $deleted = array_merge($deleted, tree_delete_rec($aSub->id));
+            }
+        }
     }
-	// deleting current node
-	$DB->delete_records('cognitivefactory_opdata', array('id' => $id)); 
-	$deleted[] = $id;
-	return $deleted;
+    // deleting current node
+    $DB->delete_records('cognitivefactory_opdata', array('id' => $id)); 
+    $deleted[] = $id;
+    return $deleted;
 }
 
 /**
@@ -82,44 +82,44 @@ function tree_delete_rec($id){
 * @param id the node from where to reorder
 * @param table the table-tree
 */
-function cognitivefactory_tree_updateordering($cognitivefactoryid, $groupid, $userid, $id, $istree){
+function cognitivefactory_tree_updateordering($cognitivefactoryid, $groupid, $userid, $id, $istree) {
 
-	// getting ordering value of the current node
-	global $CFG, $DB;
+    // getting ordering value of the current node
+    global $CFG, $DB;
 
-	$res =  $DB->get_record('cognitivefactory_opdata', array('id' => $id));
-	if (!$res) return;
+    $res =  $DB->get_record('cognitivefactory_opdata', array('id' => $id));
+    if (!$res) return;
 
     $accessClause = cognitivefactory_get_accessclauses($userid, $groupid);
-	$treeClause = ($istree) ? "     AND itemdest = {$res->itemdest} " : '';
+    $treeClause = ($istree) ? "     AND itemdest = {$res->itemdest} " : '';
 
-	// getting subsequent nodes that have same father
-	$sql = "
-	    SELECT 
-	        id   
-	    FROM 
-	        {cognitivefactory_opdata} AS od
-	    WHERE 
-	        cognitivefactoryid = {$cognitivefactoryid} AND
-	        operatorid = 'hierarchize' AND
-	        intvalue > {$res->intvalue}
-	        {$treeClause}
-	        {$accessClause}
-	    ORDER BY 
-	        intvalue
-	";
+    // getting subsequent nodes that have same father
+    $sql = "
+        SELECT 
+            id   
+        FROM 
+            {cognitivefactory_opdata} AS od
+        WHERE 
+            cognitivefactoryid = {$cognitivefactoryid} AND
+            operatorid = 'hierarchize' AND
+            intvalue > {$res->intvalue}
+            {$treeClause}
+            {$accessClause}
+        ORDER BY 
+            intvalue
+    ";
 
-	// reordering subsequent nodes using an object
-	if( $nextsubs = $DB->get_record_sql($sql)) {
-	    $ordering = $res->intvalue + 1;
-		foreach($nextsubs as $asub){
-			$opdata = new StdClass();
-			$opdata->id = $asub->id;
-			$opdata->intvalue = $ordering;
-			$DB->update_record('cognitivefactory_opdata', $opdata);
-			$ordering++;
-		}
-	}
+    // reordering subsequent nodes using an object
+    if ( $nextsubs = $DB->get_record_sql($sql)) {
+        $ordering = $res->intvalue + 1;
+        foreach ($nextsubs as $asub) {
+            $opdata = new StdClass();
+            $opdata->id = $asub->id;
+            $opdata->intvalue = $ordering;
+            $DB->update_record('cognitivefactory_opdata', $opdata);
+            $ordering++;
+        }
+    }
 }
 
 /**
@@ -129,45 +129,45 @@ function cognitivefactory_tree_updateordering($cognitivefactoryid, $groupid, $us
 * @param istree true if is a table-tree rather than a table-list
 * @return void
 */
-function cognitivefactory_tree_up($cognitivefactoryid, $userid, $groupid, $id, $istree = 1){
-	global $CFG, $DB;
+function cognitivefactory_tree_up($cognitivefactoryid, $userid, $groupid, $id, $istree = 1) {
+    global $CFG, $DB;
 
-	$res =  $DB->get_record('cognitivefactory_opdata', array('id' => $id));
-	if (!$res) return;
+    $res =  $DB->get_record('cognitivefactory_opdata', array('id' => $id));
+    if (!$res) return;
     $operator = ($istree) ? 'hierarchize' : 'order' ;
     $accessClause = cognitivefactory_get_accessclauses($userid, $groupid, false);
-	$treeClause = ($istree) ? "     AND itemdest = {$res->itemdest} " : '';
+    $treeClause = ($istree) ? "     AND itemdest = {$res->itemdest} " : '';
 
-	if($res->intvalue > 1){
-		$newordering = $res->intvalue - 1;
+    if ($res->intvalue > 1) {
+        $newordering = $res->intvalue - 1;
 
-		$sql = "
-		    SELECT 
-		        id
-		    FROM 
-		        {cognitivefactory_opdata} AS od
-		    WHERE 		        
-		        cognitivefactoryid = {$cognitivefactoryid} AND
-		        operatorid = '{$operator}' AND
-		        intvalue = {$newordering}
-		        {$treeClause}
-		        {$accessClause}
-		";
-		// echo $sql;
-		$result =  $DB->get_record_sql($sql);
-		$resid = $result->id;
+        $sql = "
+            SELECT 
+                id
+            FROM 
+                {cognitivefactory_opdata} AS od
+            WHERE                 
+                cognitivefactoryid = {$cognitivefactoryid} AND
+                operatorid = '{$operator}' AND
+                intvalue = {$newordering}
+                {$treeClause}
+                {$accessClause}
+        ";
+        // echo $sql;
+        $result =  $DB->get_record_sql($sql);
+        $resid = $result->id;
 
         // swapping
         $opdata = new StdClass();
-		$opdata->id = $resid;
-		$opdata->intvalue = $res->intvalue;
-		$DB->update_record('cognitivefactory_opdata', $opdata);
+        $opdata->id = $resid;
+        $opdata->intvalue = $res->intvalue;
+        $DB->update_record('cognitivefactory_opdata', $opdata);
 
-		$opdata = new StdClass();
-		$opdata->id = $id;
-		$opdata->intvalue = $newordering;
-		$DB->update_record('cognitivefactory_opdata', $opdata);
-	}
+        $opdata = new StdClass();
+        $opdata->id = $id;
+        $opdata->intvalue = $newordering;
+        $DB->update_record('cognitivefactory_opdata', $opdata);
+    }
 }
 
 /**
@@ -178,56 +178,56 @@ function cognitivefactory_tree_up($cognitivefactoryid, $userid, $groupid, $id, $
 * @param table the table-tree where to perform swap
 * @param istree if not set, performs swapping on a single list
 */
-function cognitivefactory_tree_down($cognitivefactoryid, $userid, $groupid, $id, $istree=1){
-	global $CFG, $DB;
+function cognitivefactory_tree_down($cognitivefactoryid, $userid, $groupid, $id, $istree=1) {
+    global $CFG, $DB;
 
-	$res =  $DB->get_record('cognitivefactory_opdata', array('id' => $id));
+    $res =  $DB->get_record('cognitivefactory_opdata', array('id' => $id));
     $operator = ($istree) ? 'hierarchize' : 'order' ;
     $accessClause = cognitivefactory_get_accessclauses($userid, $groupid, false);
-	$treeClause = ($istree) ? " AND itemdest = {$res->itemdest} " : '';
+    $treeClause = ($istree) ? " AND itemdest = {$res->itemdest} " : '';
 
-	$sql = "
-	    SELECT 
-	        MAX(intvalue) AS ordering
-	    FROM 
-	        {cognitivefactory_opdata} AS od
-	    WHERE
-	        cognitivefactoryid = {$cognitivefactoryid} AND
-	        operatorid = '{$operator}'
-	        {$treeClause}
-	        {$accessClause}
-	";
-	$resmaxordering = $DB->get_record_sql($sql);
-	$maxordering = $resmaxordering->ordering;
-	if($res->intvalue < $maxordering){
-		$newordering = $res->intvalue + 1;
+    $sql = "
+        SELECT 
+            MAX(intvalue) AS ordering
+        FROM 
+            {cognitivefactory_opdata} AS od
+        WHERE
+            cognitivefactoryid = {$cognitivefactoryid} AND
+            operatorid = '{$operator}'
+            {$treeClause}
+            {$accessClause}
+    ";
+    $resmaxordering = $DB->get_record_sql($sql);
+    $maxordering = $resmaxordering->ordering;
+    if ($res->intvalue < $maxordering) {
+        $newordering = $res->intvalue + 1;
 
-		$sql = "
-		    SELECT 
-		        id
-		    FROM    
-		        {cognitivefactory_opdata} AS od
-		    WHERE 
-    	        cognitivefactoryid = {$cognitivefactoryid} AND
-    	        operatorid = '{$operator}' AND
-		        intvalue = {$newordering}
-		        {$treeClause}
-		        {$accessClause}
-		";
-		$result =  $DB->get_record_sql($sql);
-		$resid = $result->id;
+        $sql = "
+            SELECT 
+                id
+            FROM    
+                {cognitivefactory_opdata} AS od
+            WHERE 
+                cognitivefactoryid = {$cognitivefactoryid} AND
+                operatorid = '{$operator}' AND
+                intvalue = {$newordering}
+                {$treeClause}
+                {$accessClause}
+        ";
+        $result =  $DB->get_record_sql($sql);
+        $resid = $result->id;
 
         // swapping
         $opdata = new StdClass();
-		$opdata->id = $resid;
-		$opdata->intvalue = $res->intvalue;
-		$DB->update_record('cognitivefactory_opdata', $opdata);
+        $opdata->id = $resid;
+        $opdata->intvalue = $res->intvalue;
+        $DB->update_record('cognitivefactory_opdata', $opdata);
 
         $opdata = new StdClass();
-		$opdata->id = $id;
-		$opdata->intvalue = $newordering;
-		$DB->update_record('cognitivefactory_opdata', $opdata);
-	}
+        $opdata->id = $id;
+        $opdata->intvalue = $newordering;
+        $DB->update_record('cognitivefactory_opdata', $opdata);
+    }
 }
 
 /**
@@ -236,108 +236,108 @@ function cognitivefactory_tree_down($cognitivefactoryid, $userid, $groupid, $id,
 * @param int $groupid the current group
 * @param int $id the node to be raised
 */
-function cognitivefactory_tree_left($cognitivefactoryid, $userid, $groupid, $id){
-	global $CFG, $DB;
+function cognitivefactory_tree_left($cognitivefactoryid, $userid, $groupid, $id) {
+    global $CFG, $DB;
 
     $accessClause = cognitivefactory_get_accessclauses($userid, $groupid, false);
 
-	$sql = "
-	    SELECT 
-	        itemdest, 
-	        intvalue
-	    FROM 
-	        {cognitivefactory_opdata} AS od
-	    WHERE 
-	        id = $id
-	";
-	$res =  $DB->get_record_sql($sql);
-	$ordering = $res->intvalue;
-	$fatherid = $res->itemdest;
-
-	$sql = "
-	    SELECT 
-	        id,
-	        itemdest
-	    FROM 
-	        {cognitivefactory_opdata} as od
-	    WHERE 
-	        id = $fatherid
-	";
-	$resfatherid =  $DB->get_record_sql($sql);
-	if (!$resfatherid) return; // this protects against bouncing left request
-	$fatheridbis = $resfatherid->itemdest; //id grandpa...
-
-	$sql = "
-	    SELECT 
-	        id,
-	        intvalue
-	    FROM 
-	        {cognitivefactory_opdata} AS od
+    $sql = "
+        SELECT 
+            itemdest, 
+            intvalue
+        FROM 
+            {cognitivefactory_opdata} AS od
         WHERE 
-	        cognitivefactoryid = {$cognitivefactoryid} AND
-	        operatorid = 'hierarchize' AND
+            id = $id
+    ";
+    $res =  $DB->get_record_sql($sql);
+    $ordering = $res->intvalue;
+    $fatherid = $res->itemdest;
+
+    $sql = "
+        SELECT 
+            id,
+            itemdest
+        FROM 
+            {cognitivefactory_opdata} as od
+        WHERE 
+            id = $fatherid
+    ";
+    $resfatherid =  $DB->get_record_sql($sql);
+    if (!$resfatherid) return; // this protects against bouncing left request
+    $fatheridbis = $resfatherid->itemdest; //id grandpa...
+
+    $sql = "
+        SELECT 
+            id,
+            intvalue
+        FROM 
+            {cognitivefactory_opdata} AS od
+        WHERE 
+            cognitivefactoryid = {$cognitivefactoryid} AND
+            operatorid = 'hierarchize' AND
             intvalue > $ordering AND 
             itemdest = $fatherid
             {$accessClause}
         ORDER BY 
             intvalue
     ";
-	$newbrotherordering = $ordering;
+    $newbrotherordering = $ordering;
 
-	if($ress = $DB->get_records_sql($sql)){
-		foreach($ress as $res){
-			$opdata = new StdClass();
-			$opdata->id = $res->id;
-			$opdata->intvalue = $newbrotherordering;
-			$DB->update_record('cognitivefactory_opdata', $opdata);
-			$newbrotherordering = $newbrotherordering + 1;
-		}
-	}
+    if ($ress = $DB->get_records_sql($sql)) {
+        foreach ($ress as $res) {
+            $opdata = new StdClass();
+            $opdata->id = $res->id;
+            $opdata->intvalue = $newbrotherordering;
+            $DB->update_record('cognitivefactory_opdata', $opdata);
+            $newbrotherordering = $newbrotherordering + 1;
+        }
+    }
 
-	// getting father's ordering
-	$sql = "
-	    SELECT
-	        id, 
-	        intvalue
-	    FROM 
-	        {cognitivefactory_opdata} AS od
-	    WHERE 
-	        cognitivefactoryid = {$cognitivefactoryid} AND
-	        operatorid = 'hierarchize' AND
-	        id = $fatherid
-	        {$accessClause}
-	";
-	$resorderingfather =  $DB->get_record_sql($sql);
-	$orderingfather = $resorderingfather->intvalue;
+    // getting father's ordering
+    $sql = "
+        SELECT
+            id, 
+            intvalue
+        FROM 
+            {cognitivefactory_opdata} AS od
+        WHERE 
+            cognitivefactoryid = {$cognitivefactoryid} AND
+            operatorid = 'hierarchize' AND
+            id = $fatherid
+            {$accessClause}
+    ";
+    $resorderingfather =  $DB->get_record_sql($sql);
+    $orderingfather = $resorderingfather->intvalue;
 
-	// reordering uncles
-	$select = "
-	        cognitivefactoryid = ? AND
-	        operatorid = 'hierarchize' AND
-	        intvalue > ? AND 
-	        itemdest = ?
-	        {$accessClause}
-	";
-	if ($resbrotherfathers = $DB->get_records_select('cognitivefactory_opdata', $select, array($cognitivefactoryid, $orderingfather, $fatheridbis), 'id, intvalue', 'intvalue')) {
-		foreach($resbrotherfathers as $resbrotherfather){
-			$idbrotherfather = $resbrotherfather->id;
-			$nextordering = $resbrotherfather->intvalue + 1;
+    // reordering uncles
+    $select = "
+            cognitivefactoryid = ? AND
+            operatorid = 'hierarchize' AND
+            intvalue > ? AND 
+            itemdest = ?
+            {$accessClause}
+    ";
+    if ($resbrotherfathers = $DB->get_records_select('cognitivefactory_opdata', $select, array($cognitivefactoryid, $orderingfather, $fatheridbis), 'id, intvalue', 'intvalue')) {
+        foreach ($resbrotherfathers as $resbrotherfather) {
+            $idbrotherfather = $resbrotherfather->id;
+            $nextordering = $resbrotherfather->intvalue + 1;
 
-			$opdata = new StdClass();
-			$opdata->id = $idbrotherfather;
-			$opdata->intvalue = $nextordering;
-			$DB->update_record('cognitivefactory_opdata', $opdata);
-		}
-	}
+            $opdata = new StdClass();
+            $opdata->id = $idbrotherfather;
+            $opdata->intvalue = $nextordering;
+            $DB->update_record('cognitivefactory_opdata', $opdata);
+        }
+    }
 
-	// reordering
-	$newordering = $orderingfather + 1;
+    // reordering
+    $newordering = $orderingfather + 1;
 
-	$opdata = new StdClass();
-	$opdata->id = $id;
-	$opdata->intvalue = $newordering;
-	$opdata->itemdest = $fatheridbis;
-	$DB->update_record('cognitivefactory_opdata', $opdata);
+    $opdata = new StdClass();
+    $opdata->id = $id;
+    $opdata->intvalue = $newordering;
+    $opdata->itemdest = $fatheridbis;
+    $DB->update_record('cognitivefactory_opdata', $opdata);
 }
 
 /**
@@ -348,84 +348,84 @@ function cognitivefactory_tree_left($cognitivefactoryid, $userid, $groupid, $id)
 * @param id the node to be lowered
 * @param table the table-tree name
 */
-function cognitivefactory_tree_right($cognitivefactoryid, $userid, $groupid, $id){
-	global $CFG, $DB;
+function cognitivefactory_tree_right($cognitivefactoryid, $userid, $groupid, $id) {
+    global $CFG, $DB;
 
     $accessClause = cognitivefactory_get_accessclauses($userid, $groupid, false);
 
     /// get ordering and parent for the moving node
-	$sql = "
-	    SELECT 
-	        itemdest, 
-	        intvalue
-	    FROM 
-	        {cognitivefactory_opdata} AS od
-	    WHERE 
-	        id = $id
-	";
-	$res =  $DB->get_record_sql($sql);
-	$ordering = $res->intvalue;
-	$fatherid = $res->itemdest;
+    $sql = "
+        SELECT 
+            itemdest, 
+            intvalue
+        FROM 
+            {cognitivefactory_opdata} AS od
+        WHERE 
+            id = $id
+    ";
+    $res =  $DB->get_record_sql($sql);
+    $ordering = $res->intvalue;
+    $fatherid = $res->itemdest;
 
     /// get previous record if not first. It will become our parent.
-	if($ordering > 1){
-		$orderingbis = $ordering - 1;
+    if ($ordering > 1) {
+        $orderingbis = $ordering - 1;
 
-		$sql = "
-		    SELECT 
-		        id,
-		        id
-		    FROM 
-		        {cognitivefactory_opdata} AS od
-    		WHERE 
-    	        cognitivefactoryid = {$cognitivefactoryid} AND
-    	        operatorid = 'hierarchize' AND
-    		    intvalue = $orderingbis AND 
-    		    itemdest = $fatherid
-    		    {$accessClause}
+        $sql = "
+            SELECT 
+                id,
+                id
+            FROM 
+                {cognitivefactory_opdata} AS od
+            WHERE 
+                cognitivefactoryid = {$cognitivefactoryid} AND
+                operatorid = 'hierarchize' AND
+                intvalue = $orderingbis AND 
+                itemdest = $fatherid
+                {$accessClause}
         ";
-		$resid = $DB->get_record_sql($sql);
-		$newfatherid = $resid->id;
+        $resid = $DB->get_record_sql($sql);
+        $newfatherid = $resid->id;
 
         /// get our upward brothers. They should be ordered back from ordering
-		$sql = "
-		    SELECT 
-		        id, 
-		        intvalue
-		    FROM 
-		        {cognitivefactory_opdata} AS od
-		    WHERE 
-    	        cognitivefactoryid = {$cognitivefactoryid} AND
-    	        operatorid = 'hierarchize' AND
-		        intvalue > $ordering AND 
-		        itemdest = $fatherid 
-		        {$accessClause}
-		    ORDER BY 
-		        intvalue
-		";
-		$newbrotherordering = $ordering;
+        $sql = "
+            SELECT 
+                id, 
+                intvalue
+            FROM 
+                {cognitivefactory_opdata} AS od
+            WHERE 
+                cognitivefactoryid = {$cognitivefactoryid} AND
+                operatorid = 'hierarchize' AND
+                intvalue > $ordering AND 
+                itemdest = $fatherid 
+                {$accessClause}
+            ORDER BY 
+                intvalue
+        ";
+        $newbrotherordering = $ordering;
 
         /// order back all upward brothers
-		if ($resbrothers = $DB->get_records_sql($sql)) {
-			foreach($resbrothers as $resbrother){
-				$opdata = new StdClass();
-				$opdata->id = $resbrother->id;
-				$opdata->intvalue = $newbrotherordering;
-				$DB->update_record('cognitivefactory_opdata', $opdata);
-				$newbrotherordering = $newbrotherordering + 1;
-			}
-		}
+        if ($resbrothers = $DB->get_records_sql($sql)) {
+            foreach ($resbrothers as $resbrother) {
+                $opdata = new StdClass();
+                $opdata->id = $resbrother->id;
+                $opdata->intvalue = $newbrotherordering;
+                $DB->update_record('cognitivefactory_opdata', $opdata);
+                $newbrotherordering = $newbrotherordering + 1;
+            }
+        }
 
-		$maxordering = cognitivefactory_tree_get_max_ordering($cognitivefactoryid, null, $groupid, true, $newfatherid);
-		$newordering = $maxordering + 1;
+        $maxordering = cognitivefactory_tree_get_max_ordering($cognitivefactoryid, null, $groupid, true, $newfatherid);
+        $newordering = $maxordering + 1;
 
-		// assigning father's id
-		$object = new StdClass();
-		$opdata->id = $id;
-		$opdata->itemdest = $newfatherid;
-		$opdata->intvalue = $newordering;
-		$DB->update_record('cognitivefactory_opdata', $opdata);
-	}
+        // assigning father's id
+        $object = new StdClass();
+        $opdata->id = $id;
+        $opdata->itemdest = $newfatherid;
+        $opdata->intvalue = $newordering;
+        $DB->update_record('cognitivefactory_opdata', $opdata);
+    }
 }
 
 /**
@@ -434,13 +434,13 @@ function cognitivefactory_tree_right($cognitivefactoryid, $userid, $groupid, $id
 * @param id the node from where to start of
 * @return a comma separated list of nodes
 */
-function cognitivefactory_get_subtree_list($table, $id){
-	global $DB;
-	
+function cognitivefactory_get_subtree_list($table, $id) {
+    global $DB;
+    
     $res = $DB->get_records_menu($table, array('fatherid' => $id));
     $ids = array();
-    if (is_array($res)){
-        foreach(array_keys($res) as $aSub){
+    if (is_array($res)) {
+        foreach (array_keys($res) as $aSub) {
             $ids[] = $aSub;
             $subs = cognitivefactory_get_subtree_list($table, $aSub);
             if (!empty($subs)) $ids[] = $subs;
@@ -455,21 +455,21 @@ function cognitivefactory_get_subtree_list($table, $id){
 * @param the node
 * @return the number of direct subs
 */
-function cognitivefactory_count_subs($id){
+function cognitivefactory_count_subs($id) {
     global $CFG, $DB;
     
     // counting direct subs
-	$sql = "
-	    SELECT 
-	        COUNT(id)
-	    FROM 
-	        {cognitivefactory_opdata}
-	    WHERE 
-	        itemdest = {$id} AND
-	        operatorid = 'hierarchize'
-	";
-	$res = $DB->count_records_sql($sql);
-	return $res;
+    $sql = "
+        SELECT 
+            COUNT(id)
+        FROM 
+            {cognitivefactory_opdata}
+        WHERE 
+            itemdest = {$id} AND
+            operatorid = 'hierarchize'
+    ";
+    $res = $DB->count_records_sql($sql);
+    return $res;
 }
 
 /**
@@ -479,13 +479,13 @@ function cognitivefactory_count_subs($id){
 * @param includeStart true if leaf node is in the list
 * @return array of node ids
 */
-function cognitivefactory_tree_get_upper_branch($id, $includeStart = false, $returnordering = false){
+function cognitivefactory_tree_get_upper_branch($id, $includeStart = false, $returnordering = false) {
     global $CFG, $DB;
 
     $nodelist = array();
     $res = $DB->get_record('cognitivefactory_opdata', array('id' => $id));
     if ($includeStart) $nodelist[] = ($returnordering) ? $res->intvalue : $id ;    
-    while($res->itemdest != 0){
+    while($res->itemdest != 0) {
         $res = $DB->get_record($table, array('id' => $res->itemdest, 'operatorid' => 'hierarchize'));
         $nodelist[] = ($returnordering) ? $res->intvalue : $res->itemdest;
     }
@@ -501,27 +501,27 @@ function cognitivefactory_tree_get_upper_branch($id, $includeStart = false, $ret
 * @param fatherid the parent node
 * @return integer the max ordering found
 */
-function cognitivefactory_tree_get_max_ordering($cognitivefactoryid, $userid=null, $groupid=0, $istree = false, $fatherid = 0){
+function cognitivefactory_tree_get_max_ordering($cognitivefactoryid, $userid=null, $groupid=0, $istree = false, $fatherid = 0) {
     global $CFG, $DB;
 
     $accessClause = cognitivefactory_get_accessclauses($userid, $groupid, false);
 
     $operator = ($istree) ? 'hierarchize' : 'order' ;
     $treeClause = ($istree) ? "AND itemdest = {$fatherid}" : '';
-	$sql = "
-	    SELECT 
-	        MAX(intvalue) as position
-	    FROM 
-	        {cognitivefactory_opdata} AS od
-	    WHERE 
-	        cognitivefactoryid = {$cognitivefactoryid} AND
-	        operatorid = '{$operator}'
-	        {$accessClause}
-	        {$treeClause}
-	";
+    $sql = "
+        SELECT 
+            MAX(intvalue) as position
+        FROM 
+            {cognitivefactory_opdata} AS od
+        WHERE 
+            cognitivefactoryid = {$cognitivefactoryid} AND
+            operatorid = '{$operator}'
+            {$accessClause}
+            {$treeClause}
+    ";
 
-	if(!$result = $DB->get_record_sql($sql)){
-		$result->position = 1;
-	}
-	return $result->position;
+    if (!$result = $DB->get_record_sql($sql)) {
+        $result->position = 1;
+    }
+    return $result->position;
 }

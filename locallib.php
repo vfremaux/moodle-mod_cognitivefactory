@@ -25,7 +25,7 @@ $PHASES = array('collect', 'prepare', 'organize', 'display', 'feedback');
 * @param string $sort
 * @returns array of responses
 */
-function cognitivefactory_get_responses($cognitivefactoryid, $userid=null, $groupid=0, $excludemyself=false, $sort='response'){    
+function cognitivefactory_get_responses($cognitivefactoryid, $userid=null, $groupid=0, $excludemyself=false, $sort='response') {    
     global $USER, $DB;
 
     $accessClause = cognitivefactory_get_accessclauses($userid, $groupid, $excludemyself);
@@ -48,9 +48,9 @@ function cognitivefactory_get_responses($cognitivefactoryid, $userid=null, $grou
 * @param string $sort
 * @returns array of responses
 */
-function cognitivefactory_count_responses($cognitivefactoryid, $userid=null, $groupid=0, $excludemyself=false){    
-	global $DB;
-	
+function cognitivefactory_count_responses($cognitivefactoryid, $userid=null, $groupid=0, $excludemyself=false) {    
+    global $DB;
+    
     $accessClause = cognitivefactory_get_accessclauses($userid, $groupid, $excludemyself);
     $select = "
         cognitivefactoryid = ? 
@@ -69,9 +69,9 @@ function cognitivefactory_count_responses($cognitivefactoryid, $userid=null, $gr
 * @param string $sort
 * @returns array of responses
 */
-function cognitivefactory_count_operatorinputs($cognitivefactoryid, $userid=null, $groupid=0, $excludemyself=false){    
-	global $DB;
-	
+function cognitivefactory_count_operatorinputs($cognitivefactoryid, $userid=null, $groupid=0, $excludemyself=false) {    
+    global $DB;
+    
     $accessClause = cognitivefactory_get_accessclauses($userid, $groupid, $excludemyself);
     $select = "
         cognitivefactoryid = ? 
@@ -87,13 +87,13 @@ function cognitivefactory_count_operatorinputs($cognitivefactoryid, $userid=null
 * @param int $cognitivefactoryid
 * @returns array of operators
 */
-function cognitivefactory_get_operators($cognitivefactoryid){
+function cognitivefactory_get_operators($cognitivefactoryid) {
     global $CFG, $DB;
 
     $operators = array();
     $DIR = opendir($CFG->dirroot.'/mod/cognitivefactory/operators');
-    while($opname = readdir($DIR)){
-    	if ($opname == 'CVS') continue;
+    while($opname = readdir($DIR)) {
+        if ($opname == 'CVS') continue;
         if (!is_dir($CFG->dirroot.'/mod/cognitivefactory/operators/'.$opname)) continue;
         if (preg_match("/^(\\.|!)/", $opname)) continue; // allows masking unused or unimplemented operators
         unset($operator);
@@ -102,7 +102,7 @@ function cognitivefactory_get_operators($cognitivefactoryid){
         $operator->id = $opname;
         $operator->name = $opname;
         $oprecord = $DB->get_record('cognitivefactory_operators', array('cognitivefactoryid' => $cognitivefactoryid, 'operatorid' => $opname));
-        if ($oprecord){
+        if ($oprecord) {
             $operator->active = $oprecord->active;
             $operator->configdata = unserialize($oprecord->configdata);
         } else {
@@ -121,9 +121,9 @@ function cognitivefactory_get_operators($cognitivefactoryid){
 * @param string $separator
 * @returns separated list of operator names
 */
-function cognitivefactory_get_operatorlist($operators, $separator=','){
+function cognitivefactory_get_operatorlist($operators, $separator=',') {
     $oparray = array();
-    foreach($operators as $operator){
+    foreach ($operators as $operator) {
         if (!$operator->active) continue;
         $oparray[] = $operator->id;
     }
@@ -137,35 +137,35 @@ function cognitivefactory_get_operatorlist($operators, $separator=','){
 * @param int $cognitivefactoryid
 * @param int $operatorid
 */
-function cognitivefactory_save_operatorconfig($cognitivefactoryid, $operatordata){
-	global $DB;
-	
-	$oprecord = new StdClass();
+function cognitivefactory_save_operatorconfig($cognitivefactoryid, $operatordata) {
+    global $DB;
+    
+    $oprecord = new StdClass();
     $oprecord->id = $DB->get_field('cognitivefactory_operators', 'id', array('cognitivefactoryid' => $cognitivefactoryid, 'operatorid' => $operatordata->operator));
     $configkeys = preg_grep("/^config_/", array_keys($_POST));
     $configdata = new StdClass();
-    foreach($configkeys as $akey){
+    foreach ($configkeys as $akey) {
         preg_match('/config_(.*)$/', $akey, $matches);
         $key = $matches[1];
-        if (is_array($_POST[$akey])){
-	        $configdata->$key = required_param_array($akey, PARAM_CLEANHTML);
-	        if (preg_match('/(.*)_editor$/', $key, $matches)){
-	        	$canonickey = $matches[1];
-	        	$editordata = $configdata->$key;
-		        $configdata->$canonickey = format_text($editordata['text'], $editordata['format']);
-	        }
+        if (is_array($_POST[$akey])) {
+            $configdata->$key = required_param_array($akey, PARAM_CLEANHTML);
+            if (preg_match('/(.*)_editor$/', $key, $matches)) {
+                $canonickey = $matches[1];
+                $editordata = $configdata->$key;
+                $configdata->$canonickey = format_text($editordata['text'], $editordata['format']);
+            }
         } else {
-	        $configdata->$key = required_param($akey, PARAM_CLEANHTML);
+            $configdata->$key = required_param($akey, PARAM_CLEANHTML);
         }
     }
     $config = serialize($configdata);
     $oprecord->configdata = $config;
-    if ($oprecord->id){
-        if (!$DB->update_record('cognitivefactory_operators', $oprecord)){
+    if ($oprecord->id) {
+        if (!$DB->update_record('cognitivefactory_operators', $oprecord)) {
             print_error('errorupdate', 'cognitivefactory', '', get_string('operatorconfig', 'cognitivefactory'));
         }
     } else {
-        if (!$DB->insert_record('cognitivefactory_operators', $oprecord)){
+        if (!$DB->insert_record('cognitivefactory_operators', $oprecord)) {
             print_error('errorinsert', 'cognitivefactory', '', get_string('operatorconfig', 'cognitivefactory'));
         }
     }
@@ -178,12 +178,12 @@ function cognitivefactory_save_operatorconfig($cognitivefactoryid, $operatordata
 * @param int $groupid
 * @param boolean $excludemyself
 */
-function cognitivefactory_get_accessclauses($userid=null, $groupid=0, $excludemyself=false, $fieldprefix = ''){
+function cognitivefactory_get_accessclauses($userid=null, $groupid=0, $excludemyself=false, $fieldprefix = '') {
     global $USER;
 
     if ($userid === null) $userid = $USER->id;
     $userClause = '';
-    if ($excludemyself){
+    if ($excludemyself) {
         $userClause = " AND {$fieldprefix}userid != $USER->id " ;
     } else {
         $userClause = ($userid) ? " AND {$fieldprefix}userid = $userid " : '' ;
@@ -197,7 +197,7 @@ function cognitivefactory_get_accessclauses($userid=null, $groupid=0, $excludemy
 * @param int $cognitivefactoryid
 * @param array $userids
 */
-function cognitivefactory_get_grades($cognitivefactoryid, $userids){
+function cognitivefactory_get_grades($cognitivefactoryid, $userids) {
     global $CFG, $DB;
 
     $useridlist = implode("','", $userids);
@@ -219,7 +219,7 @@ function cognitivefactory_get_grades($cognitivefactoryid, $userids){
           u.id = bg.userid AND
           u.id in ('$useridlist')
     ";
-    if (!$records = $DB->get_records_sql($sql, array($cognitivefactoryid))){
+    if (!$records = $DB->get_records_sql($sql, array($cognitivefactoryid))) {
         return array();
     }
     return $records;
@@ -230,7 +230,7 @@ function cognitivefactory_get_grades($cognitivefactoryid, $userids){
 * @param int $cognitivefactoryid
 * @param int $userid
 */
-function cognitivefactory_get_gradeset($cognitivefactoryid, $userid){
+function cognitivefactory_get_gradeset($cognitivefactoryid, $userid) {
     global $CFG, $DB;
 
     $sql = "
@@ -245,9 +245,9 @@ function cognitivefactory_get_gradeset($cognitivefactoryid, $userid){
           cognitivefactoryid = ? AND
           userid = {$userid}
     ";
-    if ($records = $DB->get_records_sql($sql, array($cognitivefactoryid))){
-    	$gradeset = new StdClass();
-        foreach($records as $gradeitem){
+    if ($records = $DB->get_records_sql($sql, array($cognitivefactoryid))) {
+        $gradeset = new StdClass();
+        foreach ($records as $gradeitem) {
             $gradeset->{$gradeitem->gradeitem} = $gradeitem->grade;
         }
         return $gradeset;
@@ -260,7 +260,7 @@ function cognitivefactory_get_gradeset($cognitivefactoryid, $userid){
 * @param object $cognitivefactory
 * @param int $userid
 */
-function cognitivefactory_convert_to_single($cognitivefactory, $userid){
+function cognitivefactory_convert_to_single($cognitivefactory, $userid) {
     global $CFG, $DB;
 
     $sql = "
@@ -276,32 +276,32 @@ function cognitivefactory_convert_to_single($cognitivefactory, $userid){
           cognitivefactoryid = ? AND
           userid = {$userid}
     ";
-    if ($records = $DB->get_records_sql($sql, array($cognitivefactoryid))){
-		$gradeset = new StdClass();
-        foreach($records as $gradeitem){
+    if ($records = $DB->get_records_sql($sql, array($cognitivefactoryid))) {
+        $gradeset = new StdClass();
+        foreach ($records as $gradeitem) {
             $gradeset->{$gradeitem->gradeitem} = $gradeitem->grade;
         }
         $gradeset->timeupdated = $gradeitem->timeupdated;
 
-        if ($cognitivefactory->seqaccesscollect && isset($gradeset->participate)){
+        if ($cognitivefactory->seqaccesscollect && isset($gradeset->participate)) {
             $total[] = $gradeset->participate;
             $weights[] = $cognitivefactory->participationweight;
         }
-        if ($cognitivefactory->seqaccessprepare && isset($gradeset->prepare)){
+        if ($cognitivefactory->seqaccessprepare && isset($gradeset->prepare)) {
             $total[] = $gradeset->prepare;
             $weights[] = $cognitivefactory->preparingweight;
         }
-        if ($cognitivefactory->seqaccessorganize && isset($gradeset->organize)){
+        if ($cognitivefactory->seqaccessorganize && isset($gradeset->organize)) {
             $total[] = $gradeset->organize;
             $weights[] = $cognitivefactory->organizeweight;
         }
-        if ($cognitivefactory->seqaccessfeedback && isset($gradeset->feedback)){
+        if ($cognitivefactory->seqaccessfeedback && isset($gradeset->feedback)) {
             $total[] = $gradeset->feedback;
             $weights[] = $cognitivefactory->feedbackweight;
         }
         $totalweights = array_sum($weights);
         $totalgrade = 0;
-        for($i = 0 ; $i < count($total) ; $i++){
+        for ($i = 0 ; $i < count($total) ; $i++) {
             $totalgrade += $total[$i] * $weights[$i];
         }
         $totalgrade = ($totalweights != 0) ? $totalgrade / $totalweights : 0 ;
@@ -312,7 +312,7 @@ function cognitivefactory_convert_to_single($cognitivefactory, $userid){
         $graderecord->userid = $userid;
         $graderecord->timeupdated = $gradeset->timeupdated; // keeps old time
         $DB->delete_records('cognitivefactory_grades', array('cognitivefactoryid' => $cognitivefactory->id, 'userid' => $userid));
-        if (!$DB->insert_record('cognitivefactory_grades', $graderecord)){
+        if (!$DB->insert_record('cognitivefactory_grades', $graderecord)) {
             print_error('errorinsert', 'cogntiviefactory', '', get_string('convertedgrades', 'cognitivefactory'));
         }
     }
@@ -323,7 +323,7 @@ function cognitivefactory_convert_to_single($cognitivefactory, $userid){
 * @param int $cognitivefactoryid
 * @param array $userids
 */
-function cognitivefactory_get_ungraded($cognitivefactoryid, $userids){
+function cognitivefactory_get_ungraded($cognitivefactoryid, $userids) {
     global $CFG, $DB;
 
     $useridlist = implode("','", $userids);
@@ -346,7 +346,7 @@ function cognitivefactory_get_ungraded($cognitivefactoryid, $userids){
           bg.grade IS NULL AND
           u.id in ('$useridlist')
     ";
-    if (!$records = $DB->get_records_sql($sql, array($cognitivefactoryid))){
+    if (!$records = $DB->get_records_sql($sql, array($cognitivefactoryid))) {
         return array();
     }
     return $records;
@@ -359,26 +359,26 @@ function cognitivefactory_get_ungraded($cognitivefactoryid, $userids){
 * @param object $cognitivefactory the activity module instance
 * @param int $userid the user ID
 */
-function cognitivefactory_get_feedback($cognitivefactory, $userid = null){
+function cognitivefactory_get_feedback($cognitivefactory, $userid = null) {
     global $USER, $DB, $OUTPUT;
 
-	$context = context_module::instance($cognitivefactory->cmid);
-	$isteacher = has_capability('mod/cognitivefactory:grade', $context);
-	
-	$feedback = '';
+    $context = context_module::instance($cognitivefactory->cmid);
+    $isteacher = has_capability('mod/cognitivefactory:grade', $context);
+    
+    $feedback = '';
 
-	// get feedback of the user
+    // get feedback of the user
     if (!$userid) $userid = $USER->id;
     
-    if (!$isteacher || ($userid != $USER->id)){ // teachers cannot have feedback for themselves 
-	    $text = $DB->get_field('cognitivefactory_userdata', 'feedback', array('cognitivefactoryid' => $cognitivefactory->id, 'userid' => $userid));	
-	    $text = (empty($userfeedback)) ? get_string('nofeedback', 'cognitivefactory') : $text ;
-	    $feedback .= $OUTPUT->box('<p align="left">'.$text.'</p>', 'cognitivefactory-feedback');
-	}
+    if (!$isteacher || ($userid != $USER->id)) { // teachers cannot have feedback for themselves 
+        $text = $DB->get_field('cognitivefactory_userdata', 'feedback', array('cognitivefactoryid' => $cognitivefactory->id, 'userid' => $userid));    
+        $text = (empty($userfeedback)) ? get_string('nofeedback', 'cognitivefactory') : $text ;
+        $feedback .= $OUTPUT->box('<p align="left">'.$text.'</p>', 'cognitivefactory-feedback');
+    }
     
     $feedback .= $OUTPUT->heading(get_string('globalfeedback', 'cognitivefactory'), 4);
 
-    $text = $DB->get_field('cognitivefactory', 'globalteacherfeedback', array('id' => $cognitivefactory->id));	
+    $text = $DB->get_field('cognitivefactory', 'globalteacherfeedback', array('id' => $cognitivefactory->id));    
     $text = (empty($userfeedback)) ? get_string('nofeedback', 'cognitivefactory') : $text ;
     $feedback .= $OUTPUT->box('<p align="left">'.$text.'</p>', 'cognitivefactory-feedback');
 
@@ -389,14 +389,14 @@ function cognitivefactory_get_feedback($cognitivefactory, $userid = null){
 * prints cols for responses
 *
 */
-function cognitivefactory_print_responses_cols(&$cognitivefactory, &$responses, $return = false, $printchecks = false){
+function cognitivefactory_print_responses_cols(&$cognitivefactory, &$responses, $return = false, $printchecks = false) {
     $index = 0;
 
     $str = '';
-    if ($responses){
-        foreach ($responses as $response){
+    if ($responses) {
+        foreach ($responses as $response) {
             $deletecheckbox = ($printchecks) ? "<input type=\"checkbox\" name=\"items[]\" value=\"{$response->id}\" /> " : '' ;
-            if (($index > 0) && ($index % $cognitivefactory->numcolumns) == 0){
+            if (($index > 0) && ($index % $cognitivefactory->numcolumns) == 0) {
                 $str .= '</tr><tr valign="top">';
             }
             $str .= '<th>' . ($index + 1) . '</th>';
@@ -405,7 +405,7 @@ function cognitivefactory_print_responses_cols(&$cognitivefactory, &$responses, 
         }
     }
 
-    if ($return){
+    if ($return) {
         return $str;
     }
     echo $str;
@@ -415,8 +415,8 @@ function cognitivefactory_print_responses_cols(&$cognitivefactory, &$responses, 
 *
 *
 */
-function cognitivefactory_have_reports($cognitivefactory, $participantids = array()){
-	global $DB;
+function cognitivefactory_have_reports($cognitivefactory, $participantids = array()) {
+    global $DB;
 
     $participantlist = implode("','", $participantids);
     $participantclause =  (empty($participantlist)) ? '' : " userid IN ('$participantlist') AND " ;
@@ -429,56 +429,56 @@ function cognitivefactory_have_reports($cognitivefactory, $participantids = arra
     return $records;
 }
 
-function cognitivefactory_save_grades(&$cognitivefactory, $fromform){
-	global $DB;
-	
+function cognitivefactory_save_grades(&$cognitivefactory, $fromform) {
+    global $DB;
+    
     $userid = $fromform->for;
 
     /// remove old records
     $DB->delete_records('cognitivefactory_grades', array('cognitivefactoryid' => $cognitivefactory->id, 'userid' => $userid));
-    if ($cognitivefactory->singlegrade){
+    if ($cognitivefactory->singlegrade) {
         $graderecord = new StdClass();
         $graderecord->cognitivefactoryid = $cognitivefactory->id;
         $graderecord->userid = $userid;
         $graderecord->grade = $fromform->grade;
         $graderecord->gradeitem = 'single';
         $graderecord->timeupdated = time();
-        if (!$DB->insert_record('cognitivefactory_grades', $graderecord)){
+        if (!$DB->insert_record('cognitivefactory_grades', $graderecord)) {
             print_error('errorinsert', 'cognitivefactory', '', get_string('grade'));
         }        
     } else { // record dissociated grade
-    	$graderecord = new StdClass();
+        $graderecord = new StdClass();
         $graderecord->cognitivefactoryid = $cognitivefactory->id;
         $graderecord->userid = $userid;
         $graderecord->timeupdated = time();
 
-        if ($cognitivefactory->seqaccesscollect){
+        if ($cognitivefactory->seqaccesscollect) {
             $graderecord->grade = $fromform->participate;
             $graderecord->gradeitem = 'participate';
-            if (!$DB->insert_record('cognitivefactory_grades', $graderecord)){
+            if (!$DB->insert_record('cognitivefactory_grades', $graderecord)) {
                 print_error('errorinsert', 'cognitivefactory', '', get_string('grade'));
             }
         }
-        if ($cognitivefactory->seqaccessprepare){
+        if ($cognitivefactory->seqaccessprepare) {
             $graderecord->grade = $fromform->prepare;
             $graderecord->gradeitem = 'prepare';
-            if (!$DB->insert_record('cognitivefactory_grades', $graderecord)){
+            if (!$DB->insert_record('cognitivefactory_grades', $graderecord)) {
                 print_error('errorinsert', 'cognitivefactory', '', get_string('grade'));
             }
         }
 
-        if ($cognitivefactory->seqaccessorganize){
+        if ($cognitivefactory->seqaccessorganize) {
             $graderecord->grade = $fromform->organize;
             $graderecord->gradeitem = 'organize';
-            if (!$DB->insert_record('cognitivefactory_grades', $graderecord)){
+            if (!$DB->insert_record('cognitivefactory_grades', $graderecord)) {
                 print_error('errorinsert', 'cognitivefactory', '', get_string('grade'));
             }
         }
 
-        if ($cognitivefactory->seqaccessorganize){
+        if ($cognitivefactory->seqaccessorganize) {
             $graderecord->grade = $fromform->feedback;
             $graderecord->gradeitem = 'feedback';
-            if (!$DB->insert_record('cognitivefactory_grades', $graderecord)){
+            if (!$DB->insert_record('cognitivefactory_grades', $graderecord)) {
                 print_error('errorinsert', 'cognitivefactory', '', get_string('grade'));
             }
         }
@@ -489,20 +489,20 @@ function cognitivefactory_save_grades(&$cognitivefactory, $fromform){
     unset($userdatarecord->reportformat);
     $userdatarecord->feedback = $fromform->teacherfeedback['text'];
     $userdatarecord->feedbackformat = $fromform->teacherfeedback['format'];
-    if (!$DB->update_record('cognitivefactory_userdata', $userdatarecord)){
+    if (!$DB->update_record('cognitivefactory_userdata', $userdatarecord)) {
         print_error('errorupdate', 'cognitivefactory', '', get_string('userfeedback', 'cognitivefactory'));
     }
 }
 
-function cognitivefactory_print_phase_buttons(&$cognitivefactory){
-	global $USER;
-	
-	$str = '';
-	
-	$cmid = $cognitivefactory->cmid;
-	$context = context_module::instance($cmid);
-   	$ismanager = has_capability('mod/cognitivefactory:manage', $context);
-	$cangrade = has_capability('mod/cognitivefactory:grade', $context, $USER->id, false);
+function cognitivefactory_print_phase_buttons(&$cognitivefactory) {
+    global $USER;
+    
+    $str = '';
+    
+    $cmid = $cognitivefactory->cmid;
+    $context = context_module::instance($cmid);
+       $ismanager = has_capability('mod/cognitivefactory:manage', $context);
+    $cangrade = has_capability('mod/cognitivefactory:grade', $context, $USER->id, false);
 
     $collectstr = get_string('collect', 'cognitivefactory');
     $preparestr = get_string('prepare', 'cognitivefactory');
@@ -522,24 +522,24 @@ function cognitivefactory_print_phase_buttons(&$cognitivefactory){
     $displayaccessclass = (!$cognitivefactory->seqaccessdisplay) ? 'cognitivefactory-manager' : 'cognitivefactory-participant' ;
     $feedbackaccessclass = (!$cognitivefactory->seqaccessfeedback) ? 'cognitivefactory-manager' : 'cognitivefactory-participant' ;
 
-    if (!$ismanager){
-    	$str = '<center>';
-        if ($cognitivefactory->seqaccesscollect){
-	        $str .= "<div class=\"cognitivefactory-phase {$collectphaseclass} {$collectaccessclass}\">{$collectstr}</div>";
-	    }
-        if ($cognitivefactory->seqaccessprepare){
-	        $str .= "<div class=\"cognitivefactory-phase {$preparephaseclass} {$prepareaccessclass}\">{$preparestr}</div>";
-	    }
-        if ($cognitivefactory->seqaccessorganize){
-        	$str .= "<div class=\"cognitivefactory-phase {$organizephaseclass} {$organizeaccessclass}\">{$organizestr}</div>";
-    	}
-        if ($cognitivefactory->seqaccessdisplay){
-	        $str .= "<div class=\"cognitivefactory-phase {$displayphaseclass} {$displayaccessclass}\">{$displaystr}</div>";
-	    }
+    if (!$ismanager) {
+        $str = '<center>';
+        if ($cognitivefactory->seqaccesscollect) {
+            $str .= "<div class=\"cognitivefactory-phase {$collectphaseclass} {$collectaccessclass}\">{$collectstr}</div>";
+        }
+        if ($cognitivefactory->seqaccessprepare) {
+            $str .= "<div class=\"cognitivefactory-phase {$preparephaseclass} {$prepareaccessclass}\">{$preparestr}</div>";
+        }
+        if ($cognitivefactory->seqaccessorganize) {
+            $str .= "<div class=\"cognitivefactory-phase {$organizephaseclass} {$organizeaccessclass}\">{$organizestr}</div>";
+        }
+        if ($cognitivefactory->seqaccessdisplay) {
+            $str .= "<div class=\"cognitivefactory-phase {$displayphaseclass} {$displayaccessclass}\">{$displaystr}</div>";
+        }
 
         $str .= "<div class=\"cognitivefactory-phase {$feedbackphaseclass} {$feedbackaccessclass}\">{$feedbackstr}</div>";
     } else {
-		$str .= '<center>';
+        $str .= '<center>';
         $str .= "<a href=\"view.php?id={$cmid}&amp;what=switchphase&amp;phase=0\"><div class=\"cognitivefactory-phase {$collectphaseclass} {$collectaccessclass}\">{$collectstr}</div></a>";
         $str .= "<a href=\"view.php?id={$cmid}&amp;what=switchphase&amp;phase=1\"><div class=\"cognitivefactory-phase {$preparephaseclass} {$prepareaccessclass}\">{$preparestr}</div></a>";
         $str .= "<a href=\"view.php?id={$cmid}&amp;what=switchphase&amp;phase=2\"><div class=\"cognitivefactory-phase {$organizephaseclass} {$organizeaccessclass}\">{$organizestr}</div></a>";
@@ -548,38 +548,38 @@ function cognitivefactory_print_phase_buttons(&$cognitivefactory){
     }
 
     $str .= ($cangrade) ? "<a href=\"view.php?id={$cmid}&amp;view=grade\"><div class=\"cognitivefactory-phase cognitivefactory-raised cognitivefactory-manager\">{$gradestr}</div></a>" : '' ;
-	$str .= '</center>';
-	    
+    $str .= '</center>';
+        
     return $str;
 }
 
-function cognitivefactory_check_jquery(){
-	global $PAGE, $OUTPUT;
+function cognitivefactory_check_jquery() {
+    global $PAGE, $OUTPUT;
 
-	$current = '1.8.2';
-	
-	if (empty($OUTPUT->jqueryversion)){
-		$OUTPUT->jqueryversion = '1.8.2';
-		$PAGE->requires->js('/mod/cognitivefactory/js/jquery-'.$current.'.min.js', true);
-	} else {
-		if ($OUTPUT->jqueryversion < $current){
-			debugging('the previously loaded version of jquery is lower than required. This may cause issues to cognitivefactory functions. Programmers might consider upgrading JQuery version in the component that preloads JQuery library.', DEBUG_DEVELOPER, array('notrace'));
-		}
-	}
-	
+    $current = '1.8.2';
+    
+    if (empty($OUTPUT->jqueryversion)) {
+        $OUTPUT->jqueryversion = '1.8.2';
+        $PAGE->requires->js('/mod/cognitivefactory/js/jquery-'.$current.'.min.js', true);
+    } else {
+        if ($OUTPUT->jqueryversion < $current) {
+            debugging('the previously loaded version of jquery is lower than required. This may cause issues to cognitivefactory functions. Programmers might consider upgrading JQuery version in the component that preloads JQuery library.', DEBUG_DEVELOPER, array('notrace'));
+        }
+    }
+    
 }
 
-function cognitivefactory_requires(&$cognitivefactory, $page){
-	global $CFG;
-	
-	$operators = cognitivefactory_get_operators($cognitivefactory->id);
-	if (!in_array($page, array_keys($operators))) return;
+function cognitivefactory_requires(&$cognitivefactory, $page) {
+    global $CFG;
+    
+    $operators = cognitivefactory_get_operators($cognitivefactory->id);
+    if (!in_array($page, array_keys($operators))) return;
 
-	if (is_dir($CFG->dirroot.'/mod/cognitivefactory/operators/'.$page.'/js')){
-		include_once $CFG->dirroot.'/mod/cognitivefactory/operators/'.$page.'/locallib.php';
-		$funcname = $page.'_requires';
-		if (function_exists($funcname)){
-			$funcname();
-		}
-	}
+    if (is_dir($CFG->dirroot.'/mod/cognitivefactory/operators/'.$page.'/js')) {
+        include_once $CFG->dirroot.'/mod/cognitivefactory/operators/'.$page.'/locallib.php';
+        $funcname = $page.'_requires';
+        if (function_exists($funcname)) {
+            $funcname();
+        }
+    }
 }

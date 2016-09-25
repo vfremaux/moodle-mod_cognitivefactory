@@ -15,25 +15,25 @@ $responses = cognitivefactory_get_responses($cognitivefactory->id, 0, 0);
 $currentoperator = new BrainstormOperator($cognitivefactory->id, $page);
 $usehtmleditor = can_use_html_editor();
 
-if (!isset($currentoperator->configdata->absolute)){
+if (!isset($currentoperator->configdata->absolute)) {
     $currentoperator->configdata->absolute = 1;
 }
-if (!isset($currentoperator->configdata->quantifiertype)){
+if (!isset($currentoperator->configdata->quantifiertype)) {
     $currentoperator->configdata->quantifiertype = 'float';
 }
-if (!isset($currentoperator->configdata->scale)){
+if (!isset($currentoperator->configdata->scale)) {
     $currentoperator->configdata->scale = 0;
 }
-if (!isset($currentoperator->configdata->blindness)){
+if (!isset($currentoperator->configdata->blindness)) {
     $currentoperator->configdata->blindness = $cognitivefactory->privacy;
 }
-if (!isset($currentoperator->configdata->barwidth)){
+if (!isset($currentoperator->configdata->barwidth)) {
     $currentoperator->configdata->barwidth = 400;
 }
-if (!isset($currentoperator->configdata->requirement)){
+if (!isset($currentoperator->configdata->requirement)) {
     $currentoperator->configdata->requirement = '';
 }
-if (!isset($currentoperator->configdata->blindness)){
+if (!isset($currentoperator->configdata->blindness)) {
     $currentoperator->configdata->blindness = 0;
 }
 
@@ -49,8 +49,8 @@ echo $OUTPUT->heading(get_string("{$page}settings", 'cognitiveoperator_'.$page))
 
 $form = new scale_prepare_form($url, array('oprequirementtype' => $cognitivefactory->oprequirementtype, 'cmid' => $cm->id));
 
-if ($data = $form->get_data()){
-	// Play the update params controller here
+if ($data = $form->get_data()) {
+    // Play the update params controller here
     cognitivefactory_save_operatorconfig($cognitivefactory->id, $data);
 }
 

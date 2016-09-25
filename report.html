@@ -13,7 +13,7 @@ $usehtmleditor = can_use_html_editor();
         <td>
         <?php print_textarea($usehtmleditor, 20, 50, 680, 400, 'report', @$form->report);
         if (!$usehtmleditor){
-    		echo '<p align="right">';
+            echo '<p align="right">';
             $OUTPUT->help_icon('textformat', );
             print_string('formattexttype');
             echo ":&nbsp;";

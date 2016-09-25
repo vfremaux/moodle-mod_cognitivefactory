@@ -40,17 +40,17 @@ class restore_cognitivefactory_activity_structure_step extends restore_activity_
         $operators = new restore_path_element('cognitivefactory_operator', '/activity/cognitivefactory/operators/operator');
         $paths[] = $operators;
         
-        if ($userinfo){
-	        $categories = new restore_path_element('cognitivefactory_category', '/activity/cognitivefactory/categories/category');
-	        $paths[] = $categories;
-	        $opdata = new restore_path_element('cognitivefactory_opdatum', '/activity/cognitivefactory/opdata/opdatum');
-	        $paths[] = $answers;
-	        $responses = new restore_path_element('cognitivefactory_response', '/activity/cognitivefactory/responses/response');
-	        $paths[] = $responses;
-	        $userdata = new restore_path_element('cognitivefactory_userdatum', '/activity/cognitivefactory/userata/userdatum');
-	        $paths[] = $userdata;
-	        $grades = new restore_path_element('cognitivefactory_grade', '/activity/cognitivefactory/grades/grade');
-	        $paths[] = $grades;
+        if ($userinfo) {
+            $categories = new restore_path_element('cognitivefactory_category', '/activity/cognitivefactory/categories/category');
+            $paths[] = $categories;
+            $opdata = new restore_path_element('cognitivefactory_opdatum', '/activity/cognitivefactory/opdata/opdatum');
+            $paths[] = $opdata;
+            $responses = new restore_path_element('cognitivefactory_response', '/activity/cognitivefactory/responses/userresponse');
+            $paths[] = $responses;
+            $userdata = new restore_path_element('cognitivefactory_userdatum', '/activity/cognitivefactory/userata/userdatum');
+            $paths[] = $userdata;
+            $grades = new restore_path_element('cognitivefactory_grade', '/activity/cognitivefactory/grades/grade');
+            $paths[] = $grades;
         }
 
         // Return the paths wrapped into standard activity structure
@@ -64,7 +64,7 @@ class restore_cognitivefactory_activity_structure_step extends restore_activity_
         $oldid = $data->id;
         $data->course = $this->get_courseid();
 
-        $data->timecreated = $this->apply_date_offset($data->timecreated);
+        $data->timemodified = $this->apply_date_offset($data->timemodified);
 
         // insert the label record
         $newitemid = $DB->insert_record('cognitivefactory', $data);
@@ -81,8 +81,8 @@ class restore_cognitivefactory_activity_structure_step extends restore_activity_
     }
 
     protected function process_cognitivefactory_category($data) {
-    	global $DB;
-    	
+        global $DB;
+        
         $data = (object)$data;
         $oldid = $data->id;
 
@@ -95,8 +95,8 @@ class restore_cognitivefactory_activity_structure_step extends restore_activity_
     }
 
     protected function process_cognitivefactory_response($data) {
-    	global $DB;
-    	
+        global $DB;
+
         $data = (object)$data;
         $oldid = $data->id;
 
@@ -110,8 +110,8 @@ class restore_cognitivefactory_activity_structure_step extends restore_activity_
     }
 
     protected function process_cognitivefactory_operator($data) {
-    	global $DB;
-    	
+        global $DB;
+
         $data = (object)$data;
         $oldid = $data->id;
 
@@ -123,8 +123,8 @@ class restore_cognitivefactory_activity_structure_step extends restore_activity_
     }
 
     protected function process_cognitivefactory_opdatum($data) {
-    	global $DB;
-    	
+        global $DB;
+
         $data = (object)$data;
         $oldid = $data->id;
 
@@ -138,8 +138,8 @@ class restore_cognitivefactory_activity_structure_step extends restore_activity_
     }
 
     protected function process_cognitivefactory_userdatum($data) {
-    	global $DB;
-    	
+        global $DB;
+
         $data = (object)$data;
         $oldid = $data->id;
 
@@ -153,8 +153,8 @@ class restore_cognitivefactory_activity_structure_step extends restore_activity_
     }
 
     protected function process_cognitivefactory_grade($data) {
-    	global $DB;
-    	
+        global $DB;
+
         $data = (object)$data;
         $oldid = $data->id;
 

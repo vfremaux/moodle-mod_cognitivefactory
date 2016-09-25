@@ -13,19 +13,19 @@ if (!defined('MOODLE_INTERNAL')) die("This script cannot be used this way.");
 
 $currentoperator = new BrainstormOperator($cognitivefactory->id, $page);
 
-if (!isset($currentoperator->configdata->quantified)){
+if (!isset($currentoperator->configdata->quantified)) {
     $currentoperator->configdata->quantified = 1;
 }
-if (!isset($currentoperator->configdata->allowcheckcycles)){
+if (!isset($currentoperator->configdata->allowcheckcycles)) {
     $currentoperator->configdata->allowcheckcycles = 1;
 }
-if (!isset($currentoperator->configdata->quantifiertype)){
+if (!isset($currentoperator->configdata->quantifiertype)) {
     $currentoperator->configdata->quantifiertype = 'float';
 }
-if (!isset($currentoperator->configdata->procedure)){
+if (!isset($currentoperator->configdata->procedure)) {
     $currentoperator->configdata->procedure = 'gridediting';
 }
-if (!isset($currentoperator->configdata->requirement)){
+if (!isset($currentoperator->configdata->requirement)) {
     $currentoperator->configdata->requirement = '';
 }
 
@@ -33,8 +33,8 @@ echo $OUTPUT->heading(get_string("{$page}settings", 'cognitiveoperator_'.$page))
 
 $form = new map_prepare_form($url, array('oprequirementtype' => $cognitivefactory->oprequirementtype, 'cmid' => $cm->id));
 
-if ($data = $form->get_data()){
-	// Play the update params controller here
+if ($data = $form->get_data()) {
+    // Play the update params controller here
     cognitivefactory_save_operatorconfig($cognitivefactory->id, $data);
 }
 

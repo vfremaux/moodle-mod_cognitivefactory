@@ -13,43 +13,43 @@ if (!defined('MOODLE_INTERNAL')) die("This script canot be used this way.");
 
 $currentoperator = new BrainstormOperator($cognitivefactory->id, $page);
 
-if (!isset($currentoperator->configdata->xquantifier)){
+if (!isset($currentoperator->configdata->xquantifier)) {
     $currentoperator->configdata->xquantifier = 'criteria X';
 }
-if (!isset($currentoperator->configdata->xminrange)){
+if (!isset($currentoperator->configdata->xminrange)) {
     $currentoperator->configdata->xminrange = '0.0';
 }
-if (!isset($currentoperator->configdata->xmaxrange)){
+if (!isset($currentoperator->configdata->xmaxrange)) {
     $currentoperator->configdata->xmaxrange = '10.0';
 }
-if (!isset($currentoperator->configdata->yquantifier)){
+if (!isset($currentoperator->configdata->yquantifier)) {
     $currentoperator->configdata->yquantifier = 'criteria Y';
 }
-if (!isset($currentoperator->configdata->yminrange)){
+if (!isset($currentoperator->configdata->yminrange)) {
     $currentoperator->configdata->yminrange = '0.0';
 }
-if (!isset($currentoperator->configdata->ymaxrange)){
+if (!isset($currentoperator->configdata->ymaxrange)) {
     $currentoperator->configdata->ymaxrange = '10.0';
 }
-if (!isset($currentoperator->configdata->neighbourhood)){
+if (!isset($currentoperator->configdata->neighbourhood)) {
     $currentoperator->configdata->neighbourhood = '0.5';
 }
-if (!isset($currentoperator->configdata->quantifiertype)){
+if (!isset($currentoperator->configdata->quantifiertype)) {
     $currentoperator->configdata->quantifiertype = 'float';
 }
-if (!isset($currentoperator->configdata->width)){
+if (!isset($currentoperator->configdata->width)) {
     $currentoperator->configdata->width = 400;
 }
-if (!isset($currentoperator->configdata->height)){
+if (!isset($currentoperator->configdata->height)) {
     $currentoperator->configdata->height = 400;
 }
-if (!isset($currentoperator->configdata->showlabels)){
+if (!isset($currentoperator->configdata->showlabels)) {
     $currentoperator->configdata->showlabels = 1;
 }
-if (!isset($currentoperator->configdata->requirement)){
+if (!isset($currentoperator->configdata->requirement)) {
     $currentoperator->configdata->requirement = '';
 }
-if (!isset($currentoperator->configdata->blindness)){
+if (!isset($currentoperator->configdata->blindness)) {
     $currentoperator->configdata->blindness = $cognitivefactory->privacy;
 }
 
@@ -57,8 +57,8 @@ echo $OUTPUT->heading(get_string("{$page}settings", 'cognitiveoperator_'.$page))
 
 $form = new locate_prepare_form($url, array('oprequirementtype' => $cognitivefactory->oprequirementtype, 'cmid' => $cm->id));
 
-if ($data = $form->get_data()){
-	// Play the add/update controller here
+if ($data = $form->get_data()) {
+    // Play the add/update controller here
     cognitivefactory_save_operatorconfig($cognitivefactory->id, $data);
 }
 

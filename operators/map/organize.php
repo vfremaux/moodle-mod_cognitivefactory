@@ -12,12 +12,12 @@ include_once("$CFG->dirroot/mod/cognitivefactory/operators/operator.class.php");
 echo $OUTPUT->heading("<img src=\"".$OUTPUT->pix_url('enabled_small', 'cognitiveoperator_map')."\" align=\"left\" width=\"40\" /> " . get_string("organizing{$page}", 'cognitiveoperator_'.$page));
 
 $responses = cognitivefactory_get_responses($cognitivefactory->id, 0, 0);
-if (count($responses) > $MAP_MAX_DATA){
+if (count($responses) > $MAP_MAX_DATA) {
     echo $OUTPUT->notification(get_string('toomuchdata', 'cognitiveoperator_'.$page, $MAP_MAX_DATA));
     return;
 }
 
-if (!isset($current_operator)){
+if (!isset($current_operator)) {
     $current_operator = new BrainstormOperator($cognitivefactory->id, $page);
 }
 $map = map_get_cells($cognitivefactory->id, $USER->id, $currentgroup, $current_operator->configdata);
@@ -34,31 +34,31 @@ if (isset($current_operator->configdata->requirement))
 <center>
 <table cellspacing="5" class="cognitiveoperator-map-table">
 <?php
-if ($responses){
+if ($responses) {
     $width = 100 / count($responses) + 2;
     $titlewidth = $width * 2;
 
     /// draw top title line
     echo "<tr>\n";
     echo "<th width=\"{$titlewidth}%\" class=\"cognitiveoperator-map-tablecell\">&nbsp;</th>\n";
-    foreach($responses as $responsecol){
+    foreach ($responses as $responsecol) {
         echo "<td width=\"{$width}%\" class=\"cognitiveoperator-map-tablecell\">{$responsecol->response}</td>\n";
     }
     echo "</tr>\n";
 
-    foreach($responses as $responserow){
+    foreach ($responses as $responserow) {
         echo "<tr>\n";
         echo "<th width=\"{$titlewidth}%\" class=\"cognitiveoperator-map-tablecell\">{$responserow->response}</th>\n";
-        foreach($responses as $responsecol){
-            if (!@$current_operator->configdata->quantified){
+        foreach ($responses as $responsecol) {
+            if (!@$current_operator->configdata->quantified) {
                 $checked = (@$map[$responserow->id][$responsecol->id]) ? 'checked="checked"' : '' ;
                 $mapcheck = "<input type=\"checkbox\" name=\"map_{$responserow->id}_{$responsecol->id}\" value=\"1\" $checked /> ";
                 echo "<td width=\"{$width}%\" class=\"cognitiveoperator-map-tablecell\">$mapcheck</td>\n";
             } else {
-                switch($current_operator->configdata->quantifiertype){
+                switch($current_operator->configdata->quantifiertype) {
                     case 'multiple':
                         $itemdata = map_print_multiple_value(@$map[$responserow->id][$responsecol->id]);
-                        if (!empty($itemdata)){
+                        if (!empty($itemdata)) {
                             $itemdata .= '<br/>';
                             $maplink = "<a href=\"view.php?id={$cm->id}&amp;operator={$page}&amp;what=updatemultiple&amp;source={$responserow->id}&amp;dest={$responsecol->id}\"><img src=\"".$OTPUT->pix_url('t/edit').'" /></a>';
                             $maplink .= "&nbsp;<a href=\"view.php?id={$cm->id}&amp;operator={$page}&amp;what=deletemultiple&amp;source={$responserow->id}&amp;dest={$responsecol->id}\"><img src=\"".$OUTPUT->pix_url('t/delete').'" /></a>';

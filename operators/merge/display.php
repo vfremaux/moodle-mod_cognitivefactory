@@ -17,7 +17,7 @@ $responses = cognitivefactory_get_responses($cognitivefactory->id, 0, $currentgr
 $merges = merge_get_merges($cognitivefactory->id, null, $currentgroup, false, $current_operator->configdata);
 $othermerges = merge_get_merges($cognitivefactory->id, null, $currentgroup, true, $current_operator->configdata);
 /// sorting and dispatching
-foreach($othermerges as $amerge){
+foreach ($othermerges as $amerge) {
     $others[$amerge->userid][] = $amerge;
 }
 
@@ -41,7 +41,7 @@ echo $OUTPUT->box_start('center');
                  </tr>
 <?php
     $i = 0;
-    foreach($responses as $response){
+    foreach ($responses as $response) {
 ?>
                 <tr>
                     <th>
@@ -59,7 +59,7 @@ echo $OUTPUT->box_start('center');
         </td>
         <td>
 <?php
-if ($merges){
+if ($merges) {
 ?>
             <table cellspacing="5">
                 <tr>
@@ -72,7 +72,7 @@ if ($merges){
                  </tr>
 <?php
     $i = 0;
-    foreach($merges as $merge){
+    foreach ($merges as $merge) {
 ?>
                 <tr>
                     <th>
@@ -101,23 +101,23 @@ echo $OUTPUT->box_end();
 echo $OUTPUT->heading(get_string('othermerges', 'cognitiveoperator_'.$page));
 echo $OUTPUT->box_start('center');
 $cols = 0;
-if (!empty($others)){
+if (!empty($others)) {
 ?>
 <table>
     <tr>
         <td>
 <?php
-foreach(array_keys($others) as $userid){
+foreach (array_keys($others) as $userid) {
     $user = $DB->get_record('user', array('id' => $userid));
     echo $OUTPUT->heading(fullname($user));
     echo '<table>';
     $i = 0;
-    foreach($others[$userid] as $merge){
+    foreach ($others[$userid] as $merge) {
         echo '<tr><td>'.($i + 1).'</td><td align="left">'.$merge->merged.'</td></tr>';
         $i++;
     }
     echo '</table>';
-    if ($cols && $cols % $cognitivefactory->numcolumns == 0){
+    if ($cols && $cols % $cognitivefactory->numcolumns == 0) {
         echo "</td></tr><tr><td>";
     } else {
         echo "</td><td>";

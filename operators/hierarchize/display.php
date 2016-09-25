@@ -25,8 +25,8 @@ $tree = hierarchize_get_childs($cognitivefactory->id, null, 0, false);
 <input type="hidden" name="what" value="" />
 <table width="80%">
 <?php
-if ($tree){
-    if ($action == 'printindeepness'){
+if ($tree) {
+    if ($action == 'printindeepness') {
         echo hierarchize_print_levelindeepness($cognitivefactory->id, $cm, null, 0, 0);
 ?>
 </table>
@@ -41,7 +41,7 @@ if ($tree){
     else{
         $i = 0;
         $indent = 25;
-        foreach($tree as $child){
+        foreach ($tree as $child) {
             $prefix = $i + 1;
 ?>
     <tr>

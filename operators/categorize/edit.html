@@ -5,9 +5,9 @@ echo $OUTPUT->heading(get_string('addcategory', 'cognitiveoperator_categorize'))
 ?>
 <center>
 <table width"100%" class="cognitiveoperator-settings">
-	<tr valign="top"><td>
+    <tr valign="top"><td>
 <?php echo '<img src="'.$OUTPUT->pix_url('enabled', 'cognitiveoperator_categorize').'" />' ?>
-	</td><td>
+    </td><td>
 <form name="categoryform" action="view.php" method="post">
 <input type="hidden" name="id" value="<?php p($form->id) ?>" />
 <input type="hidden" name="operator" value="categorize" />

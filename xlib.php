@@ -15,6 +15,6 @@
 * Checklist 2012040601/valery fremaux
 *
 */
-function cognitivefactory_checklist_get_logaction_code(){
-	return 'createreport';
+function cognitivefactory_checklist_get_logaction_code() {
+    return 'createreport';
 }

@@ -11,8 +11,8 @@
 *
 * @param int $cognitivefactoryid
 */
-function categorize_get_categories($cognitivefactoryid, $userid=null, $groupid=0){
-	global $DB;
+function categorize_get_categories($cognitivefactoryid, $userid=null, $groupid=0) {
+    global $DB;
 
     $accessClause = cognitivefactory_get_accessclauses($userid, $groupid, false);
     $select = "
@@ -32,14 +32,14 @@ function categorize_get_categories($cognitivefactoryid, $userid=null, $groupid=0
 * @param int $cognitivefactoryid
 * @param int $userid
 */
-function categorize_get_responsespercategories($cognitivefactoryid, $userid, $groupid, $excludemyself=false){
+function categorize_get_responsespercategories($cognitivefactoryid, $userid, $groupid, $excludemyself=false) {
     global $CFG, $USER, $DB;
     $accessClause = cognitivefactory_get_accessclauses($userid, $groupid, $excludemyself, 'od.');
     $struncategorized = get_string('uncategorized', 'cognitiveoperator_categorize');
     $responses = array();
     $categories = $DB->get_records('cognitivefactory_categories', array('cognitivefactoryid' => $cognitivefactoryid));
-    if ($categories){
-        foreach($categories as $category){
+    if ($categories) {
+        foreach ($categories as $category) {
             $sql = "
                 SELECT
                     od.id as odid,
@@ -83,7 +83,7 @@ function categorize_get_responsespercategories($cognitivefactoryid, $userid, $gr
 * @param int $cognitivefactoryid
 * @param int $userid
 */
-function categorize_get_categoriesperresponses($cognitivefactoryid, $userid=null, $groupid=0){
+function categorize_get_categoriesperresponses($cognitivefactoryid, $userid=null, $groupid=0) {
     global $CFG, $USER, $DB;
     $accessClause = cognitivefactory_get_accessclauses($userid, $groupid, false, 'od.');
 
@@ -105,10 +105,10 @@ function categorize_get_categoriesperresponses($cognitivefactoryid, $userid=null
             {$accessClause}
     ";
     $allresponses = $DB->get_records_sql($sql); 
-    if ($allresponses){
-        foreach($allresponses as $response){
+    if ($allresponses) {
+        foreach ($allresponses as $response) {
             $categorized[$response->id]->response = &$response;
-            if (!empty($response->category)){
+            if (!empty($response->category)) {
                 $categorized[$response->id]->categories[] = $response->category;
             }
             else{
@@ -125,7 +125,7 @@ function categorize_get_categoriesperresponses($cognitivefactoryid, $userid=null
 * @param int $braintormid
 * @param int $userid
 */
-function categorize_get_matchings($cognitivefactoryid, $userid=null, $groupid=0){
+function categorize_get_matchings($cognitivefactoryid, $userid=null, $groupid=0) {
     global $CFG, $DB;
     $accessClause = cognitivefactory_get_accessclauses($userid, $groupid, true);
     /// get interesting responses
@@ -146,27 +146,27 @@ function categorize_get_matchings($cognitivefactoryid, $userid=null, $groupid=0)
     $mycategorizations = $DB->get_records_select('cognitivefactory_opdata', $select);
     /// compile our values first
     $reference = array();
-    if ($mycategorizations){
-        foreach($mycategorizations as $cat){
+    if ($mycategorizations) {
+        foreach ($mycategorizations as $cat) {
             $reference[$cat->itemsource][] = $cat->itemdest;
         }
     }
 
-    if ($allcategorizations && !empty($reference)){            
+    if ($allcategorizations && !empty($reference)) {            
         /// compile values for other users
-        foreach($allcategorizations as $cat){
+        foreach ($allcategorizations as $cat) {
             if (!in_array($cat->itemsource, array_keys($reference))) continue ; // discard those responses we did not give any assignation
-            if (@in_array($cat->itemdest, $reference[$cat->itemsource])){
+            if (@in_array($cat->itemdest, $reference[$cat->itemsource])) {
                 @$match[$cat->itemsource]++;
             } else {
                 @$unmatch[$cat->itemsource]++;
             }
         }
-    	$matchings = new StdClass();
+        $matchings = new StdClass();
         $matchings->match = &$match;
         $matchings->unmatch = &$unmatch;
     } else {
-    	$matchings = new StdClass();
+        $matchings = new StdClass();
         $matchings->match = array();
         $matchings->unmatch = array();
     }
@@ -178,55 +178,55 @@ function categorize_get_matchings($cognitivefactoryid, $userid=null, $groupid=0)
 * displays categorization for a user
 *
 */
-function categorize_display(&$cognitivefactory, $userid, $groupid, $return = false){
+function categorize_display(&$cognitivefactory, $userid, $groupid, $return = false) {
     $responses = categorize_get_responsespercategories($cognitivefactory->id, $userid, $groupid);
     $cols = 0;
 
-	$str = '';
-	$str .= '<center>';
-	$str .= '<table width="80%">';
-	$str .= '<tr valign="top">';
+    $str = '';
+    $str .= '<center>';
+    $str .= '<table width="80%">';
+    $str .= '<tr valign="top">';
 
-    foreach(array_keys($responses) as $acategoryname){
-        if ($cols && $cols % $cognitivefactory->numcolumns == 0){
+    foreach (array_keys($responses) as $acategoryname) {
+        if ($cols && $cols % $cognitivefactory->numcolumns == 0) {
             $str .= '</tr><tr valign="top">';
         }
 
-		$str .= '<td>';
-		$str .= '<table width="90%">';
-		$str .= '<tr>';
-		$str .= '<th colspan="2">';
-		$str .= format_string($acategoryname);
-		$str .= '</th>';
-		$str .= '</tr>';
-    	$index = 1;
-    	if ($responses[$acategoryname]){
-        	foreach($responses[$acategoryname] as $aresponse){
-				$str .= '<tr>';
-				$str .= '<th>';
-				$str .= $index;
-				$str .= '</th>';
-				$str .= '<td>';
-				$str .= format_string($aresponse->response);
-				$str .= '</td>';
-				$str .= '</tr>';
-            	$index++;
+        $str .= '<td>';
+        $str .= '<table width="90%">';
+        $str .= '<tr>';
+        $str .= '<th colspan="2">';
+        $str .= format_string($acategoryname);
+        $str .= '</th>';
+        $str .= '</tr>';
+        $index = 1;
+        if ($responses[$acategoryname]) {
+            foreach ($responses[$acategoryname] as $aresponse) {
+                $str .= '<tr>';
+                $str .= '<th>';
+                $str .= $index;
+                $str .= '</th>';
+                $str .= '<td>';
+                $str .= format_string($aresponse->response);
+                $str .= '</td>';
+                $str .= '</tr>';
+                $index++;
             }
         } else {
-			$str .= '<tr>';
-			$str .= '<td colspan="2">';
-			$str .= get_string('nothinghere', 'cognitiveoperator_categorize');
-			$str .= '</td>';
-			$str .= '</tr>';
+            $str .= '<tr>';
+            $str .= '<td colspan="2">';
+            $str .= get_string('nothinghere', 'cognitiveoperator_categorize');
+            $str .= '</td>';
+            $str .= '</tr>';
         }
-		$str .= '</table>';
-		$str .= '</td>';
+        $str .= '</table>';
+        $str .= '</td>';
         $cols++;
     }
-	$str .= '</tr>';
-	$str .= '</table>';
-	$str .= '</center>';
-	
-	if ($return) return $str;
-	echo $str;
+    $str .= '</tr>';
+    $str .= '</table>';
+    $str .= '</center>';
+    
+    if ($return) return $str;
+    echo $str;
 }

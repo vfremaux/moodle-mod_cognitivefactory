@@ -13,13 +13,13 @@ if (!defined('MOODLE_INTERNAL')) die("This script canot be used this way.");
 
 $currentoperator = new BrainstormOperator($cognitivefactory->id, $page);
 
-if (!isset($currentoperator->configdata->maxlevels)){
+if (!isset($currentoperator->configdata->maxlevels)) {
     $currentoperator->configdata->maxlevels = 0;
 }
-if (!isset($currentoperator->configdata->maxarity)){
+if (!isset($currentoperator->configdata->maxarity)) {
     $currentoperator->configdata->maxarity = 0;
 }
-if (!isset($currentoperator->configdata->requirement)){
+if (!isset($currentoperator->configdata->requirement)) {
     $currentoperator->configdata->requirement = '';
 }
 
@@ -27,8 +27,8 @@ echo $OUTPUT->heading(get_string("{$page}settings", 'cognitiveoperator_'.$page))
 
 $form = new hierarchize_prepare_form($url, array('oprequirementtype' => $cognitivefactory->oprequirementtype, 'cmid' => $cm->id));
 
-if ($data = $form->get_data()){
-	// Play the add/update controller here
+if ($data = $form->get_data()) {
+    // Play the add/update controller here
     cognitivefactory_save_operatorconfig($cognitivefactory->id, $data);
 }
 

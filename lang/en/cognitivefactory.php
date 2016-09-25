@@ -81,6 +81,7 @@ $string['notresponded'] = 'No response given';
 $string['notsubmitted'] = 'No input till now';
 $string['numcolumns'] = 'Columns in display';
 $string['numinputs'] = 'Inputs per participant';
+$string['nostudents'] = 'No students';
 $string['numresponsesinform'] = 'Input fields in collect form';
 $string['opdatainallgroups'] = 'Organisation records (all groups)';
 $string['opdatainyourgroup'] = 'Orrganisation records (current group)';

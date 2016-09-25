@@ -9,7 +9,7 @@
 include_once ($CFG->dirroot."/mod/cognitivefactory/operators/{$page}/locallib.php");
 include_once("$CFG->dirroot/mod/cognitivefactory/operators/operator.class.php");
 
-if (!isset($current_operator)){
+if (!isset($current_operator)) {
     $current_operator = new BrainstormOperator($cognitivefactory->id, $page);
 }
 
@@ -33,17 +33,17 @@ if (isset($current_operator->configdata->requirement))
 <input type="hidden" name="what" value="maketree" />
 <table width="80%" cellspacing="5" class="cognitiveoperator">
 <?php
-if ($tree){
+if ($tree) {
     $i = 0;
     $indent = 25;
     $level = 1;
     $subscount = 0;
-    foreach($tree as $child){
+    foreach ($tree as $child) {
         $prefix = $i + 1;
         $up = ($i) ? "<a href=\"view.php?id={$cm->id}&amp;operator={$page}&amp;what=up&amp;item={$child->odid}\"><img src=\"".$OUTPUT->pix_url('t/up').'"></a>' : '&nbsp;' ;
         $down = ($i < count($tree) - 1) ? "<a href=\"view.php?id={$cm->id}&amp;operator={$page}&amp;what=down&amp;item={$child->odid}\"><img src=\"".$OUTPUT->pix_url('t/down').'"></a>' : '&nbsp;' ;
         $left = ($indent > 25) ? "<a href=\"view.php?id={$cm->id}&amp;operator={$page}&amp;what=left&amp;item={$child->odid}\"><img src=\"".$OUTPUT->pix_url('t/left').'"></a>' : '&nbsp;' ;
-        if ((@$current_operator->configdata->maxarity && $subscount >= $current_operator->configdata->maxarity) || (@$current_operator->configdata->maxlevels && $level > $current_operator->configdata->maxlevels)){
+        if ((@$current_operator->configdata->maxarity && $subscount >= $current_operator->configdata->maxarity) || (@$current_operator->configdata->maxlevels && $level > $current_operator->configdata->maxlevels)) {
             $right = '';
         } else {
             $right = ($i) ? "<a href=\"view.php?id={$cm->id}&amp;operator={$page}&amp;what=right&amp;item={$child->odid}\"><img src=\"".$OUTPUT->pix_url('t/right').'"></a>' : '&nbsp;' ;

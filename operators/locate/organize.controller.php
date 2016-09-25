@@ -11,15 +11,15 @@ include_once("$CFG->dirroot/mod/cognitivefactory/operators/operator.class.php");
 if (!defined('MOODLE_INTERNAL')) die("You cannot use this script this way.");
 
 /********************************** Saves locations ********************************/
-if ($action == 'savelocations'){
+if ($action == 'savelocations') {
     // first delete all old location data - the fastest way to do it
-    if (!$DB->delete_records('cognitivefactory_opdata', array('cognitivefactoryid' => $cognitivefactory->id, 'userid' => $USER->id, 'operatorid' => 'locate'))){
-    	// not a real error. othing to delete ?
+    if (!$DB->delete_records('cognitivefactory_opdata', array('cognitivefactoryid' => $cognitivefactory->id, 'userid' => $USER->id, 'operatorid' => 'locate'))) {
+        // not a real error. othing to delete ?
     }
 
     $keys = preg_grep("/^ixquantifier_/", array_keys($_POST));
     $current_operator = new BrainstormOperator($cognitivefactory->id, $page);
-    foreach($keys as $key){        
+    foreach ($keys as $key) {        
         preg_match("/^ixquantifier_(.*)/", $key, $matches);
         $locaterecord = new StdClass;
         $locaterecord->itemsource = $matches[1];
@@ -28,7 +28,7 @@ if ($action == 'savelocations'){
         $locaterecord->userid = $USER->id;
         $locaterecord->groupid = $currentgroup;
         $quantifiers = new StdClass;
-        switch ($current_operator->configdata->quantifiertype){
+        switch ($current_operator->configdata->quantifiertype) {
             case 'integer' :
                 // will floor numbers
                 $quantifiers->x = (int)required_param('ixquantifier_'.$locaterecord->itemsource, PARAM_INT);
@@ -51,7 +51,7 @@ if ($action == 'savelocations'){
         $quantifiers->y = max($quantifiers->y, $current_operator->configdata->yminrange);
         $locaterecord->blobvalue = serialize($quantifiers);
         $locaterecord->timemodified = time();
-        if (!$DB->insert_record('cognitivefactory_opdata', $locaterecord)){
+        if (!$DB->insert_record('cognitivefactory_opdata', $locaterecord)) {
             print_error('errorinsert', 'cognitivefactory', '', get_string('operatordata', 'cognitivefactory'));
         }
     }

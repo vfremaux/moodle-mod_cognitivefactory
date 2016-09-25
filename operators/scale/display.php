@@ -24,17 +24,17 @@ echo $OUTPUT->heading(get_string('otherscales', 'cognitiveoperator_'.$page));
 echo $OUTPUT->box_start();
 
 $otherscalings = scale_get_meanscalings($cognitivefactory->id, 0, $currentgroup, true, $current_operator->configdata);
-if ($otherscalings){
+if ($otherscalings) {
     $absscalebounds = scale_get_scalebounds($cognitivefactory->id, 0, $currentgroup, false, $current_operator->configdata);
 }
 ?>
 <table cellspacing="5" width="80%">
 <?php
-if ($otherscalings && $absscalebounds->range != 0){
+if ($otherscalings && $absscalebounds->range != 0) {
     $i = 0;
     $absoffset = ($absscalebounds->minv < 0) ? abs(($absscalebounds->minv / $absscalebounds->range) * $current_operator->configdata->barwidth) : 0 ;
-    foreach($otherscalings as $other){
-        switch($current_operator->configdata->quantifiertype){
+    foreach ($otherscalings as $other) {
+        switch($current_operator->configdata->quantifiertype) {
             case 'integer':{
                 $relmid = $current_operator->configdata->barwidth * ( ($other->sumintvalue  / $other->countintvalue) / $absscalebounds->range);
                 $relstart = $current_operator->configdata->barwidth * ( $other->minintvalue / $absscalebounds->range);

@@ -36,7 +36,7 @@ define('PHASE_FEEDBACK', '4');
  * @return mixed True if module supports feature, null if doesn't know
  */
 function cognitivefactory_supports($feature) {
-	
+    
     switch($feature) {
         case FEATURE_GROUPS:                  return true;
         case FEATURE_GROUPINGS:               return true;
@@ -62,9 +62,13 @@ function cognitivefactory_supports($feature) {
 * @param object $cognitivefactory
 */
 function cognitivefactory_add_instance($cognitivefactory) {
-	global $DB, $COURSE;
-		
+    global $DB, $COURSE;
+        
     $cognitivefactory->timemodified = time();
+
+    if (empty($cognitivefactory->globalteacherfeedback)) {
+        $cognitivefactory->globalteacherfeedback = '';
+    }
 
     $cognitivefactory->collectrequirementformat = FORMAT_MOODLE;
     if (!$cognitivefactory->numcolumns) $cognitivefactory->numcolumns = 2;
@@ -81,9 +85,9 @@ function cognitivefactory_add_instance($cognitivefactory) {
 * @param object $cognitivefactory
 */
 function cognitivefactory_update_instance($cognitivefactory) {
-	global $DB, $COURSE;
-	
-	
+    global $DB, $COURSE;
+    
+    
     $cognitivefactory->id = $cognitivefactory->instance;
     $cognitivefactory->timemodified = time();
     if (!$cognitivefactory->numcolumns) $cognitivefactory->numcolumns = 2;
@@ -94,10 +98,10 @@ function cognitivefactory_update_instance($cognitivefactory) {
     $cognitivefactory->collectrequirementformat = FORMAT_MOODLE;
     
     // check for some changes that imply some cleaning
-    if ($oldrecord->singlegrade != $cognitivefactory->singlegrade){
+    if ($oldrecord->singlegrade != $cognitivefactory->singlegrade) {
         $participants = get_users_by_capability($context, 'mod/cognitivefactory:gradable', 'id,firstname,lastname', 'lastname');
-        if ($cognitivefactory->singlegrade){ // we are setting up single grades. compile the single grade with dissociated
-            foreach($participants as $participant){
+        if ($cognitivefactory->singlegrade) { // we are setting up single grades. compile the single grade with dissociated
+            foreach ($participants as $participant) {
                 cognitivefactory_convert_to_single($cognitivefactory, $participant->id);
             }
         } else { // we are setting dissociated grading for which we MUST delete grades
@@ -115,8 +119,8 @@ function cognitivefactory_update_instance($cognitivefactory) {
 * @param int $id
 */
 function cognitivefactory_delete_instance($id) {
-	global $DB;
-	
+    global $DB;
+    
     if (! $cognitivefactory = $DB->get_record('cognitivefactory', array('id' => "$id"))) {
         return false;
     }
@@ -177,7 +181,7 @@ function cognitivefactory_user_complete($course, $user, $mod, $cognitivefactory)
 *
 *
 */
-function cognitivefactory_cron(){
+function cognitivefactory_cron() {
     // TODO : may cleanup some old group rubish ??
 }
 
@@ -223,11 +227,11 @@ function cognitivefactory_get_participants($cognitivefactoryid) {
 function cognitivefactory_grades($cmid) {
     global $CFG;
 
-    if (!$module = $DB->get_record('course_modules', array('id' => $cmid))){
+    if (!$module = $DB->get_record('course_modules', array('id' => $cmid))) {
         return NULL;
     }    
 
-    if (!$cognitivefactory = $DB->get_record('cognitivefactory', array('id' => $module->instance))){
+    if (!$cognitivefactory = $DB->get_record('cognitivefactory', array('id' => $module->instance))) {
         return NULL;
     }
 
@@ -238,33 +242,33 @@ function cognitivefactory_grades($cmid) {
     $context = context_module::instance($cmid);
 
     $participants = get_users_by_capability($context, 'mod/cognitivefactory:gradable', 'u.id,lastname,firstname', 'lastname');
-    if ($participants){
-        foreach($participants as $participant){
+    if ($participants) {
+        foreach ($participants as $participant) {
             $gradeset = cognitivefactory_get_gradeset($cognitivefactory->id, $participant->id);
             if (!$gradeset) return null;
-            if ($cognitivefactory->grade > 0 ){ // Grading numerically        
-                if ($cognitivefactory->singlegrade){
+            if ($cognitivefactory->grade > 0 ) { // Grading numerically        
+                if ($cognitivefactory->singlegrade) {
                     $finalgrades[$participant->id] = $gradeset->single;
                 } else {
-                    if ($cognitivefactory->seqaccesscollect && isset($gradeset->participate)){
+                    if ($cognitivefactory->seqaccesscollect && isset($gradeset->participate)) {
                         $total[] = $gradeset->participate;
                         $weights[] = $cognitivefactory->participationweight;
                     }
-                    if ($cognitivefactory->seqaccessprepare && isset($gradeset->prepare)){
+                    if ($cognitivefactory->seqaccessprepare && isset($gradeset->prepare)) {
                         $total[] = $gradeset->prepare;
                         $weights[] = $cognitivefactory->preparingweight;
                     }
-                    if ($cognitivefactory->seqaccessorganize && isset($gradeset->organize)){
+                    if ($cognitivefactory->seqaccessorganize && isset($gradeset->organize)) {
                         $total[] = $gradeset->organize;
                         $weights[] = $cognitivefactory->organizeweight;
                     }
-                    if ($cognitivefactory->seqaccessfeedback && isset($gradeset->feedback)){
+                    if ($cognitivefactory->seqaccessfeedback && isset($gradeset->feedback)) {
                         $total[] = $gradeset->feedback;
                         $weights[] = $cognitivefactory->feedbackweight;
                     }
                     $totalweights = array_sum($weights);
                     $totalgrade = 0;
-                    for($i = 0 ; $i < count(@$total) ; $i++){
+                    for ($i = 0 ; $i < count(@$total) ; $i++) {
                         $totalgrade += $total[$i] * $weights[$i];
                     }
                     $totalgrade = ($totalweights != 0) ? round($totalgrade / $totalweights) : 0 ;
@@ -280,28 +284,28 @@ function cognitivefactory_grades($cmid) {
                 if ($scale = $DB->get_record('scale', array('id' => $scaleid))) {
                     $scalegrades = make_menu_from_list($scale->scale);
                 }        
-                if ($cognitivefactory->singlegrade){
+                if ($cognitivefactory->singlegrade) {
                     $finalgrades[$participant->id] = $scalegrades($gradeset->single);
                 } else {
-                    if ($cognitivefactory->setaccesscollect){
+                    if ($cognitivefactory->setaccesscollect) {
                         $total[] = $scalegrades($gradeset->participate);
                         $weights[] = $cognitivefactory->participationweight;
                     }
-                    if ($cognitivefactory->setaccessprepare){
+                    if ($cognitivefactory->setaccessprepare) {
                         $total[] = $scalegrades($gradeset->prepare);
                         $weights[] = $cognitivefactory->preparingweight;
                     }
-                    if ($cognitivefactory->setaccessorganize){
+                    if ($cognitivefactory->setaccessorganize) {
                         $total[] = $scalegrades($gradeset->organize);
                         $weights[] = $cognitivefactory->organizeweight;
                     }
-                    if ($cognitivefactory->setaccessfeedback){
+                    if ($cognitivefactory->setaccessfeedback) {
                         $total[] = $scalegrades($gradeset->feedback);
                         $weights[] = $cognitivefactory->feedbackweight;
                     }
                     $totalweights = array_sum($weights);
                     $totalgrade = 0;
-                    for($i = 0 ; $i < count(@$total) ; $i++){
+                    for ($i = 0 ; $i < count(@$total) ; $i++) {
                         $totalgrade += $total[$i] * $weights[$i];
                     }
                     $totalgrade = ($totalweights != 0) ? round($totalgrade / $totalweights) : 0 ;
@@ -327,8 +331,8 @@ function cognitivefactory_grades($cmid) {
  * @todo Finish documenting this function
  **/
 function cognitivefactory_scale_used($cmid, $scaleid) {
-	global $DB;
-	
+    global $DB;
+    
     $return = false;
 
     // note : scales are assigned using negative index in the grade field of cognitivefactoryer (see mod/assignement/lib.php) 

@@ -2,7 +2,7 @@
     margin-height : 10px;
     color : #D00000 ;
     border : 1px solid #FF0000;
-	border-radius:8px;
+    border-radius:8px;
     text-align : center;
     padding:15px;
     width:90%;
@@ -46,32 +46,32 @@
 }
 
 .cognitivefactory-notification{
-	color : #3D3E3C ;
-	border : 1px solid #919391;
-	border-radius:8px;
-	text-align : center;
-	padding:10px;
-	margin:5px;
-	width:90%;
+    color : #3D3E3C ;
+    border : 1px solid #919391;
+    border-radius:8px;
+    text-align : center;
+    padding:10px;
+    margin:5px;
+    width:90%;
 }
 
 .cognitivefactory-feedback{
-	color : #3D3E3C ;
-	border : 1px solid #8177AC;
-	border-radius:8px;
-	text-align : center;
-	padding:15px;
-	margin:5px;
-	width:90%;
+    color : #3D3E3C ;
+    border : 1px solid #8177AC;
+    border-radius:8px;
+    text-align : center;
+    padding:15px;
+    margin:5px;
+    width:90%;
 }
 
 table.cognitivefactory{
-	font-size:1em !important;
+    font-size:1em !important;
 }
 
 .cognitivefactory-phase {
-	width:60px;
-	display:inline;
+    width:60px;
+    display:inline;
 }
 
 .cognitivefactory-match { background-color : #54DE57 }

@@ -53,8 +53,8 @@ h3 {
 }
 
 h4 {
-	display:inline-block;
-	width:100%;
+    display:inline-block;
+    width:100%;
     color:#B5B5B5;
     font-family: Arial, Helvetica, Tahoma, serif;
     font-size:20px;
@@ -215,7 +215,7 @@ li img {
 
 .line {
     margin: 0;
-	padding: 1px;
+    padding: 1px;
     background: url("../img/border-dotted.gif") repeat-x top;
 }
 
@@ -226,7 +226,7 @@ li img {
     display:block;
     height:35px;
     width:100%;
-	margin-bottom:20px;
+    margin-bottom:20px;
 }
 
 a.navigation {
@@ -276,67 +276,67 @@ a.view-source {
 }
 
 .logo_grid{
-	background:transparent url("../img/logo_grid.gif") no-repeat;
+    background:transparent url("../img/logo_grid.gif") no-repeat;
 }
 .logo_treegrid{
-	background:transparent url("../img/logo_treegrid.gif") no-repeat;
+    background:transparent url("../img/logo_treegrid.gif") no-repeat;
 }
 .logo_tree{
-	background:transparent url("../img/logo_tree.gif") no-repeat;
+    background:transparent url("../img/logo_tree.gif") no-repeat;
 }
 .logo_layout{
-	background:transparent url("../img/logo_layout.gif") no-repeat;
+    background:transparent url("../img/logo_layout.gif") no-repeat;
 }
 .logo_menu{
-	background:transparent url("../img/logo_menu.gif") no-repeat;
+    background:transparent url("../img/logo_menu.gif") no-repeat;
 }
 .logo_toolbar{
-	background:transparent url("../img/logo_toolbar.gif") no-repeat;
+    background:transparent url("../img/logo_toolbar.gif") no-repeat;
 }
 .logo_windows{
-	background:transparent url("../img/logo_windows.gif") no-repeat;
+    background:transparent url("../img/logo_windows.gif") no-repeat;
 }
 .logo_calendar{
-	background:transparent url("../img/logo_calendar.gif") no-repeat;
+    background:transparent url("../img/logo_calendar.gif") no-repeat;
 }
 .logo_slider{
-	background:transparent url("../img/logo_slider.gif") no-repeat;
+    background:transparent url("../img/logo_slider.gif") no-repeat;
 }
 .logo_scheduler{
-	background:transparent url("../img/logo_scheduler.gif") no-repeat;
+    background:transparent url("../img/logo_scheduler.gif") no-repeat;
 }
 .logo_colorpicker{
-	background:transparent url("../img/logo_colorpicker.gif") no-repeat;
+    background:transparent url("../img/logo_colorpicker.gif") no-repeat;
 }
 .logo_combo{
-	background:transparent url("../img/logo_combo.gif") no-repeat;
+    background:transparent url("../img/logo_combo.gif") no-repeat;
 }
 .logo_tabbar{
-	background:transparent url("../img/logo_tabbar.gif") no-repeat;
+    background:transparent url("../img/logo_tabbar.gif") no-repeat;
 }
 .logo_accordion{
-	background:transparent url("../img/logo_accordion.gif") no-repeat;
+    background:transparent url("../img/logo_accordion.gif") no-repeat;
 }
 .logo_folders{
-	background:transparent url("../img/logo_folders.gif") no-repeat;
+    background:transparent url("../img/logo_folders.gif") no-repeat;
 }
 .logo_editor{
-	background:transparent url("../img/logo_editor.gif") no-repeat;
+    background:transparent url("../img/logo_editor.gif") no-repeat;
 }
 .logo_ajax{
-	background:transparent url("../img/logo_ajax.gif") no-repeat;
+    background:transparent url("../img/logo_ajax.gif") no-repeat;
 }
 .logo_gantt{
-	background:transparent url("../img/logo_gantt.gif") no-repeat;
+    background:transparent url("../img/logo_gantt.gif") no-repeat;
 }
 .logo_chart{
-	background:transparent url("../img/logo_chart.gif") no-repeat;
+    background:transparent url("../img/logo_chart.gif") no-repeat;
 }
 .logo_dataview{
-	background:transparent url("../img/logo_dataview.gif") no-repeat;
+    background:transparent url("../img/logo_dataview.gif") no-repeat;
 }
 .logo_form{
-	background:transparent url("../img/logo_form.gif") no-repeat;
+    background:transparent url("../img/logo_form.gif") no-repeat;
 }
 
 /* Topics */
@@ -441,10 +441,10 @@ ul.list {
 }
 
 .hl-identifier a{
-    	    font-family: "Courier New";
-	    font-size: 11px;
-	    color: Blue;
-	    text-decoration: underline;
+            font-family: "Courier New";
+        font-size: 11px;
+        color: Blue;
+        text-decoration: underline;
 }
 
 .hl-builtin {

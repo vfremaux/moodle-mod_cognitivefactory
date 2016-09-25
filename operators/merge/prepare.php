@@ -14,13 +14,13 @@ if (!defined('MOODLE_INTERNAL')) die("This script canot be used this way.");
 $responses = cognitivefactory_get_responses($cognitivefactory->id, 0, 0);
 $currentoperator = new BrainstormOperator($cognitivefactory->id, $page);
 
-if (!isset($currentoperator->configdata->maxideasleft)){
+if (!isset($currentoperator->configdata->maxideasleft)) {
     $currentoperator->configdata->maxideasleft = count($responses);
 }
-if (!isset($currentoperator->configdata->requirement)){
+if (!isset($currentoperator->configdata->requirement)) {
     $currentoperator->configdata->requirement = '';
 }
-if (!isset($currentoperator->configdata->allowreducesource)){
+if (!isset($currentoperator->configdata->allowreducesource)) {
     $currentoperator->configdata->allowreducesource = 0;
 }
 
@@ -31,8 +31,8 @@ echo $OUTPUT->heading(get_string("{$page}settings", 'cognitiveoperator_'.$page))
 
 $form = new merge_prepare_form($url, array('cmid' => $cm->id, 'oprequirementtype' => $cognitivefactory->oprequirementtype, 'maxresponses' => count($responses)));
 
-if ($data = $form->get_data()){
-	// Play the update params controller here
+if ($data = $form->get_data()) {
+    // Play the update params controller here
     cognitivefactory_save_operatorconfig($cognitivefactory->id, $data);
 }
 

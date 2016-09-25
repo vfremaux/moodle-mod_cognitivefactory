@@ -14,7 +14,7 @@ echo $OUTPUT->heading("<img src=\"".$OUTPUT->pix_url('enabled_small', 'cognitive
 $responses = cognitivefactory_get_responses($cognitivefactory->id, 0, $currentgroup);
 $operator = new BrainstormOperator($cognitivefactory->id, $page);
 
-if (!isset($operator->configdata->xminrange)){
+if (!isset($operator->configdata->xminrange)) {
     echo '<center>';
     echo $OUTPUT->box(get_string('notconfigured', 'cognitiveoperator_'.$page));
     echo '</center>';
@@ -53,12 +53,12 @@ echo $OUTPUT->box($intro);
         </th>
     </tr>
 <?php
-if (count($responses)){
-    foreach($responses as $response){
+if (count($responses)) {
+    foreach ($responses as $response) {
         $locationdata = @unserialize($responses_locations[$response->id]->blobvalue);
-        if (!$locationdata){
-        	$locationdata = new StdClass();
-            switch (@$operator->configdata->quantifiertype){
+        if (!$locationdata) {
+            $locationdata = new StdClass();
+            switch (@$operator->configdata->quantifiertype) {
                 case 'integer' :
                     $locationdata->x = '0';
                     $locationdata->y = '0';
@@ -86,15 +86,15 @@ if (count($responses)){
             <?php locate_build_slider("yquantifier_{$response->id}", 150, $operator->configdata->yminrange, $operator->configdata->ymaxrange, $locationdata->x, 1); ?>
         </td>
 <?php
-        if (!@$current_operator->configdata->blindness){
+        if (!@$current_operator->configdata->blindness) {
             $matchgroup = (!$groupmode) ? 0 : $currentgroup ;
             // $means = locate_get_means($cognitivefactory->id, $USER->id, $matchgroup);
-            if (@$current_operator->configdata->neighbourhood > 0){
+            if (@$current_operator->configdata->neighbourhood > 0) {
                 $neighbours = locate_get_neighbours($cognitivefactory->id, $locationdata->x, $locationdata->y, $response->id, $operator->configdata, $USER->id, $currentgroup);
 ?>
         <td align="left">
             <?php
-                if ($neighbours){
+                if ($neighbours) {
                     print_string('isinneighbourhood', 'cognitiveoperator_'.$page, $neighbours);
                 }
             ?>

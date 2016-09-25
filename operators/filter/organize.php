@@ -7,39 +7,39 @@
 * @package mod-cognitivefactory 
 * @date 10/01/2009*/
 
-	include_once ($CFG->dirroot."/mod/cognitivefactory/operators/{$page}/locallib.php");
-	include_once("$CFG->dirroot/mod/cognitivefactory/operators/operator.class.php");
+    include_once ($CFG->dirroot."/mod/cognitivefactory/operators/{$page}/locallib.php");
+    include_once("$CFG->dirroot/mod/cognitivefactory/operators/operator.class.php");
 
-	echo '<center>';
+    echo '<center>';
 
-	echo $OUTPUT->heading("<img src=\"".$OUTPUT->pix_url('enabled_small', 'cognitiveoperator_'.$page)."\" align=\"left\" width=\"40\" /> " . get_string("organizing{$page}", 'cognitiveoperator_'.$page));
+    echo $OUTPUT->heading("<img src=\"".$OUTPUT->pix_url('enabled_small', 'cognitiveoperator_'.$page)."\" align=\"left\" width=\"40\" /> " . get_string("organizing{$page}", 'cognitiveoperator_'.$page));
 
-	$responses = cognitivefactory_get_responses($cognitivefactory->id, 0, 0);
+    $responses = cognitivefactory_get_responses($cognitivefactory->id, 0, 0);
 
-	if (!isset($current_operator)){ // if was not set by a controller
-	    $current_operator = new BrainstormOperator($cognitivefactory->id, $page);
-	}
+    if (!isset($current_operator)) { // if was not set by a controller
+        $current_operator = new BrainstormOperator($cognitivefactory->id, $page);
+    }
 
-	$filterstatus = filter_get_status($cognitivefactory->id);
+    $filterstatus = filter_get_status($cognitivefactory->id);
 
 /// module seems it is not configured
 
-	if (!isset($current_operator->configdata->maxideasleft)){
-	    echo $OUTPUT->box(get_string('notconfigured', 'cognitiveoperator_'.$page));
-	    return;
-	}
+    if (!isset($current_operator->configdata->maxideasleft)) {
+        echo $OUTPUT->box(get_string('notconfigured', 'cognitiveoperator_'.$page));
+        return;
+    }
 
 /// print organizing interface
 
-	$toeliminate = max(0, count($responses) - $current_operator->configdata->maxideasleft);
-	echo $OUTPUT->box(get_string('responses', 'cognitiveoperator_'.$page)." <span id=\"leftcount\">$toeliminate</span>".' '.get_string('responsestoeliminate', 'cognitiveoperator_'.$page));
-	if (isset($current_operator->configdata->requirement)){
-		if (is_array($current_operator->configdata->requirement)){
-		    echo $OUTPUT->box(format_string($current_operator->configdata->requirement['text'], $current_operator->configdata->requirement['format']), 'cognitivefactory-notification');
-		} else {
-		    echo $OUTPUT->box($current_operator->configdata->requirement, 'cognitivefactory-notification');
-		}
-	}
+    $toeliminate = max(0, count($responses) - $current_operator->configdata->maxideasleft);
+    echo $OUTPUT->box(get_string('responses', 'cognitiveoperator_'.$page)." <span id=\"leftcount\">$toeliminate</span>".' '.get_string('responsestoeliminate', 'cognitiveoperator_'.$page));
+    if (isset($current_operator->configdata->requirement)) {
+        if (is_array($current_operator->configdata->requirement)) {
+            echo $OUTPUT->box(format_string($current_operator->configdata->requirement['text'], $current_operator->configdata->requirement['format']), 'cognitivefactory-notification');
+        } else {
+            echo $OUTPUT->box($current_operator->configdata->requirement, 'cognitivefactory-notification');
+        }
+    }
 
 ?>
 <form name="filterform" method="post" action="view.php">
@@ -57,12 +57,12 @@ var candeletemore = <?php echo 0 + @$current_operator->configdata->candeletemore
 
 <table width="80%" cellspacing="5" class="cognitiveoperator">    
 <?php
-	$i = 0;
-	$checks = 0;
-	foreach($responses as $response){
-	    $checked = (@$filterstatus[$response->id]->intvalue || empty($filterstatus)) ? "checked=\"checked\"" : '' ;
-	    if ($checked) $checks++;
-	    $class = (@$filterstatus[$response->id]->intvalue || empty($filterstatus)) ? 'cognitiveoperator-filter-kept' : 'cognitiveoperator-filter-deleted' ;
+    $i = 0;
+    $checks = 0;
+    foreach ($responses as $response) {
+        $checked = (@$filterstatus[$response->id]->intvalue || empty($filterstatus)) ? "checked=\"checked\"" : '' ;
+        if ($checked) $checks++;
+        $class = (@$filterstatus[$response->id]->intvalue || empty($filterstatus)) ? 'cognitiveoperator-filter-kept' : 'cognitiveoperator-filter-deleted' ;
 ?>
     <tr valign="top">
         <td align="right" class="<?php echo $class ?>" id="tdc_<?php echo $i?>">
@@ -84,16 +84,16 @@ $disabled = ($checks > @$operator->configdata->maxideasleft || ($checks < @$oper
             <input type="submit" id="go1" name="go_btn" value="<?php print_string('saveordering', 'cognitiveoperator_'.$page) ?>" <?php echo $disabled ?> />
             &nbsp;<input type="button" name="startproc_btn" value="<?php print_string('startpaircompare', 'cognitiveoperator_'.$page) ?>" onclick="confirmprocedure();" />
             <script language="">
-                function confirmprocedure(){
-                	<?php $confirmmessage = get_string('confirmpaircompare', 'cognitiveoperator_'.$page); ?>
-                    if (confirm("<?php echo $confirmmessage ?>")){
+                function confirmprocedure() {
+                    <?php $confirmmessage = get_string('confirmpaircompare', 'cognitiveoperator_'.$page); ?>
+                    if (confirm("<?php echo $confirmmessage ?>")) {
                         document.forms['filterform'].what.value = 'startpaircompare';
                         document.forms['filterform'].submit();                
                     }
                 }
             </script>
 <?php
-if (!empty($current_operator->configdata->allowreducesource)){
+if (!empty($current_operator->configdata->allowreducesource)) {
 ?>
             &nbsp;<input type="button" id="go2" name="reduce_btn" value="<?php print_string('saveorderingandreduce', 'cognitiveoperator_'.$page) ?>" onclick="document.forms['filterform'].what.value='saveandreduce';document.forms['filterform'].submit();" />
 <?php

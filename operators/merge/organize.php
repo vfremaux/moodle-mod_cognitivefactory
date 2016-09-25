@@ -20,10 +20,10 @@ $assignations = merge_get_assignations($cognitivefactory->id, null, $currentgrou
 /// get currently selected status for non data moving commands
 $current_target = optional_param('to', null, PARAM_INT);
 
-if(isset($nochecks)){
+if (isset($nochecks)) {
     $checks = array();
 }
-if (!isset($checks)){ // might have been setup within the controller
+if (!isset($checks)) { // might have been setup within the controller
     $checks = array_keys(merge_get_dataset_from_query('choose_'));
 }
 
@@ -34,7 +34,7 @@ $strmerged = get_string('mergeddata', 'cognitiveoperator_'.$page);
 
 echo $OUTPUT->heading("<img src=\"".$OUTPUT->pix_url('enabled_small', 'cognitiveoperator_'.$page)."\" align=\"left\" width=\"40\" /> " . get_string("organizing{$page}", 'cognitiveoperator_'.$page));
 
-if (!isset($current_operator->configdata->maxideasleft)){
+if (!isset($current_operator->configdata->maxideasleft)) {
     $current_operator->configdata->maxideasleft = $responsesnum;
     echo $OUTPUT->box_start('generalbox');
     echo $OUTPUT->notification(get_string('filterlimitundefined', 'cognitiveoperator_'.$page));    
@@ -61,11 +61,11 @@ echo $OUTPUT->box_start('center');
 .assignedslot {background-color : #F8F8F8 ; border : 1px solid #404040 }
 </style>
 <script type="text/javascript">
-function choosethis(ix, text){
+function choosethis(ix, text) {
     document.forms['mergeform'].elements['merge_'+ix].value = text;
 }
 
-function setcustom(ix){
+function setcustom(ix) {
     numradio = document.forms['mergeform'].elements['choice_'+ix].length;
     document.forms['mergeform'].elements['choice_'+ix][numradio - 1].checked = true;
 }
@@ -84,7 +84,7 @@ function setcustom(ix){
         <td>
             <table cellspacing="5" class="cognitiveoperator">
 <?php
-foreach($unassignedresponses as $response){
+foreach ($unassignedresponses as $response) {
     $checked = (in_array($response->id, $checks)) ? 'checked="checked"' : '' ;
 ?>
                 <tr valign="middle">
@@ -116,7 +116,7 @@ foreach($unassignedresponses as $response){
                     </th>
                 </tr>
 <?php
-for($i = 0 ; $i < $current_operator->configdata->maxideasleft ; $i++){
+for ($i = 0 ; $i < $current_operator->configdata->maxideasleft ; $i++) {
     $mergedvalue = '';
     $checked = ($i == $current_target) ? 'checked="checked" ' : '' ;
 ?>
@@ -130,8 +130,8 @@ for($i = 0 ; $i < $current_operator->configdata->maxideasleft ; $i++){
                         <table cellspacing="5">
 <?php
     $choosed = false;
-    if (@$assignations[$i]){
-        foreach($assignations[$i] as $response){
+    if (@$assignations[$i]) {
+        foreach ($assignations[$i] as $response) {
             $checked = ($response->choosed) ? 'checked="checked"' : '' ;
             $choosed &= $checked;
             if ($checked && $response->merged) $mergedvalue = $response->merged;
@@ -149,7 +149,7 @@ for($i = 0 ; $i < $current_operator->configdata->maxideasleft ; $i++){
         $response = merge_get_customentries($cognitivefactory->id, $i, null, $currentgroup, false);
         $customchecked = '';
         $mergedvalue = optional_param('merge_'.$i, '', PARAM_TEXT);
-        if ($response){
+        if ($response) {
             $customrecords = array_values($response);
             // watch the subtility of the === operator here.
             $customchecked = ($customrecords[0]->itemdest === '0') ? ' checked="checked" ' : '' ;
@@ -186,7 +186,7 @@ for($i = 0 ; $i < $current_operator->configdata->maxideasleft ; $i++){
         <td colspan="3">
             <input type="submit" id="go1" name="save_btn" value="<?php print_string('savemerges', 'cognitiveoperator_'.$page) ?>" />
 <?php
-if (!empty($current_operator->configdata->allowreducesource)){
+if (!empty($current_operator->configdata->allowreducesource)) {
 ?>
             &nbsp;<input type="button" id="go2" name="reduce_btn" value="<?php print_string('saveandreduce', 'cognitiveoperator_'.$page) ?>" onclick="document.forms['mergeform'].what.value='saveandreduce';document.forms['mergeform'].submit();" />
 <?php

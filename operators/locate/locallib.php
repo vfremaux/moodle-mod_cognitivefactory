@@ -11,7 +11,7 @@
 *
 *
 */
-function locate_get_locations($cognitivefactoryid, $userid=null, $groupid=0, $excludemyself=false){
+function locate_get_locations($cognitivefactoryid, $userid=null, $groupid=0, $excludemyself=false) {
     global $CFG, $USER, $DB;
     
     $accessClause = cognitivefactory_get_accessclauses($userid, $groupid, $excludemyself);
@@ -20,7 +20,7 @@ function locate_get_locations($cognitivefactoryid, $userid=null, $groupid=0, $ex
         operatorid = 'locate'
         $accessClause
     ";
-    if (!$locations = $DB->get_records_select('cognitivefactory_opdata', $select, array($cognitivefactoryid), '', 'itemsource,blobvalue')){
+    if (!$locations = $DB->get_records_select('cognitivefactory_opdata', $select, array($cognitivefactoryid), '', 'itemsource,blobvalue')) {
         $locations = array();
     }
     return $locations;
@@ -30,7 +30,7 @@ function locate_get_locations($cognitivefactoryid, $userid=null, $groupid=0, $ex
 *
 *
 */
-function locate_get_means($cognitivefactoryid, $userid=null, $groupid=0, $excludemyself=false){
+function locate_get_means($cognitivefactoryid, $userid=null, $groupid=0, $excludemyself=false) {
     global $CFG, $DB;
     
     $accessClause = cognitivefactory_get_accessclauses($userid, $groupid, $excludemyself);
@@ -40,7 +40,7 @@ function locate_get_means($cognitivefactoryid, $userid=null, $groupid=0, $exclud
         operatorid = 'locate'
         {$accessClause}
     ";
-    if (!$locations = $DB->get_records_select('cognitivefactory_opdata', $select, array($cognitivefactoryid), '', 'itemsource,blobvalue')){
+    if (!$locations = $DB->get_records_select('cognitivefactory_opdata', $select, array($cognitivefactoryid), '', 'itemsource,blobvalue')) {
         $locations = array();
     }
 
@@ -48,7 +48,7 @@ function locate_get_means($cognitivefactoryid, $userid=null, $groupid=0, $exclud
     $sigmas = array();
     $locationdatas = array();
     /// calculate mean
-    foreach ($locations as $responseid => $locationblob){
+    foreach ($locations as $responseid => $locationblob) {
         $locationdata = unserialize($locationblob->blobvalue);
         $locationdatas[$responseid][] = $locationdata;
         $means[$responseid]['x'] = @$means[$responseid]['x'] + $locationdata->x;
@@ -56,8 +56,8 @@ function locate_get_means($cognitivefactoryid, $userid=null, $groupid=0, $exclud
     }
 
     /// calculate sigmas square sums
-    foreach (array_keys($locationdatas) as $responseid){
-        foreach($locationdatas[$responseid] as $asample){
+    foreach (array_keys($locationdatas) as $responseid) {
+        foreach ($locationdatas[$responseid] as $asample) {
             $deltax = $asample->x - $means[$responseid]['x'];
             $deltay = $asample->y - $means[$responseid]['y'];
             $sigmasum[$responseid]['x'] = @$sigmasum[$responseid]['x'] + $deltax * $deltax;
@@ -67,7 +67,7 @@ function locate_get_means($cognitivefactoryid, $userid=null, $groupid=0, $exclud
     }
 
     /// calculate sigmas
-    foreach (array_keys($locationdatas) as $responseid){
+    foreach (array_keys($locationdatas) as $responseid) {
         $sigmas[$responseid]['x'] = sqrt($sigmasum[$responseid]['x'] / $sigmasum[$responseid]['n']);
         $sigmas[$responseid]['y'] = sqrt($sigmasum[$responseid]['y'] / $sigmasum[$responseid]['n']);
     }
@@ -79,7 +79,7 @@ function locate_get_means($cognitivefactoryid, $userid=null, $groupid=0, $exclud
 *
 *
 */
-function locate_get_neighbours($cognitivefactoryid, $x, $y, $responseid, $config, $userid=null, $groupid=0){
+function locate_get_neighbours($cognitivefactoryid, $x, $y, $responseid, $config, $userid=null, $groupid=0) {
     global $CFG, $DB;
 
     $accessClause = cognitivefactory_get_accessclauses($userid, $groupid, true);
@@ -90,14 +90,14 @@ function locate_get_neighbours($cognitivefactoryid, $x, $y, $responseid, $config
         itemsource = ?
         {$accessClause}
     ";
-    if (!$locations = $DB->get_records_select('cognitivefactory_opdata', $select, array($cognitivefactoryid, $responseid), '', 'itemsource, blobvalue')){
+    if (!$locations = $DB->get_records_select('cognitivefactory_opdata', $select, array($cognitivefactoryid, $responseid), '', 'itemsource, blobvalue')) {
         $locations = array();
     }
     /// count neighbours
     $neighbours = 0;
-    foreach ($locations as $responseid => $locationblob){
+    foreach ($locations as $responseid => $locationblob) {
         $locationdata = unserialize($locationblob->blobvalue);
-        if (($locationdata->x - $x) * ($locationdata->x - $x) + ($locationdata->y - $y) * ($locationdata->y - $y) < $config->neighbourhood * $config->neighbourhood){
+        if (($locationdata->x - $x) * ($locationdata->x - $x) + ($locationdata->y - $y) * ($locationdata->y - $y) < $config->neighbourhood * $config->neighbourhood) {
             $neighbours++;
         }
     }
@@ -110,7 +110,7 @@ function locate_get_neighbours($cognitivefactoryid, $x, $y, $responseid, $config
 * @param int $userid
 * @param int $groupid
 */
-function locate_get_bounds($cognitivefactoryid, $userid=null, $groupid=0, $excludemyself=false){
+function locate_get_bounds($cognitivefactoryid, $userid=null, $groupid=0, $excludemyself=false) {
     global $CFG, $DB;
     
     $operator = new BrainstormOperator($cognitivefactoryid, 'locate');
@@ -121,14 +121,14 @@ function locate_get_bounds($cognitivefactoryid, $userid=null, $groupid=0, $exclu
         operatorid = 'locate'
         {$accessClause}
     ";
-    if (!$locations = $DB->get_records_select('cognitivefactory_opdata', $select, array($cognitivefactoryid), '', 'itemsource,blobvalue')){
+    if (!$locations = $DB->get_records_select('cognitivefactory_opdata', $select, array($cognitivefactoryid), '', 'itemsource,blobvalue')) {
         $locations = array();
     }
 
     $maxs = array();
     $mins = array();
     /// calculate bounds
-    foreach ($locations as $responseid => $locationblob){
+    foreach ($locations as $responseid => $locationblob) {
         $locationdata = unserialize($locationblob->blobvalue);
         // $locationdatas[$responseid][] = $locationdata;
         if (!isset($maxs[$responseid]['x'])) $maxs[$responseid]['x'] = $operator->configdata->xminrange;
@@ -140,21 +140,21 @@ function locate_get_bounds($cognitivefactoryid, $userid=null, $groupid=0, $exclu
         $maxs[$responseid]['y'] = ($maxs[$responseid]['y'] - $locationdata->y < 0) ? $locationdata->y : $maxs[$responseid]['y'] ;
         $mins[$responseid]['y'] = ($mins[$responseid]['y'] - $locationdata->y < 0) ? $locationdata->y : $mins[$responseid]['y'] ;
     }
-    foreach(array_keys($maxs) as $responseid){
-        if ($maxs[$responseid]['x'] == $operator->configdata->xminrange){
+    foreach (array_keys($maxs) as $responseid) {
+        if ($maxs[$responseid]['x'] == $operator->configdata->xminrange) {
             $maxs[$responseid] = null;
             continue;
         }
-        if ($maxs[$responseid] == $operator->configdata->yminrange){
+        if ($maxs[$responseid] == $operator->configdata->yminrange) {
             $maxs[$responseid] = null;
         }
     }
-    foreach(array_keys($mins) as $responseid){
-        if ($mins[$responseid]['x'] == $operator->configdata->xmaxrange){
+    foreach (array_keys($mins) as $responseid) {
+        if ($mins[$responseid]['x'] == $operator->configdata->xmaxrange) {
             $mins[$responseid] = null;
             continue;
         }
-        if ($mins[$responseid]['y'] == $operator->configdata->ymaxrange){
+        if ($mins[$responseid]['y'] == $operator->configdata->ymaxrange) {
             $mins[$responseid] = null;
         }
     }
@@ -169,8 +169,8 @@ function locate_get_bounds($cognitivefactoryid, $userid=null, $groupid=0, $exclu
 *
 *
 */
-function locate_display(&$cognitivefactory, $userid, $groupid, $return = false){
-	global $OUTPUT;
+function locate_display(&$cognitivefactory, $userid, $groupid, $return = false) {
+    global $OUTPUT;
 
     $responses = cognitivefactory_get_responses($cognitivefactory->id, 0, $groupid, false);
     $responses_locations = locate_get_locations($cognitivefactory->id, $userid, $groupid);
@@ -178,8 +178,8 @@ function locate_display(&$cognitivefactory, $userid, $groupid, $return = false){
     $current_operator->configdata->width = $w = 200;
     $current_operator->configdata->height = $h = 200;
 
-	$str = '<center>';
-    if (!isset($current_operator->configdata->xminrange)){
+    $str = '<center>';
+    if (!isset($current_operator->configdata->xminrange)) {
         $str .= $OUTPUT->box(get_string('notconfigured', 'cognitiveoperator_locate'));
     } else {
         $str .= '<div style="width:'.$w.'px;height:'.$h.'px;left:0px;position:relative;text-align:left">';
@@ -187,14 +187,14 @@ function locate_display(&$cognitivefactory, $userid, $groupid, $return = false){
         $ptop = g(0, $current_operator->configdata->xmaxrange, $current_operator->configdata);
         $str .= '<div class="cognitiveoperator-locate-axis" style="position:absolute;left:'.$pleft->x.'px;top:'.$pleft->y.'px;width:'.$w.'px;height:1px;"></div>';
         $str .= '<div class="cognitiveoperator-locate-axis" style="position:absolute;left:'.$ptop->x.'px; top:'.$ptop->y.'px; width:1px;height:'.$h.'px;"></div>';
-        if ($responses_locations){
+        if ($responses_locations) {
             $i = 0;
-            foreach($responses_locations as $located){
+            foreach ($responses_locations as $located) {
                 $spot = 'spot';
                 $abs = unserialize($located->blobvalue);
                 $p = g($abs->x, $abs->y, $current_operator->configdata,0,-15);
                 $str .= '<div class="'.$spot.'" style="position:absolute; left:'.$p->x.'px; top: '.$p->y.'px; width: 15px; height: 15px;" title="('.$abs->x.','.$abs->y.' '.$responses[$located->itemsource]->response.'"></div>';
-                if (@$current_operator->configdata->showlabels){
+                if (@$current_operator->configdata->showlabels) {
                     $p->x += 20 + rand(-20,20);
                     $p->y += 20 + rand(-20,20);
                     $str .= '<div style="position:absolute; left: '.$p->x.'px; top: '.$p->y.'px;" >'.$responses[$located->itemsource]->response.'</div>';
@@ -203,14 +203,14 @@ function locate_display(&$cognitivefactory, $userid, $groupid, $return = false){
             }    
         }
     }
-	$str .= '</div>';
-	$str .= '</center>';
-	
-	if ($return) return $str;
-	echo $str;
+    $str .= '</div>';
+    $str .= '</center>';
+    
+    if ($return) return $str;
+    echo $str;
 }
 
-function g($absx, $absy, $configdata, $xshift = 0, $yshift = 0){
+function g($absx, $absy, $configdata, $xshift = 0, $yshift = 0) {
     $xabsoffset = 0;
     $yabsoffset = 0;
     $xfactor = ($configdata->width / ($configdata->xmaxrange - $configdata->xminrange));
@@ -221,33 +221,33 @@ function g($absx, $absy, $configdata, $xshift = 0, $yshift = 0){
     return $p;
 }
 
-function locate_requires(){
-	global $PAGE;
-	
-	$PAGE->requires->js('/mod/cognitivefactory/js/dhtmlxSlider/codebase/dhtmlxcommon.js', true);
-	$PAGE->requires->js('/mod/cognitivefactory/js/dhtmlxSlider/codebase/dhtmlxslider.js', true);
-	$PAGE->requires->css('/mod/cognitivefactory/js/dhtmlxSlider/codebase/dhtmlxslider.css', true);
+function locate_requires() {
+    global $PAGE;
+    
+    $PAGE->requires->js('/mod/cognitivefactory/js/dhtmlxSlider/codebase/dhtmlxcommon.js', true);
+    $PAGE->requires->js('/mod/cognitivefactory/js/dhtmlxSlider/codebase/dhtmlxslider.js', true);
+    $PAGE->requires->css('/mod/cognitivefactory/js/dhtmlxSlider/codebase/dhtmlxslider.css', true);
 }
 
-function locate_build_slider($name, $size = 120, $min = 0, $max = 100, $value = 0, $step = 1, $return = false){
-	static $magic = 0;
-	
-	$str = '';
-	$str .= '<div id="'.$name.'" style="display:inline"></div>';
-	$str .= '<script type="text/javascript">
-		var sld_'.$magic.' = new dhtmlxSlider('.$name.', '.$size.', \'ball\', false, '.$min.', '.$max.', '.(0 + $value).', '.$step.');
-		sld_'.$magic.'.init();
-		sld_'.$magic.'.linkTo(\'i\'+\''.$name.'\');
-		sld_'.$magic.'.attachEvent("onChange",function(newValue,sliderObj){
+function locate_build_slider($name, $size = 120, $min = 0, $max = 100, $value = 0, $step = 1, $return = false) {
+    static $magic = 0;
+    
+    $str = '';
+    $str .= '<div id="'.$name.'" style="display:inline"></div>';
+    $str .= '<script type="text/javascript">
+        var sld_'.$magic.' = new dhtmlxSlider('.$name.', '.$size.', \'ball\', false, '.$min.', '.$max.', '.(0 + $value).', '.$step.');
+        sld_'.$magic.'.init();
+        sld_'.$magic.'.linkTo(\'i\'+\''.$name.'\');
+        sld_'.$magic.'.attachEvent("onChange",function(newValue,sliderObj) {
               color = (255 * newValue) / '.($max - $min).';
               color2 = (color <= 128) ? 128 + color : 255;
               color1 = (color > 128) ? 255 + 128 - color : 255;
               $(\'#i'.$name.'\').css(\'background-color\', \'rgb(\'+color1+\',\'+color2+\',128)\');
           })  
-  	</script>';
+      </script>';
 
-	$magic++;
+    $magic++;
 
-	if ($return) return $str;
-	echo $str;
+    if ($return) return $str;
+    echo $str;
 }

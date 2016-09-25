@@ -25,21 +25,21 @@ echo $OUTPUT->heading(get_string('categories', 'cognitiveoperator_categorize'));
 
 $form = new categorize_prepare_form($url, array('oprequirementtype' => $cognitivefactory->oprequirementtype, 'maxresponses' => count($responses), 'cmid' => $cm->id));
 
-if ($data = $form->get_data()){
-	// Play the add/update controller here
+if ($data = $form->get_data()) {
+    // Play the add/update controller here
     cognitivefactory_save_operatorconfig($cognitivefactory->id, $data);
 }
 
 echo "<img src=\"".$OUTPUT->pix_url('enabled', 'cognitiveoperator_'.$page).'" align="left" />';
 
-if (count($categories)){
-	$table = new html_table();
+if (count($categories)) {
+    $table = new html_table();
     $table->head = array("<b>$strcategories</b>", "<b>$strcommands</b>");
     $table->width = '80%';
     $table->align = array('left', 'left');
     $table->size = array('70%', '20%');
-    foreach($categories as $category){
-        if (($USER->id == $category->userid) || !$cognitivefactory->privacy){
+    foreach ($categories as $category) {
+        if (($USER->id == $category->userid) || !$cognitivefactory->privacy) {
             $action = "<a href=\"view.php?id={$cm->id}&amp;operator=categorize&amp;categoryid={$category->id}&amp;what=update\"><img src=\"".$OUTPUT->pix_url('t/edit').'" /></a>';
             $action .= "&nbsp;<a href=\"view.php?id={$cm->id}&amp;operator=categorize&amp;categoryid={$category->id}&amp;what=delete\"><img src=\"".$OUTPUT->pix_url('t/delete').'" /></a>';
         } else {
@@ -70,16 +70,16 @@ if (count($categories)){
 </form>
 <?php    
 
-if (!isset($currentoperator->configdata->blindness)){
+if (!isset($currentoperator->configdata->blindness)) {
     $currentoperator->configdata->blindness = $cognitivefactory->privacy;
 }
-if (!isset($currentoperator->configdata->allowmultiple)){
+if (!isset($currentoperator->configdata->allowmultiple)) {
     $currentoperator->configdata->allowmultiple = 0;
 }
-if (!isset($currentoperator->configdata->categoriesoncollect)){
+if (!isset($currentoperator->configdata->categoriesoncollect)) {
     $currentoperator->configdata->categoriesoncollect = 0;
 }
-if (!isset($currentoperator->configdata->requirement)){
+if (!isset($currentoperator->configdata->requirement)) {
     $currentoperator->configdata->requirement = '';
 }
 

@@ -8,7 +8,7 @@ function xmldb_cognitivefactory_upgrade($oldversion = 0) {
 
     $result = true;
 
-	// Moodle 2.0 line
-	
+    // Moodle 2.0 line
+    
     return true;
 }

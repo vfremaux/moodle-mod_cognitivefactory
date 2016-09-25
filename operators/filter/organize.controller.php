@@ -9,15 +9,15 @@
 include_once("$CFG->dirroot/mod/cognitivefactory/operators/operator.class.php");
 
 /********************************** Saves a new filter ********************************/
-if ($action == 'savefiltering' || $action == 'saveandreduce'){
+if ($action == 'savefiltering' || $action == 'saveandreduce') {
     // first delete all old ordering data - the fastest way to do it
-    if (!$DB->delete_records('cognitivefactory_opdata', array('cognitivefactoryid' => $cognitivefactory->id, 'userid' => $USER->id, 'operatorid' => 'filter'))){
+    if (!$DB->delete_records('cognitivefactory_opdata', array('cognitivefactoryid' => $cognitivefactory->id, 'userid' => $USER->id, 'operatorid' => 'filter'))) {
         print_error('errordelete', 'cognitivefactory', '', get_string('operatordata', 'cognitivefactory'));
     }
 
     $inserted = array();
     $keys = preg_grep("/^keep_shadow_/", array_keys($_POST));
-    foreach($keys as $key){        
+    foreach ($keys as $key) {        
         if ($_POST[$key] == 0) continue;
         preg_match("/^keep_shadow_(.*)/", $key, $matches);
         $filterrecord = new StdClass();
@@ -29,13 +29,13 @@ if ($action == 'savefiltering' || $action == 'saveandreduce'){
         $filterrecord->groupid = $currentgroup;
         $filterrecord->intvalue = 1;
         $filterrecord->timemodified = time();
-        if (!$DB->insert_record('cognitivefactory_opdata', $filterrecord)){
+        if (!$DB->insert_record('cognitivefactory_opdata', $filterrecord)) {
             print_error('errorinsert', 'cognitivefactory', '', get_string('operatordata', 'cognitivefactory'));
         }
     }
 }
 /********************************** Reduces entries ********************************/
-if ($action == 'saveandreduce'){
+if ($action == 'saveandreduce') {
     // first delete all old ordering data - the fastest way to do it
     $nottodeletelist = implode("','", $inserted);
     $groupClause = ($groupmode && $currentgroup) ? " AND groupid = $currentgroup " : '' ;
@@ -48,7 +48,7 @@ if ($action == 'saveandreduce'){
         itemdest NOT IN ('$nottodeletelist'))
         $groupClause
     ";
-    if (!$DB->delete_records_select('cognitivefactory_opdata', $select)){
+    if (!$DB->delete_records_select('cognitivefactory_opdata', $select)) {
         // print_error('errordelete', 'cognitivefactory', '', get_string('operatordata', 'cognitivefactory'));
     }
 
@@ -58,7 +58,7 @@ if ($action == 'saveandreduce'){
         id NOT IN ('$nottodeletelist')
         $groupClause
     ";
-    if (!$DB->delete_records_select('cognitivefactory_responses', $select)){
+    if (!$DB->delete_records_select('cognitivefactory_responses', $select)) {
         print_error('errordelete', 'cognitivefactory', '', get_string('responses', 'cognitivefactory'));
     }
 
@@ -68,7 +68,7 @@ if ($action == 'saveandreduce'){
         responseid NOT IN ('$nottodeletelist')
         $groupClause
     ";
-    if (!$DB->delete_records_select('cognitivefactory_categorize', $select)){
+    if (!$DB->delete_records_select('cognitivefactory_categorize', $select)) {
         print_error('errordelete', 'cognitivefactory', '', get_string('filterings', 'cognitivefactory'));
     }        
 }
@@ -78,11 +78,11 @@ if ($result == -1) return $result;
 /*********************************** Resuming pair compare procedure ************************/
 // this use case is specific to filter operator as we need producing a valid operator data set for filtering
 // we set as deletable the lower ranked entries
-if ($action == 'resumepaircompare'){
-	echo $OUTPUT->heading(get_string('resumepaircompare', 'cognitiveoperator_'.$page));
+if ($action == 'resumepaircompare') {
+    echo $OUTPUT->heading(get_string('resumepaircompare', 'cognitiveoperator_'.$page));
     $responses = cognitivefactory_get_responses($cognitivefactory->id, 0, $currentgroup, false);
     $current_operator = new BrainstormOperator($cognitivefactory->id, $page);
-    if (@$processedfinished){
+    if (@$processedfinished) {
         echo $OUTPUT->box(get_string('finished', 'cognitiveoperator_filter'));
     }
 
@@ -110,35 +110,35 @@ if ($action == 'resumepaircompare'){
     ";
     $ordered = $DB->get_records_sql($sql, array($cognitivefactory->id));
 
-    if ($ordered){
-    	$table = new html_table();
+    if ($ordered) {
+        $table = new html_table();
         $table->head = array(get_string('response', 'cognitiveoperator_filter'), get_string('rank', 'cognitiveoperator_filter'), get_string('keepit', 'cognitiveoperator_filter'));
         $table->size = array('80%', '10%', '10%');
         $table->align = array('left', 'center', 'center');
         $datatoresponses = array();
         $i = 0;
-        foreach($ordered as $response){
+        foreach ($ordered as $response) {
             $table->data[] = array($response->response, $response->intvalue, '');
             $datatoresponses[$i] = $response->id;
             $i++;
         }
         $tokeep = false;
         $keepodids = null;
-        for ($i = count($ordered) - 1 ; $i >= 0 ; $i--){
+        for ($i = count($ordered) - 1 ; $i >= 0 ; $i--) {
             if (!isset($lastknownrank)) $lastknownrank = $table->data[$i][1];
-            if (!$tokeep){
-                if ($i > $current_operator->configdata->maxideasleft){
-                    if ($table->data[$i][1] != $lastknownrank){
+            if (!$tokeep) {
+                if ($i > $current_operator->configdata->maxideasleft) {
+                    if ($table->data[$i][1] != $lastknownrank) {
                         $lastknownrank = $table->data[$i][1];
                     }
                 } else { // rank changes upper the maxideas number
-                    if ($table->data[$i][1] != $lastknownrank){
+                    if ($table->data[$i][1] != $lastknownrank) {
                         $lastknownrank = $table->data[$i][1];
                         $tokeep = true;
                     }
                 }
             }
-            if ($tokeep){
+            if ($tokeep) {
                 $keepodids[] = $datatoresponses[$i];
                 $table->data[$i][2] = "<img src=\"".$OUTPUT->pix_url('check', 'cognitiveoperator_filter').'">'; 
             }
@@ -157,17 +157,17 @@ if ($action == 'resumepaircompare'){
         $DB->delete_records_select('cognitivefactory_opdata', $select);
 
         /// record back all keep markers
-        if($keepodids){
-        	$orderrecord = new StdClass();
+        if ($keepodids) {
+            $orderrecord = new StdClass();
             $orderrecord->userid = $USER->id;
             $orderrecord->groupid = $currentgroup;
             $orderrecord->operatorid = 'filter';
             $orderrecord->cognitivefactoryid = $cognitivefactory->id;
             $orderrecord->timemodified = time();
             $orderrecord->intvalue = 1;
-            foreach($keepodids as $keepid){
+            foreach ($keepodids as $keepid) {
                 $orderrecord->itemsource = $keepid;        
-                if (!$DB->insert_record('cognitivefactory_opdata', $orderrecord)){
+                if (!$DB->insert_record('cognitivefactory_opdata', $orderrecord)) {
                     print_error('errorinsert', 'cognitivefactory', '', get_string('reorderedrecords', 'cognitiveoperator_filter'));
                 }            
             }

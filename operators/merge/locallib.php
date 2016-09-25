@@ -31,7 +31,7 @@
 * @param boolean $excludemyself
 * @param object $configdata
 */
-function merge_get_unassigned($cognitivefactoryid, $userid=null, $groupid=0, $excludemyself=false, $configdata){
+function merge_get_unassigned($cognitivefactoryid, $userid=null, $groupid=0, $excludemyself=false, $configdata) {
     global $CFG, $DB;
 
     $accessClause = cognitivefactory_get_accessclauses($userid, $groupid, $excludemyself, 'od.');
@@ -51,7 +51,7 @@ function merge_get_unassigned($cognitivefactoryid, $userid=null, $groupid=0, $ex
             {$accessClause}
             AND od.itemsource IS NULL
     ";
-    if (!$records = $DB->get_records_sql($sql)){
+    if (!$records = $DB->get_records_sql($sql)) {
         return array();
     }
     return $records;
@@ -66,7 +66,7 @@ function merge_get_unassigned($cognitivefactoryid, $userid=null, $groupid=0, $ex
 * @param boolean $excludemyself
 * @param object $configdata
 */
-function merge_get_assignations($cognitivefactoryid, $userid=null, $groupid=0, $excludemyself=false, $configdata){
+function merge_get_assignations($cognitivefactoryid, $userid=null, $groupid=0, $excludemyself=false, $configdata) {
     global $CFG, $DB;
 
     $accessClause = cognitivefactory_get_accessclauses($userid, $groupid, $excludemyself, 'od.');
@@ -85,11 +85,11 @@ function merge_get_assignations($cognitivefactoryid, $userid=null, $groupid=0, $
             od.operatorid = 'merge'
             {$accessClause}
     ";
-    if (!$records = $DB->get_records_sql($sql, array($cognitivefactoryid))){
+    if (!$records = $DB->get_records_sql($sql, array($cognitivefactoryid))) {
         return array();
     }
     $assignations = array();
-    foreach($records as $record){
+    foreach ($records as $record) {
         $assignations[$record->slotid][] = $record;
     }
     return $assignations;
@@ -104,7 +104,7 @@ function merge_get_assignations($cognitivefactoryid, $userid=null, $groupid=0, $
 * @param boolean $excludemyself
 * @param object $configdata
 */
-function merge_get_merges($cognitivefactoryid, $userid=null, $groupid=0, $excludemyself=false, $configdata){
+function merge_get_merges($cognitivefactoryid, $userid=null, $groupid=0, $excludemyself=false, $configdata) {
     global $CFG, $DB;
 
     $accessClause = cognitivefactory_get_accessclauses($userid, $groupid, $excludemyself, 'od.');
@@ -126,7 +126,7 @@ function merge_get_merges($cognitivefactoryid, $userid=null, $groupid=0, $exclud
             od.intvalue,
             userid
     ";
-    if (!$merges = $DB->get_records_sql($sql)){
+    if (!$merges = $DB->get_records_sql($sql)) {
         return array();
     }
     return $merges;
@@ -141,7 +141,7 @@ function merge_get_merges($cognitivefactoryid, $userid=null, $groupid=0, $exclud
 * @param int $groupid
 * @param boolean $excludemyself
 */
-function merge_get_customentries($cognitivefactoryid, $slotid, $userid=null, $groupid=0, $excludemyself=false){
+function merge_get_customentries($cognitivefactoryid, $slotid, $userid=null, $groupid=0, $excludemyself=false) {
     global $CFG, $DB;
 
     $accessClause = cognitivefactory_get_accessclauses($userid, $groupid, $excludemyself);
@@ -161,11 +161,11 @@ function merge_get_customentries($cognitivefactoryid, $slotid, $userid=null, $gr
 *
 *
 */
-function merge_get_dataset_from_query($prefix){
+function merge_get_dataset_from_query($prefix) {
     $keys = preg_grep("/^$prefix/", array_keys($_POST));
     $dataset = array();
-    if ($keys){
-        foreach($keys as $key){
+    if ($keys) {
+        foreach ($keys as $key) {
             preg_match("/^$prefix(.*)/", $key, $matches);
             $dataset[$matches[1]] = required_param($key, PARAM_RAW);
         }

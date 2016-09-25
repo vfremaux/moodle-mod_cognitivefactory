@@ -15,16 +15,16 @@ $responses = cognitivefactory_get_responses($cognitivefactory->id, 0, 0);
 $currentoperator = new BrainstormOperator($cognitivefactory->id, $page);
 $usehtmleditor = can_use_html_editor();
 
-if (!isset($currentoperator->configdata->maxideasleft)){
+if (!isset($currentoperator->configdata->maxideasleft)) {
     $currentoperator->configdata->maxideasleft = count($responses);
 }
-if (!isset($currentoperator->configdata->requirement)){
+if (!isset($currentoperator->configdata->requirement)) {
     $currentoperator->configdata->requirement = '';
 }
-if (!isset($currentoperator->configdata->allowreducesource)){
+if (!isset($currentoperator->configdata->allowreducesource)) {
     $currentoperator->configdata->allowreducesource = 0;
 }
-if (!isset($currentoperator->configdata->candeletemore)){
+if (!isset($currentoperator->configdata->candeletemore)) {
     $currentoperator->configdata->candeletemore = 0;
 }
 
@@ -32,8 +32,8 @@ echo $OUTPUT->heading(get_string("{$page}settings", 'cognitiveoperator_'.$page))
 
 $form = new filter_prepare_form($url, array('oprequirementtype' => $cognitivefactory->oprequirementtype, 'cmid' => $cm->id, 'maxresponses' => count($responses)));
 
-if ($data = $form->get_data()){
-	// Play the add/update controller here
+if ($data = $form->get_data()) {
+    // Play the add/update controller here
     cognitivefactory_save_operatorconfig($cognitivefactory->id, $data);
 }
 

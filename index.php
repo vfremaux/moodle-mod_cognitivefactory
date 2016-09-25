@@ -1,7 +1,7 @@
-<?PHP  // $Id: index.php,v 1.3 2011-05-15 11:17:02 vf Exp $
+<?php
 
-require_once("../../config.php");
-require_once("lib.php");
+require('../../config.php');
+require_once($CFG->dirroot.'/mod/cognitivefactory/lib.php');
 
 $id = required_param('id', PARAM_INT);           // Course Module ID
 
@@ -11,12 +11,15 @@ if (! $course = $DB->get_record('course', array('id' => $id))) {
 
 require_login($course->id);
 
-add_to_log($course->id, 'cognitivefactory', 'view all', "index?id=$course->id", "");
+$eventdata = array('context' => context_course::instance($id));
+$event = \mod_cognitivefactory\event\course_module_instance_list_viewed::create($eventdata);
+$event->add_record_snapshot('course', $course);
+$event->trigger();
 
 $strcognitivefactory = get_string('modulename', 'cognitivefactory');
 $strcognitivefactorys = get_string('modulenameplural', 'cognitivefactory');
 
-$url = $CFG->wwwroot.'/mod/congnitivefactory/index.php?id='.$id);
+$url = new moodle_url('/mod/cognitivefactory/index.php', array('id' => $id));
 
 $PAGE->set_url($url);
 $PAGE->set_title($course->shortname.': '.format_string($strcognitivefactorys));

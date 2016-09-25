@@ -12,7 +12,7 @@
 
     require_once("../../config.php");
 
-	require_once $CFG->dirroot.'/mod/cognitivefactory/forms/import_form.php';
+    require_once $CFG->dirroot.'/mod/cognitivefactory/forms/import_form.php';
     require_once($CFG->dirroot."/mod/cognitivefactory/lib.php");
     require_once($CFG->dirroot."/mod/cognitivefactory/locallib.php");
 
@@ -21,7 +21,7 @@
     $view = optional_param('view', '', PARAM_TEXT); 
     $page = optional_param('page', '', PARAM_TEXT); 
 
-	$url = new moodle_url($CFG->wwwroot.'/mod/cognitivefactory/view.php', array('id' => $id, 'view' => $view, 'page' => $page, 'what' => $action));
+    $url = new moodle_url($CFG->wwwroot.'/mod/cognitivefactory/view.php', array('id' => $id, 'view' => $view, 'page' => $page, 'what' => $action));
     $PAGE->set_url($url);
 
     if (! $cm = get_coursemodule_from_id('cognitivefactory', $id)) {
@@ -45,55 +45,55 @@
     
 /// Forms and controllers
 
-	$form = new import_form();
+    $form = new import_form();
 
-	if ($form->is_cancelled()){
-		redirect($CFG->wwwroot.'/mod/cognitivefactory/view.php?id='.$id.'&page=collect');
-	}
-	if ($data = $form->get_data()){
-		// TODO : process the file 
-		$fs = get_file_storage();
+    if ($form->is_cancelled()) {
+        redirect($CFG->wwwroot.'/mod/cognitivefactory/view.php?id='.$id.'&page=collect');
+    }
+    if ($data = $form->get_data()) {
+        // TODO : process the file 
+        $fs = get_file_storage();
 
-		$draftitemid = $data->inputs;
-		$usercontext = context_user::instance($USER->id);
-		if (!$fs->is_area_empty($usercontext->id, 'user', 'draft', $draftitemid)){
-			$submittedfiles = $fs->get_area_files($usercontext->id, 'user', 'draft', $draftitemid);
-			$submittedfile = array_pop($submittedfiles);
-			$content = $submittedfile->get_content();
-			$lines = explode("\n", $content);
-			
-			$groupid = groups_get_activity_group($cm);
-			
-			if (!empty($data->clearalldata)){
-				$DB->delete_records('cognitivefactory_responses', array('cognitivefactoryid' => $cognitivefactory->id));
-				$DB->delete_records('cognitivefactory_opdata', array('cognitivefactoryid' => $cognitivefactory->id));
-				$DB->delete_records('cognitivefactory_grades', array('cognitivefactoryid' => $cognitivefactory->id));
-				$DB->delete_records('cognitivefactory_userdata', array('cognitivefactoryid' => $cognitivefactory->id));
-			}
-			
-			foreach($lines as $l){
-				if (empty($l)) continue;
-				if (preg_match('/^!#\(/', $l)) continue; // throw some comments out
+        $draftitemid = $data->inputs;
+        $usercontext = context_user::instance($USER->id);
+        if (!$fs->is_area_empty($usercontext->id, 'user', 'draft', $draftitemid)) {
+            $submittedfiles = $fs->get_area_files($usercontext->id, 'user', 'draft', $draftitemid);
+            $submittedfile = array_pop($submittedfiles);
+            $content = $submittedfile->get_content();
+            $lines = explode("\n", $content);
+            
+            $groupid = groups_get_activity_group($cm);
+            
+            if (!empty($data->clearalldata)) {
+                $DB->delete_records('cognitivefactory_responses', array('cognitivefactoryid' => $cognitivefactory->id));
+                $DB->delete_records('cognitivefactory_opdata', array('cognitivefactoryid' => $cognitivefactory->id));
+                $DB->delete_records('cognitivefactory_grades', array('cognitivefactoryid' => $cognitivefactory->id));
+                $DB->delete_records('cognitivefactory_userdata', array('cognitivefactoryid' => $cognitivefactory->id));
+            }
+            
+            foreach ($lines as $l) {
+                if (empty($l)) continue;
+                if (preg_match('/^!#\(/', $l)) continue; // throw some comments out
 
-				$entry = new StdClass();
-				$entry->cognitivefactoryid = $cognitivefactory->id;
-				$entry->response = $l;
-				$entry->userid = $USER->id;
-				$entry->groupid = $groupid;
-				$entry->timemodified = time();
-				$DB->insert_record('cognitivefactory_responses', $entry);
-			}
-			
-		}
-		
-		redirect($CFG->wwwroot.'/mod/cognitivefactory/view.php?id='.$id.'&page=collect');
-	}
+                $entry = new StdClass();
+                $entry->cognitivefactoryid = $cognitivefactory->id;
+                $entry->response = $l;
+                $entry->userid = $USER->id;
+                $entry->groupid = $groupid;
+                $entry->timemodified = time();
+                $DB->insert_record('cognitivefactory_responses', $entry);
+            }
+            
+        }
+        
+        redirect($CFG->wwwroot.'/mod/cognitivefactory/view.php?id='.$id.'&page=collect');
+    }
 
 /// Prepare header
 
     $strcognitivefactory = get_string('modulename', 'cognitivefactory');
 
-	$url = new moodle_url($CFG->wwwroot.'/mod/cognitivefactory/import.php', array('id' => $cm->id));
+    $url = new moodle_url($CFG->wwwroot.'/mod/cognitivefactory/import.php', array('id' => $cm->id));
 
     $PAGE->set_url($url);
     $PAGE->set_context($context);
@@ -107,15 +107,15 @@
 
     echo $OUTPUT->header();
 
-	echo $OUTPUT->heading_with_help(get_string('importideas', 'cognitivefactory'), 'importformat', 'cognitivefactory');
-	
-	echo $OUTPUT->box_start();
+    echo $OUTPUT->heading_with_help(get_string('importideas', 'cognitivefactory'), 'importformat', 'cognitivefactory');
+    
+    echo $OUTPUT->box_start();
 
-	$data = new StdClass();
-	$data->id = $cm->id;
-	$form->set_data($data);
-	$form->display();
+    $data = new StdClass();
+    $data->id = $cm->id;
+    $form->set_data($data);
+    $form->display();
 
-	echo $OUTPUT->box_end();
+    echo $OUTPUT->box_end();
 
-	echo $OUTPUT->footer();
+    echo $OUTPUT->footer();
