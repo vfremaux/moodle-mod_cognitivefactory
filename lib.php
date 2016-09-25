@@ -344,4 +344,27 @@ function cognitivefactory_scale_used($cmid, $scaleid) {
     return $return;
 }
 
-?>
+/**
+ * This function allows the tool_dbcleaner to register integrity checks
+ */
+function cognitivefactory_dbcleaner_add_keys() {
+    global $DB;
+
+    $cognitivemoduleid = $DB->get_field('modules', 'id', array('name' => 'cognitivefactory'));
+
+    $keys = array(
+        array('cognitivefactory', 'course', 'course', 'id', ''),
+        array('cognitivefactory', 'id', 'course_modules', 'instance', ' module = '.$cognitivemoduleid.' '),
+        array('cognitivefactory_categories', 'cognitivefactoryid', 'cognitivefactory', 'id', ''),
+        array('cognitivefactory_operators', 'cognitivefactoryid', 'cognitivefactory', 'id', ''),
+        array('cognitivefactory_opdata', 'cognitivefactoryid', 'cognitivefactory', 'id', ''),
+        array('cognitivefactory_responses', 'cognitivefactoryid', 'cognitivefactory', 'id', ''),
+        array('cognitivefactory_responses', 'userid', 'user', 'id', ''),
+        array('cognitivefactory_grades', 'cognitivefactoryid', 'cognitivefactory', 'id', ''),
+        array('cognitivefactory_grades', 'userid', 'user', 'id', ''),
+        array('cognitivefactory_userdata', 'cognitivefactoryid', 'cognitivefactory', 'id', ''),
+        array('cognitivefactory_userdata', 'userid', 'user', 'id', ''),
+    );
+
+    return $keys;
+}
