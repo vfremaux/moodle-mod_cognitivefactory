@@ -18,7 +18,8 @@
  * This file contains an event for when a feedback activity is viewed.
  *
  * @package    mod_cognitivefactory
- * @copyright  2013 Ankit Agarwal
+ * @since      Moodle 2.7
+ * @copyright  2015 Valery Fremaux
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -34,10 +35,6 @@ defined('MOODLE_INTERNAL') || die();
  *      @type int cmid course module id.
  * }
  *
- * @package    mod_cognitivefactory
- * @since      Moodle 2.7
- * @copyright  2015 Valery Fremaux
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class course_module_collected extends \core\event\course_module_viewed {
 

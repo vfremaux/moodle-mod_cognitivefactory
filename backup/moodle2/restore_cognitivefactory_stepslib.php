@@ -15,8 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+defined('MOODLE_INTERNAL') || die();
+
 /**
- * @package mod-cognitivefactory
+ * @package mod_cognitivefactory
+ * @category mod
  * @copyright 2010 onwards Valery Fremaux (valery.freamux@club-internet.fr)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

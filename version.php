@@ -15,20 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details
+ * Version details.
  *
- * @package     mod_cognitivefactory
- * @category    mod
- * @author      Valery Fremaux (valery.fremaux@gmeil.com)
- * @copyright   2006 onwards Valery Fremaux (valery.fremaux@gmeil.com)
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    mod_cognitivefactory
+ * @category   mod
+ * @author     Valery Fremaux (valery.fremaux@gmail.com)
+ * @copyright  2013 onwards Valery Fremaux (valery.fremaux@gmail.com)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 $plugin->version  = 2015070101;
-$plugin->requires = 2014050800;  // Requires this Moodle version
+$plugin->requires = 2014110400;  // Requires this Moodle version.
 $plugin->component = 'mod_cognitivefactory';
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release  = '2.7.0 (Build 2015070101)';
+$plugin->release  = '2.8.0 (Build 2015070101)';
 
-// Non moodle attributes
-$plugin->codeincrement = '2.7.0000';
+// Non moodle attributes.
+$plugin->codeincrement = '2.8.0000';
