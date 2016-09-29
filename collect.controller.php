@@ -3,7 +3,6 @@
 if (!defined('MOODLE_INTERNAL')) {
     die('You cannot use this script directly');
 }
-require_once('{$CFG->dirroot}/lib/uploadlib.php');
 
 /********************************  Asked for collecting form *******************************/
 if ($action == 'docollect') {
@@ -73,29 +72,28 @@ elseif ($action == 'deleteitems') {
 elseif ($action == 'doimport') {
     $clearalldata = optional_param('clearall', 0, PARAM_INT);
     $allusersclear = optional_param('allusersclear', 0, PARAM_INT);
-    $uploader = new upload_manager('inputs', false, false, $course->id, true, 0, true);
-    if ($uploader->preprocess_files()) {
-        $content = file($uploader->files['inputs']['tmp_name']);
-        $ideas = preg_grep("/^[^!\/#].*$/", $content);
-        if ($clearalldata) {
-            if ($allusersclear) {
-                $DB->delete_records('cognitivefactory_responses', array('cognitivefactoryid' => $cognitivefactory->id));
-                $DB->delete_records('cognitivefactory_opdata', array('cognitivefactoryid' => $cognitivefactory->id));
-            } else {
-                $DB->delete_records('cognitivefactory_responses', array('cognitivefactoryid' => $cognitivefactory->id, 'userid' => $USER->id));
-                $DB->delete_records('cognitivefactory_opdata', array('cognitivefactoryid' => $cognitivefactory->id, 'userid' => $USER->id));
-            }
+
+    // Todo get ideas from storedfile
+    $ideas = array();
+
+    if ($clearalldata) {
+        if ($allusersclear) {
+            $DB->delete_records('cognitivefactory_responses', array('cognitivefactoryid' => $cognitivefactory->id));
+            $DB->delete_records('cognitivefactory_opdata', array('cognitivefactoryid' => $cognitivefactory->id));
+        } else {
+            $DB->delete_records('cognitivefactory_responses', array('cognitivefactoryid' => $cognitivefactory->id, 'userid' => $USER->id));
+            $DB->delete_records('cognitivefactory_opdata', array('cognitivefactoryid' => $cognitivefactory->id, 'userid' => $USER->id));
         }
-        $response = new StdClass();
-        $response->cognitivefactoryid = $cognitivefactory->id;
-        $response->userid = $USER->id;
-        $response->groupid = $currentgroup;
-        $response->timemodified = time();
-        foreach ($ideas as $idea) {
-            $response->response = mb_convert_encoding($idea, 'UTF-8', 'auto');
-            if (! $DB->insert_record('cognitivefactory_responses', $response)) {
-                print_error('errorinsertimport' , 'cognitivefactory');
-            }
+    }
+    $response = new StdClass();
+    $response->cognitivefactoryid = $cognitivefactory->id;
+    $response->userid = $USER->id;
+    $response->groupid = $currentgroup;
+    $response->timemodified = time();
+    foreach ($ideas as $idea) {
+        $response->response = mb_convert_encoding($idea, 'UTF-8', 'auto');
+        if (! $DB->insert_record('cognitivefactory_responses', $response)) {
+            print_error('errorinsertimport' , 'cognitivefactory');
         }
     }
 }

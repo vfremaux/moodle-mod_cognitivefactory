@@ -101,7 +101,7 @@ $out = $OUTPUT->header();
 
 /// Check to see if groups are being used in this cognitivefactory
 
-if ($groupmode = groupmode($course, $cm)) {   // Groups are being used
+if ($groupmode = groups_get_activity_groupmode($cm)) {   // Groups are being used
     $currentgroup = groups_get_activity_group($cm, true);
     $out .= groups_print_activity_menu($cm, $url, '', true);
 } else {
@@ -329,7 +329,7 @@ if ($view == 'organize') {
         $operator = optional_param('operator', '', PARAM_ALPHA);
         $result = 0;
         if ($operator && $action) {
-            $result = include($CFG->dirroot.'/mod/cognitivefactory/operators/{$operator}/organize.controller.php');
+            $result = include($CFG->dirroot.'/mod/cognitivefactory/operators/'.$operator.'/organize.controller.php');
         }
         if ($result != -1) {
             switch($page) {

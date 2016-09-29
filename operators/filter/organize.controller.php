@@ -40,7 +40,7 @@ if ($action == 'saveandreduce') {
     $nottodeletelist = implode("','", $inserted);
     $groupClause = ($groupmode && $currentgroup) ? " AND groupid = $currentgroup " : '' ;
 
-    /// deleting all instances of those entries in operatordata    
+    /// deleting all instances of those entries in operatordata
     $select = "
         cognitivefactoryid = $cognitivefactory->id AND
         operatorid = 'filter' AND
@@ -62,15 +62,6 @@ if ($action == 'saveandreduce') {
         print_error('errordelete', 'cognitivefactory', '', get_string('responses', 'cognitivefactory'));
     }
 
-    /// deleting in filter
-    $select = "
-        cognitivefactoryid = $cognitivefactory->id AND
-        responseid NOT IN ('$nottodeletelist')
-        $groupClause
-    ";
-    if (!$DB->delete_records_select('cognitivefactory_categorize', $select)) {
-        print_error('errordelete', 'cognitivefactory', '', get_string('filterings', 'cognitivefactory'));
-    }        
 }
 // use the generic pair comparison ordering procedure
 $result = include "{$CFG->dirroot}/mod/cognitivefactory/operators/paircompare.controller.php";

@@ -16,7 +16,6 @@ $currentoperator = new BrainstormOperator($cognitivefactory->id, $page);
 $responses = cognitivefactory_get_responses($cognitivefactory->id, 0, 0);
 $userrestriction = ($cognitivefactory->privacy) ? null : 0 ;
 $categories = categorize_get_categories($cognitivefactory->id, $userrestriction, $currentgroup);
-$usehtmleditor = can_use_html_editor();
 
 $strcategories = get_string('categories', 'cognitiveoperator_categorize');
 $strcommands = get_string('commands', 'cognitivefactory');
@@ -52,7 +51,7 @@ if (count($categories)) {
     echo $OUTPUT->box_start('center');
     print_string('nocategories', 'cognitiveoperator_categorize');
     echo $OUTPUT->box_end();
-}    
+}
 
 ?>
 <form name="addform" method="post" action="view.php">
@@ -68,7 +67,7 @@ if (count($categories)) {
     </tr>
 </table>
 </form>
-<?php    
+<?php
 
 if (!isset($currentoperator->configdata->blindness)) {
     $currentoperator->configdata->blindness = $cognitivefactory->privacy;

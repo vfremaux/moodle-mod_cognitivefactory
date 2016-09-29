@@ -13,7 +13,6 @@ if (!defined('MOODLE_INTERNAL')) die("This script canot be used this way.");
 
 $responses = cognitivefactory_get_responses($cognitivefactory->id, 0, 0);
 $currentoperator = new BrainstormOperator($cognitivefactory->id, $page);
-$usehtmleditor = can_use_html_editor();
 
 if (!isset($currentoperator->configdata->maxideasleft)) {
     $currentoperator->configdata->maxideasleft = count($responses);

@@ -14,7 +14,7 @@ class BrainstormOperator{
         if ($id) {
             $this->cognitivefactoryid = $cognitivefactoryid;
             $oprecord = $DB->get_record('cognitivefactory_operators', array('cognitivefactoryid' => $cognitivefactoryid, 'operatorid' => $id));
-            $this->configdata = (isset($oprecord->configdata)) ? unserialize($oprecord->configdata) : new Object() ;
+            $this->configdata = (isset($oprecord->configdata)) ? unserialize($oprecord->configdata) : new StdClass() ;
             $this->active = ($oprecord) ? $oprecord->active : 1 ;
         }
     }

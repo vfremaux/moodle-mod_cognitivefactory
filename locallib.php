@@ -107,7 +107,7 @@ function cognitivefactory_get_operators($cognitivefactoryid) {
             $operator->configdata = unserialize($oprecord->configdata);
         } else {
             $operator->active = 0;
-            $operator->configdata = new Object();
+            $operator->configdata = new StdClass();
         }
         $operators[$opname] = $operator;
     }

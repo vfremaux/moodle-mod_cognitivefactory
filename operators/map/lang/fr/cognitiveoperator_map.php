@@ -18,6 +18,7 @@ $string['mapsettings'] = 'Réglage des paramètres de la mise en relation';
 $string['orderminusone'] = 'Ordre inférieur : {$a}';
 $string['orderplusone'] = 'Ordre supérieur : {$a}';
 $string['organizingmap'] = 'Mettre en relation des idées';
+$string['noresponses'] = 'Pas de réponses';
 $string['pluginname'] = 'Opérateur Cognitif : Carte des relations';
 $string['quantified'] = 'Quantifier la relation ';
 $string['saveconnections'] = 'Enregistrer les relations';

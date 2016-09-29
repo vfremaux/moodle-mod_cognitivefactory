@@ -16,7 +16,7 @@ if ($action == 'enable') {
         $oprecord->cognitivefactoryid = $cognitivefactory->id;
         $oprecord->operatorid = $operatorid;
         $oprecord->active = 1;
-        $oprecord->configdata = serialize(new Object());
+        $oprecord->configdata = serialize(new StdClass());
         if (!$DB->insert_record('cognitivefactory_operators', $oprecord)) {
             print_error('errorinsert', 'cognitivefactory', '', get_string('operatorconfig', 'cognitivefactory'));
         }

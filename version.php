@@ -17,18 +17,18 @@
 /**
  * Version details.
  *
- * @package    mod_cognitivefactory
- * @category   mod
- * @author     Valery Fremaux (valery.fremaux@gmail.com)
- * @copyright  2013 onwards Valery Fremaux (valery.fremaux@gmail.com)
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package     mod_cognitivefactory
+ * @category    mod
+ * @author      Valery Fremaux (valery.fremaux@gmail.com)
+ * @copyright   2009 onwards Valery Fremaux (valery.fremaux@gmail.com)
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 $plugin->version  = 2015070101;
-$plugin->requires = 2015111100;  // Requires this Moodle version.
+$plugin->requires = 2016052300;  // Requires this Moodle version.
 $plugin->component = 'mod_cognitivefactory';
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release  = '3.0.0 (Build 2015070101)';
+$plugin->release  = '3.1.0 (Build 2015070101)';
 
 // Non Moodle attributes.
-$plugin->codeincrement = '3.0.0000';
+$plugin->codeincrement = '3.1.0000';

@@ -21,6 +21,7 @@ $string['orderplusone'] = 'Higher order: {$a}';
 $string['organizingmap'] = 'Mapping ideas together';
 $string['pluginname'] = 'Cognitive Operator : Mapping';
 $string['quantified'] = 'Quantify the connection';
+$string['noresponses'] = 'No answers';
 $string['saveconnections'] = 'Save the connections';
 $string['savemultiple'] = 'Save the composite qualifier';
 $string['showmatrixproduct'] = 'Show pathes';

@@ -153,7 +153,7 @@ if ($responses) {
 }
 else{
     echo '<tr><td>';
-    print_simple_box(get_string('noorderset', 'cognitiveoperator_order'));
+    echo $OUTPUT->box(get_string('noorderset', 'cognitiveoperator_order'));
     echo '</td></tr>';
 }
 ?>

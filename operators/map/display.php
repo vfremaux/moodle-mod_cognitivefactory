@@ -10,6 +10,8 @@
 include_once ($CFG->dirroot."/mod/cognitivefactory/operators/{$page}/locallib.php");
 include_once("$CFG->dirroot/mod/cognitivefactory/operators/operator.class.php");
 
+$renderer = $PAGE->get_renderer('cognitivefactory');
+
 $responses = cognitivefactory_get_responses($cognitivefactory->id);
 if (count($responses) > $MAP_MAX_DATA) {
     echo $OUTPUT->notification(get_string('toomuchdata', 'cognitiveoperator_'.$page, $MAP_MAX_DATA));
@@ -67,7 +69,7 @@ if ($responses) {
                     $mapitem = @$map[$responserow->id][$responsecol->id];
                 } else {
                     if (@$map[$responserow->id][$responsecol->id]) {
-                        $mapitem = "<img src=\"".$renderer->operator_pix_url('check').'"/>';
+                        $mapitem = "<img src=\"".$renderer->operator_pix_url('check', 'map').'"/>';
                     }
                 }
             }

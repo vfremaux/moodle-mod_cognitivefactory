@@ -102,6 +102,8 @@ function order_get_otherorderings($cognitivefactoryid, $orderedresponsekeys, $gr
 *
 */
 function order_display(&$cognitivefactory, $userid, $groupid, $return = false) {
+    global $OUTPUT;
+
     $responses = cognitivefactory_get_responses($cognitivefactory->id, 0, $groupid, false, 'timemodified,id');
     $myordering = order_get_ordering($cognitivefactory->id, $userid, 0, false);
 
@@ -148,7 +150,7 @@ function order_display(&$cognitivefactory, $userid, $groupid, $return = false) {
         }
         $str .= '</table>';
     } else {
-        $str .= $OUPTUT->box(get_string('noresponses', 'cognitivefactory'));    
+        $str .= $OUTPUT->box(get_string('noresponses', 'cognitiveoperator_order'));
     }
     $str .= '</td>';
     $str .= '<td>';
@@ -184,7 +186,7 @@ function order_display(&$cognitivefactory, $userid, $groupid, $return = false) {
         }
         $str .= '</table>';
     } else {
-        $str .= $OUTPUT->box(get_string('noorderset', 'cognitivefactory'));
+        $str .= $OUTPUT->box(get_string('noorderset', 'cognitiveoperator_order'));
     }
     $str .= '</td>';
     $str .= '</tr>';
