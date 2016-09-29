@@ -25,7 +25,7 @@
  */
 
 $plugin->version  = 2015070101;
-$plugin->requires = 2015111100;  // Requires this Moodle version
+$plugin->requires = 2015111100;  // Requires this Moodle version.
 $plugin->component = 'mod_cognitivefactory';
 $plugin->maturity = MATURITY_ALPHA;
 $plugin->release  = '3.0.0 (Build 2015070101)';
