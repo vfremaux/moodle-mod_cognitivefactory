@@ -131,7 +131,7 @@ if ($action == 'resumepaircompare') {
             }
             if ($tokeep) {
                 $keepodids[] = $datatoresponses[$i];
-                $table->data[$i][2] = "<img src=\"".$OUTPUT->pix_url('check', 'cognitiveoperator_filter').'">'; 
+                $table->data[$i][2] = $OUTPUT->pix_icon('check', 'cognitiveoperator_filter');
             }
         }
         echo html_writer::table($table);

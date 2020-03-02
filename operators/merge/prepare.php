@@ -39,5 +39,5 @@ if ($data = $form->get_data()) {
 $currentoperator->configdata->id = $cm->id;
 $currentoperator->configdata->operator = $page;
 $form->set_data($currentoperator->configdata);
-echo "<img src=\"".$OUTPUT->pix_url('enabled', 'cognitiveoperator_'.$page).'" align="left" />';
+echo $OUTPUT->pix_icon('enabled', '', 'cognitiveoperator_'.$page);
 $form->display();

@@ -1,16 +1,30 @@
-<?PHP // $Id: lib.php,v 1.2 2012-07-07 17:49:23 vf Exp $
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
-* Module Brainstorm V2
-* @author Martin Ellermann, Valery Fremaux
-* @package mod-cognitivefactory 
-* @date 2007/20/12
-*/
+ * Module mod_cognitivefactory
+ * @author Martin Ellermann, Valery Fremaux
+ * @package mod-cognitivefactory
+ * @date 2007/20/12
+ */
 
 /**
-* Requires and includes
-*/
-include_once("{$CFG->dirroot}/mod/cognitivefactory/locallib.php");
+ * Requires and includes
+ */
+include_once($CFG->dirroot.'/mod/cognitivefactory/locallib.php');
 
 define('BRAINSTORM_MAX_RESPONSES', 12);
 define('BRAINSTORM_MAX_CATEGORIES', 8);
@@ -22,7 +36,13 @@ define('PHASE_ORGANIZE', '2');
 define('PHASE_DISPLAY', '3');
 define('PHASE_FEEDBACK', '4');
 
-/// Standard functions /////////////////////////////////////////////////////////
+/**
+ * This function is not implemented in this plugin, but is needed to mark
+ * the vf documentation custom volume availability.
+ */
+function mod_cognitivefactory_supports_feature($feature) {
+    assert(1);
+}
 
 /**
  * @uses FEATURE_GROUPS
@@ -36,7 +56,7 @@ define('PHASE_FEEDBACK', '4');
  * @return mixed True if module supports feature, null if doesn't know
  */
 function cognitivefactory_supports($feature) {
-    
+
     switch($feature) {
         case FEATURE_GROUPS:                  return true;
         case FEATURE_GROUPINGS:               return true;
@@ -55,15 +75,15 @@ function cognitivefactory_supports($feature) {
 }
 
 /**
-* Given an object containing all the necessary data,
-* (defined by the form in mod.html) this function
-* will create a new instance and return the id number
-* of the new instance.
-* @param object $cognitivefactory
-*/
+ * Given an object containing all the necessary data,
+ * (defined by the form in mod.html) this function
+ * will create a new instance and return the id number
+ * of the new instance.
+ * @param object $cognitivefactory
+ */
 function cognitivefactory_add_instance($cognitivefactory) {
     global $DB, $COURSE;
-        
+
     $cognitivefactory->timemodified = time();
 
     if (empty($cognitivefactory->globalteacherfeedback)) {
@@ -71,7 +91,9 @@ function cognitivefactory_add_instance($cognitivefactory) {
     }
 
     $cognitivefactory->collectrequirementformat = FORMAT_MOODLE;
-    if (!$cognitivefactory->numcolumns) $cognitivefactory->numcolumns = 2;
+    if (!$cognitivefactory->numcolumns) {
+        $cognitivefactory->numcolumns = 2;
+    }
 
     $return = $DB->insert_record('cognitivefactory', $cognitivefactory);
 
@@ -79,32 +101,33 @@ function cognitivefactory_add_instance($cognitivefactory) {
 }
 
 /**
-* Given an object containing all the necessary data,
-* (defined by the form in mod.html) this function
-* will update an existing instance with new data.
-* @param object $cognitivefactory
-*/
+ * Given an object containing all the necessary data,
+ * (defined by the form in mod.html) this function
+ * will update an existing instance with new data.
+ * @param object $cognitivefactory
+ */
 function cognitivefactory_update_instance($cognitivefactory) {
     global $DB, $COURSE;
-    
-    
+
     $cognitivefactory->id = $cognitivefactory->instance;
     $cognitivefactory->timemodified = time();
     if (!$cognitivefactory->numcolumns) $cognitivefactory->numcolumns = 2;
 
     $context = context_module::instance($cognitivefactory->coursemodule);
     $oldrecord = $DB->get_record('cognitivefactory', array('id' => $cognitivefactory->id));
-    
+
     $cognitivefactory->collectrequirementformat = FORMAT_MOODLE;
-    
-    // check for some changes that imply some cleaning
+
+    // Check for some changes that imply some cleaning.
     if ($oldrecord->singlegrade != $cognitivefactory->singlegrade) {
         $participants = get_users_by_capability($context, 'mod/cognitivefactory:gradable', 'id,firstname,lastname', 'lastname');
-        if ($cognitivefactory->singlegrade) { // we are setting up single grades. compile the single grade with dissociated
+        if ($cognitivefactory->singlegrade) {
+            // We are setting up single grades. compile the single grade with dissociated.
             foreach ($participants as $participant) {
                 cognitivefactory_convert_to_single($cognitivefactory, $participant->id);
             }
-        } else { // we are setting dissociated grading for which we MUST delete grades
+        } else {
+            // We are setting dissociated grading for which we MUST delete grades.
            $DB->delete_records('cognitivefactory_grades', array('cognitivefactoryid' => $cognitivefactory->id));
         }
     }
@@ -113,14 +136,14 @@ function cognitivefactory_update_instance($cognitivefactory) {
 }
 
 /**
-* Given an ID of an instance of this module,
-* this function will permanently delete the instance
-* and any data that depends on it.
-* @param int $id
-*/
+ * Given an ID of an instance of this module,
+ * this function will permanently delete the instance
+ * and any data that depends on it.
+ * @param int $id
+ */
 function cognitivefactory_delete_instance($id) {
     global $DB;
-    
+
     if (! $cognitivefactory = $DB->get_record('cognitivefactory', array('id' => "$id"))) {
         return false;
     }
@@ -141,34 +164,34 @@ function cognitivefactory_delete_instance($id) {
 }
 
 /**
-* gives back an object for student abstract reports
-* @param object $course the current course
-* @param object $user the current user
-* @param object $mod the current course module
-* @param object $cognitivefactory the current cognitivefactory
-*/
+ * gives back an object for student abstract reports
+ * @param object $course the current course
+ * @param object $user the current user
+ * @param object $mod the current course module
+ * @param object $cognitivefactory the current cognitivefactory
+ */
 function cognitivefactory_user_outline($course, $user, $mod, $cognitivefactory) {
     if ($responses = cognitivefactory_get_responses($cognitivefactory->id, $user->id, 0, false)) {
         $responses_values = array_values($responses);
-        /// printing last entered response for that user
+        // Printing last entered response for that user.
         $result->info = '"'.$responses_values[count($responses_values) - 1]->response.'"';
         $result->time = $responses_values[count($responses_values) - 1]->timemodified;
         return $result;
     }
-    return NULL;
+    return null;
 }
 
 /**
-* gives back an object for student detailed reports
-* @param object $course the current course
-* @param object $user the current user
-* @param object $mod the current course module
-* @param object $cognitivefactory the current cognitivefactory instance
-*/
+ * gives back an object for student detailed reports
+ * @param object $course the current course
+ * @param object $user the current user
+ * @param object $mod the current course module
+ * @param object $cognitivefactory the current cognitivefactory instance
+ */
 function cognitivefactory_user_complete($course, $user, $mod, $cognitivefactory) {
     if ($responses = cognitivefactory_get_responses($cognitivefactory->id, $user->id, 0, false)) {
         $responses_values = array_values($responses);
-        /// printing last entered response for that user
+        // Printing last entered response for that user.
         $result->info = '"'.$responses_values[count($responses_values) - 1]->response.'"';
         $result->time = $responses_values[count($responses_values) - 1]->timemodified;
         echo get_string('responded', 'cognitivefactory').": $result->info , last updated ".userdate($result->time);
@@ -178,23 +201,23 @@ function cognitivefactory_user_complete($course, $user, $mod, $cognitivefactory)
 }
 
 /**
-*
-*
-*/
+ *
+ *
+ */
 function cognitivefactory_cron() {
     // TODO : may cleanup some old group rubish ??
 }
 
 /**
-* Returns the users with data in one cognitivefactory
-*(users with records in cognitivefactory_responses, participants)
-* @uses CFG
-* @param int $cognitivefactoryid
-*/
+ * Returns the users with data in one cognitivefactory
+ *(users with records in cognitivefactory_responses, participants)
+ * @uses CFG
+ * @param int $cognitivefactoryid
+ */
 function cognitivefactory_get_participants($cognitivefactoryid) {
     global $CFG;
 
-    //Get all participants
+    // Get all participants.
     $sql = "
         SELECT DISTINCT 
             u.*
@@ -207,7 +230,7 @@ function cognitivefactory_get_participants($cognitivefactoryid) {
     ";
     $participants = $DB->get_records_sql($sql);
 
-    //Return students array (it contains an array of unique users)
+    // Return students array (it contains an array of unique users).
     return ($participants);
 }
 
@@ -228,25 +251,29 @@ function cognitivefactory_grades($cmid) {
     global $CFG;
 
     if (!$module = $DB->get_record('course_modules', array('id' => $cmid))) {
-        return NULL;
-    }    
+        return null;
+    }
 
     if (!$cognitivefactory = $DB->get_record('cognitivefactory', array('id' => $module->instance))) {
-        return NULL;
+        return null;
     }
 
-    if ($cognitivefactory->grade == 0) { // No grading
-        return NULL;
+    if ($cognitivefactory->grade == 0) {
+        // No grading.
+        return null;
     }
-    
+
     $context = context_module::instance($cmid);
 
     $participants = get_users_by_capability($context, 'mod/cognitivefactory:gradable', 'u.id,lastname,firstname', 'lastname');
     if ($participants) {
         foreach ($participants as $participant) {
             $gradeset = cognitivefactory_get_gradeset($cognitivefactory->id, $participant->id);
-            if (!$gradeset) return null;
-            if ($cognitivefactory->grade > 0 ) { // Grading numerically        
+            if (!$gradeset) {
+                return null;
+            }
+            if ($cognitivefactory->grade > 0 ) {
+                // Grading numerically
                 if ($cognitivefactory->singlegrade) {
                     $finalgrades[$participant->id] = $gradeset->single;
                 } else {
@@ -277,13 +304,14 @@ function cognitivefactory_grades($cmid) {
                 $return->grades = @$finalgrades;
                 $return->maxgrade = $cognitivefactory->grade;
                 return $return;
-            } else { // Scales
+            } else {
+                // Scales.
                 $finalgrades = array();
                 $scaleid = - ($cognitivefactory->grade);
                 $maxgrade = '';
                 if ($scale = $DB->get_record('scale', array('id' => $scaleid))) {
                     $scalegrades = make_menu_from_list($scale->scale);
-                }        
+                }
                 if ($cognitivefactory->singlegrade) {
                     $finalgrades[$participant->id] = $scalegrades($gradeset->single);
                 } else {
@@ -308,7 +336,7 @@ function cognitivefactory_grades($cmid) {
                     for ($i = 0 ; $i < count(@$total) ; $i++) {
                         $totalgrade += $total[$i] * $weights[$i];
                     }
-                    $totalgrade = ($totalweights != 0) ? round($totalgrade / $totalweights) : 0 ;
+                    $totalgrade = ($totalweights != 0) ? round($totalgrade / $totalweights) : 0;
                     $finalgrades[$participant->id] = $totalgrade;
                 }
                 $return->grades = @$final;
@@ -332,10 +360,10 @@ function cognitivefactory_grades($cmid) {
  **/
 function cognitivefactory_scale_used($cmid, $scaleid) {
     global $DB;
-    
+
     $return = false;
 
-    // note : scales are assigned using negative index in the grade field of cognitivefactoryer (see mod/assignement/lib.php) 
+    // Note : scales are assigned using negative index in the grade field of cognitivefactoryer (see mod/assignement/lib.php).
     $rec = $DB->get_record('cognitivefactory', array('id' => $cmid, 'grade' => -$scaleid));
 
     if (!empty($rec) && !empty($scaleid)) {

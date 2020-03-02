@@ -67,7 +67,7 @@ if ($otherscalings && $absscalebounds->range != 0) {
         </td>
         <td align="left">
             <div style="position : relative ; left: <?php echo $offset ?>px">
-            <img src="<?php echo $OUTPUT->pix_url('transparent', 'cognitiveoperator_'.$page) ?>"  style="width: <?php echo $relmid - $relstart - 2; ?>px" class="barrange" align="middle" /><img src="<?php echo $OUTPUT->pix_url('transparent', 'cognitivefactory') ?>"  style="width: 5px" class="barmid" align="middle" /><img src="<?php $OUTPUT->pix_url('transparent', 'cognitivefactory') ?>"  style="width: <?php echo $relend - $relmid - 2; ?>px" class="barrange" align="middle" /> <?php echo $value ?></div>
+            <img src="<?php echo $OUTPUT->image_url('transparent', 'cognitiveoperator_'.$page) ?>"  style="width: <?php echo $relmid - $relstart - 2; ?>px" class="barrange" align="middle" /><img src="<?php echo $OUTPUT->pix_url('transparent', 'cognitivefactory') ?>"  style="width: 5px" class="barmid" align="middle" /><img src="<?php $OUTPUT->pix_url('transparent', 'cognitivefactory') ?>"  style="width: <?php echo $relend - $relmid - 2; ?>px" class="barrange" align="middle" /> <?php echo $value ?></div>
         </td>
     </tr>
 <?php

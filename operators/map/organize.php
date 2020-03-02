@@ -9,7 +9,7 @@
 include_once ($CFG->dirroot."/mod/cognitivefactory/operators/{$page}/locallib.php");
 include_once("$CFG->dirroot/mod/cognitivefactory/operators/operator.class.php");
 
-echo $OUTPUT->heading("<img src=\"".$OUTPUT->pix_url('enabled_small', 'cognitiveoperator_map')."\" align=\"left\" width=\"40\" /> " . get_string("organizing{$page}", 'cognitiveoperator_'.$page));
+echo $OUTPUT->heading($OUTPUT->pix_icon('enabled_small', '', 'cognitiveoperator_map').' '.get_string("organizing{$page}", 'cognitiveoperator_'.$page));
 
 $responses = cognitivefactory_get_responses($cognitivefactory->id, 0, 0);
 if (count($responses) > $MAP_MAX_DATA) {
@@ -60,8 +60,8 @@ if ($responses) {
                         $itemdata = map_print_multiple_value(@$map[$responserow->id][$responsecol->id]);
                         if (!empty($itemdata)) {
                             $itemdata .= '<br/>';
-                            $maplink = "<a href=\"view.php?id={$cm->id}&amp;operator={$page}&amp;what=updatemultiple&amp;source={$responserow->id}&amp;dest={$responsecol->id}\"><img src=\"".$OTPUT->pix_url('t/edit').'" /></a>';
-                            $maplink .= "&nbsp;<a href=\"view.php?id={$cm->id}&amp;operator={$page}&amp;what=deletemultiple&amp;source={$responserow->id}&amp;dest={$responsecol->id}\"><img src=\"".$OUTPUT->pix_url('t/delete').'" /></a>';
+                            $maplink = "<a href=\"view.php?id={$cm->id}&amp;operator={$page}&amp;what=updatemultiple&amp;source={$responserow->id}&amp;dest={$responsecol->id}\">".$OUTPUT->pix_icon('t/edit', get_string('edit', 'core')).'</a>';
+                            $maplink .= "&nbsp;<a href=\"view.php?id={$cm->id}&amp;operator={$page}&amp;what=deletemultiple&amp;source={$responserow->id}&amp;dest={$responsecol->id}\">".$OUTPUT->pix_icon('t/delete', get_string('delete'), 'core').'</a>';
                         } else {
                             $maplink = "<a href=\"view.php?id={$cm->id}&amp;operator={$page}&amp;what=inputmultiple&amp;source={$responserow->id}&amp;dest={$responsecol->id}\">".get_string('inputdata', 'cognitivefactory').'</a>';
                         }

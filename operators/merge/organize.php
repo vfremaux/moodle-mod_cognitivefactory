@@ -32,7 +32,7 @@ $strmerge = get_string('mergedata', 'cognitiveoperator_'.$page);
 $strchoice = get_string('choicedata', 'cognitiveoperator_'.$page);
 $strmerged = get_string('mergeddata', 'cognitiveoperator_'.$page);
 
-echo $OUTPUT->heading("<img src=\"".$OUTPUT->pix_url('enabled_small', 'cognitiveoperator_'.$page)."\" align=\"left\" width=\"40\" /> " . get_string("organizing{$page}", 'cognitiveoperator_'.$page));
+echo $OUTPUT->heading($OUTPUT->pix_icon('enabled_small', '', 'cognitiveoperator_'.$page).' '.get_string("organizing{$page}", 'cognitiveoperator_'.$page));
 
 if (!isset($current_operator->configdata->maxideasleft)) {
     $current_operator->configdata->maxideasleft = $responsesnum;
@@ -170,7 +170,7 @@ for ($i = 0 ; $i < $current_operator->configdata->maxideasleft ; $i++) {
                         </table>
                     </td>
                     <td>
-                        <img src="<?php echo $OUTPUT->pix_url('mergeop', 'cognitiveoperator_'.$page) ?>" height="100%" style="height:100%">
+                        <?php echo $OUTPUT->pix_icon('mergeop', '', 'cognitiveoperator_'.$page) ?>
                     </td>
                     <td class="<?php echo (@$assignations[$i]) ? 'assignedslot' : 'unassignedslot' ; ?>">
                         &nbsp;<b><?php p($i + 1) ?></b> <input type="text" name="merge_<?php p($i) ?>" value="<?php echo $mergedvalue ?>" onchange="setcustom('<?php p($i) ?>')" />

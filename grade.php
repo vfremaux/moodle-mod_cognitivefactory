@@ -79,8 +79,8 @@
                     $userpic->image->src = $student->picture;
                     $picture = $OUTPUT->user_picture($userpic);
                     $studentname = fullname($student);
-                    $updatelink = "<a href=\"view.php?id={$cm->id}&amp;gradefor={$student->id}\"><img src=\"".$OUTPUT->pix_url('t/edit').'"></a><br/>';
-                    $deletelink = "<a href=\"view.php?id={$cm->id}&amp;what=deletegrade&amp;for={$student->id}\"><img src=\"".$OUTPUT->pix_url('t/delete').'"></a><br/>';
+                    $updatelink = "<a href=\"view.php?id={$cm->id}&amp;gradefor={$student->id}\">".$OUTPUT->pix_icon('t/edit', get_string('edit'), 'core').'</a><br/>';
+                    $deletelink = "<a href=\"view.php?id={$cm->id}&amp;what=deletegrade&amp;for={$student->id}\">".$OUTPUT->pix_icon('t/delete', et_string('delete', 'core')).'</a><br/>';
                     $table->data[] = array($picture, $studentname, $gradeset->single, $updatelink.'&nbsp;'.$deletelink);
                 }
                 echo html_writer::table($table);
@@ -106,40 +106,40 @@
                             $participategrade = '';  
                         }
                     } else {
-                        $participategrade = "<img src=\"".$OUTPUT->pix_url('teachhat', 'cognitivefactory').'" width="30" />' ;
+                        $participategrade = $OUTPUT->pix_icon('teachhat', '', 'cognitivefactory', ['width' => 30]);
                     }
                     if ($cognitivefactory->seqaccessprepare) {
                         if (isset($gradeset->prepare)) {
-                            $preparinggrade = $gradeset->prepare;  
+                            $preparinggrade = $gradeset->prepare;
                             $weights[] = $cognitivefactory->preparingweight;
                             $gradeparts[] = $gradeset->prepare;
                         } else {
-                            $preparinggrade = '';  
+                            $preparinggrade = '';
                         }
                     } else {
-                        $preparinggrade = "<img src=\"".$OUTPUT->pix_url('teachhat', 'cognitivefactory').'" width="30" />' ;
+                        $preparinggrade = $OUTPUT->pix_url('teachhat', '', 'cognitivefactory', ['width' => 30]);
                     }
                     if ($cognitivefactory->seqaccessorganize) {
                         if (isset($gradeset->organize)) {
-                            $organizegrade = $gradeset->organize;  
+                            $organizegrade = $gradeset->organize;
                             $weights[] = $cognitivefactory->organizeweight;
                             $gradeparts[] = $gradeset->organize;
                         } else {
-                            $organizegrade = '';  
+                            $organizegrade = '';
                         }
                     } else {
-                        $organizegrade = "<img src=\"".$OUTPUT->pix_url('teachhat', 'cognitivefactory').'" width="30" />' ;
+                        $organizegrade = $OUTPUT->pix_url('teachhat', '', 'cognitivefactory', ['width' => 30]);
                     }
                     if ($cognitivefactory->seqaccessfeedback) {
                         if (isset($gradeset->feedback)) {
-                            $feedbackgrade = $gradeset->feedback;  
+                            $feedbackgrade = $gradeset->feedback;
                             $weights[] = $cognitivefactory->feedbackweight;
                             $gradeparts[] = $gradeset->feedback;
                         } else {
-                            $feedbackgrade = '';  
+                            $feedbackgrade = '';
                         }
                     } else {
-                        $feedbackgrade = "<img src=\"".$OUTPUT->pix_url('teachhat', 'cognitivefactory').'" width="30" />' ;
+                        $feedbackgrade = $OUTPUT->pix_icon('teachhat', '', 'cognitivefactory', ['width' => 30]);
                     }
     
                     // calculates final
@@ -153,8 +153,8 @@
     
                     $picture = $OUTPUT->user_picture($student);
                     $studentname = ' '.fullname($student);
-                    $updatelink = " <a href=\"view.php?id={$cm->id}&amp;gradefor={$student->id}\"><img src=\"".$OUTPUT->pix_url('t/edit').'"></a><br/>';
-                    $deletelink = " <a href=\"view.php?id={$cm->id}&amp;what=deletegrade&amp;for={$student->id}\"><img src=\"".$OUTPUT->pix_url('t/delete').'"></a><br/>';
+                    $updatelink = " <a href=\"view.php?id={$cm->id}&amp;gradefor={$student->id}\">".$OUTPUT->pix_icon('t/edit', gets_tring('edit'), 'core').'</a><br/>';
+                    $deletelink = " <a href=\"view.php?id={$cm->id}&amp;what=deletegrade&amp;for={$student->id}\">".$OUTPUT->pix_icon('t/delete', get_string('delete'), 'core').'</a><br/>';
                     $table->data[] = array($picture, $studentname, $participategrade, $preparinggrade, $organizegrade, $feedbackgrade, "<b>$finalgrade</b>", $updatelink.'&nbsp;'.$deletelink);
                 }
                 $str .= html_writer::table($table);
@@ -183,7 +183,7 @@
     
         $user = $DB->get_record('user', array('id' => $gradefor));
     
-        $data = cognitivefactory_get_gradeset($cognitivefactory->id, $gradefor);    
+        $data = cognitivefactory_get_gradeset($cognitivefactory->id, $gradefor);
         if (empty($data)) $data = new StdClass();
         $data->id = $cm->id;
         $data->what = 'savegrade';

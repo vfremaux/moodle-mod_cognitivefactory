@@ -17,7 +17,7 @@ $responses = cognitivefactory_get_responses($cognitivefactory->id, 0, $currentgr
 $responses = hierarchize_refresh_tree($cognitivefactory->id, $currentgroup);
 $tree = hierarchize_get_childs($cognitivefactory->id, null, $currentgroup, false, 0);
 
-echo $OUTPUT->heading("<img src=\"".$OUTPUT->pix_url('enabled_small', 'cognitiveoperator_'.$page)."\" align=\"left\" width=\"40\" /> " . get_string('tree', 'cognitiveoperator_'.$page));
+echo $OUTPUT->heading($OUTPUT->pix_icon('enabled_small', '', 'cognitiveoperator_'.$page).' '.get_string('tree', 'cognitiveoperator_'.$page));
 ?>
 <center>
 <?php
@@ -40,13 +40,13 @@ if ($tree) {
     $subscount = 0;
     foreach ($tree as $child) {
         $prefix = $i + 1;
-        $up = ($i) ? "<a href=\"view.php?id={$cm->id}&amp;operator={$page}&amp;what=up&amp;item={$child->odid}\"><img src=\"".$OUTPUT->pix_url('t/up').'"></a>' : '&nbsp;' ;
-        $down = ($i < count($tree) - 1) ? "<a href=\"view.php?id={$cm->id}&amp;operator={$page}&amp;what=down&amp;item={$child->odid}\"><img src=\"".$OUTPUT->pix_url('t/down').'"></a>' : '&nbsp;' ;
-        $left = ($indent > 25) ? "<a href=\"view.php?id={$cm->id}&amp;operator={$page}&amp;what=left&amp;item={$child->odid}\"><img src=\"".$OUTPUT->pix_url('t/left').'"></a>' : '&nbsp;' ;
+        $up = ($i) ? "<a href=\"view.php?id={$cm->id}&amp;operator={$page}&amp;what=up&amp;item={$child->odid}\">".$OUTPUT->pix_icon('t/up', '', 'core').'</a>' : '&nbsp;' ;
+        $down = ($i < count($tree) - 1) ? "<a href=\"view.php?id={$cm->id}&amp;operator={$page}&amp;what=down&amp;item={$child->odid}\">".$OUTPUT->pix_icon('t/down', '', 'core').'</a>' : '&nbsp;' ;
+        $left = ($indent > 25) ? "<a href=\"view.php?id={$cm->id}&amp;operator={$page}&amp;what=left&amp;item={$child->odid}\">".$OUTPUT->pix_icon('t/left', '', 'core').'</a>' : '&nbsp;' ;
         if ((@$current_operator->configdata->maxarity && $subscount >= $current_operator->configdata->maxarity) || (@$current_operator->configdata->maxlevels && $level > $current_operator->configdata->maxlevels)) {
             $right = '';
         } else {
-            $right = ($i) ? "<a href=\"view.php?id={$cm->id}&amp;operator={$page}&amp;what=right&amp;item={$child->odid}\"><img src=\"".$OUTPUT->pix_url('t/right').'"></a>' : '&nbsp;' ;
+            $right = ($i) ? "<a href=\"view.php?id={$cm->id}&amp;operator={$page}&amp;what=right&amp;item={$child->odid}\">".$OUTPUT->pix_icon('t/right', '', 'core').'</a>' : '&nbsp;' ;
         }
 ?>
                 <tr>
@@ -73,7 +73,7 @@ if ($tree) {
                     </td>
                 </tr>
 <?php
-        echo hierarchize_print_level($cognitivefactory->id, $cm, null, $currentgroup, false, $child->odid, $i+1, $indent, $current_operator->configdata);
+        echo hierarchize_print_level($cognitivefactory->id, $cm, null, $currentgroup, false, $child->odid, $i + 1, $indent, $current_operator->configdata);
         $i++;
         $subscount = cognitivefactory_count_subs($child->odid); // get subs status of previous entry
     }

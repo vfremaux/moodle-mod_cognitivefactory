@@ -31,9 +31,9 @@ foreach ($operators as $operator) {
     }
     echo '<td align="center">';
     if ($operator->active) {
-        echo "<a href=\"view.php?id={$cm->id}&amp;what=disable&amp;operatorid={$operator->id}\"><img src=\"".$OUTPUT->pix_url('enabled', 'cognitiveoperator_'.$operator->name)."\" border=\"0\"></a><br/>".get_string($operator->id, 'cognitiveoperator_'.$operator->name);
+        echo "<a href=\"view.php?id={$cm->id}&amp;what=disable&amp;operatorid={$operator->id}\"><img src=\"".$OUTPUT->image_url('enabled', 'cognitiveoperator_'.$operator->name)."\" ></a><br/>".get_string($operator->id, 'cognitiveoperator_'.$operator->name);
     } else {
-        echo "<a href=\"view.php?id={$cm->id}&amp;what=enable&amp;operatorid={$operator->id}\"><img src=\"".$OUTPUT->pix_url('disabled', 'cognitiveoperator_'.$operator->name)."\" border=\"0\"></a><br/>".get_string($operator->id, 'cognitiveoperator_'.$operator->name);
+        echo "<a href=\"view.php?id={$cm->id}&amp;what=enable&amp;operatorid={$operator->id}\"><img src=\"".$OUTPUT->image_url('disabled', 'cognitiveoperator_'.$operator->name)."\" ></a><br/>".get_string($operator->id, 'cognitiveoperator_'.$operator->name);
     }
     echo '</td>';
     $index++;

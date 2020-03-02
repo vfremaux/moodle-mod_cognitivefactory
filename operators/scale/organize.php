@@ -12,7 +12,7 @@ include_once("$CFG->dirroot/mod/cognitivefactory/operators/operator.class.php");
 $operator = new BrainstormOperator($cognitivefactory->id, $page);
 $responses = cognitivefactory_get_responses($cognitivefactory->id, 0, $currentgroup, false);
 $scalings = scale_get_scalings($cognitivefactory->id, null, $currentgroup, false, $operator->configdata);
-echo $OUTPUT->heading("<img src=\"".$OUTPUT->pix_url('enabled_small', 'cognitiveoperator_scale')."\" align=\"left\" width=\"40\" /> " . get_string('givingweightstoideas', 'cognitiveoperator_'.$page));
+echo $OUTPUT->heading("<img src=\"".$OUTPUT->image_url('enabled_small', 'cognitiveoperator_scale')."\" align=\"left\" width=\"40\" /> " . get_string('givingweightstoideas', 'cognitiveoperator_'.$page));
 ?>
 <center>
 <?php

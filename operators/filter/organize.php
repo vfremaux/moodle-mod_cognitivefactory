@@ -12,7 +12,7 @@
 
     echo '<center>';
 
-    echo $OUTPUT->heading("<img src=\"".$OUTPUT->pix_url('enabled_small', 'cognitiveoperator_'.$page)."\" align=\"left\" width=\"40\" /> " . get_string("organizing{$page}", 'cognitiveoperator_'.$page));
+    echo $OUTPUT->heading($OUTPUT->pix_icon('enabled_small', '', 'cognitiveoperator_'.$page).' '.get_string("organizing{$page}", 'cognitiveoperator_'.$page));
 
     $responses = cognitivefactory_get_responses($cognitivefactory->id, 0, 0);
 

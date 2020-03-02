@@ -24,11 +24,11 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$plugin->version  = 2015070101;
-$plugin->requires = 2016052300;  // Requires this Moodle version.
+$plugin->version  = 2018091700;
+$plugin->requires = 2019111200;  // Requires this Moodle version.
 $plugin->component = 'mod_cognitivefactory';
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->release  = '3.1.0 (Build 2015070101)';
+$plugin->release  = '3.8.0 (Build 2018091700)';
 
 // Non Moodle attributes.
-$plugin->codeincrement = '3.1.0000';
+$plugin->codeincrement = '3.8.0000';

@@ -9,7 +9,7 @@
 include_once ($CFG->dirroot."/mod/cognitivefactory/operators/{$page}/locallib.php");
 include_once("$CFG->dirroot/mod/cognitivefactory/operators/operator.class.php");
 
-echo $OUTPUT->heading("<img src=\"".$OUTPUT->pix_url('enabled_small', 'cognitiveoperator_locate')."\" align=\"left\" width=\"40\" /> " . get_string("organizing{$page}", 'cognitiveoperator_'.$page));
+echo $OUTPUT->heading($OUTPUT->pix_icon('enabled_small', '', 'cognitiveoperator_locate').' '.get_string("organizing{$page}", 'cognitiveoperator_'.$page));
 
 $responses = cognitivefactory_get_responses($cognitivefactory->id, 0, $currentgroup);
 $operator = new BrainstormOperator($cognitivefactory->id, $page);

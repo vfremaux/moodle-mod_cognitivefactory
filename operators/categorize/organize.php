@@ -27,7 +27,7 @@ if (has_capability('mod/cognitivefactory:gradable', $context, $USER->id, false))
     }
 }
 
-echo $OUTPUT->heading("<img src=\"".$OUTPUT->pix_url('enabled_small', 'cognitiveoperator_categorize')."\" align=\"left\" width=\"40\" /> " . get_string("organizing{$page}", 'cognitiveoperator_'.$page));
+echo $OUTPUT->heading($OUTPUT->pix_icon('enabled_small', '', 'cognitiveoperator_categorize').' '.get_string("organizing{$page}", 'cognitiveoperator_'.$page));
 $categories = categorize_get_categories($cognitivefactory->id, $categoryowner, $currentgroup);
 $categorization = categorize_get_categoriesperresponses($cognitivefactory->id, $behalfed, $currentgroup);
 

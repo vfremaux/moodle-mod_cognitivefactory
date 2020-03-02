@@ -155,13 +155,13 @@ function hierarchize_print_level($cognitivefactoryid, $cm, $userid, $groupid, $e
             $levelprefix = $prefix . '.' . ($i + 1);
             $str .= '<tr>';
             if ($editing) {
-                $up = ($i) ? "<a href=\"view.php?id={$cm->id}&amp;operator=hierarchize&amp;what=up&amp;item={$sub->odid}\"><img src=\"".$OUTPUT->pix_url('t/up').'"></a>' : '' ;
-                $down = ($i < count($subs) - 1) ? "<a href=\"view.php?id={$cm->id}&amp;operator=hierarchize&amp;what=down&amp;item={$sub->odid}\"><img src=\"".$OUTPUT->pix_url('t/down').'"></a>' : '' ;
-                $left = ($indent > 25) ? "<a href=\"view.php?id={$cm->id}&amp;operator=hierarchize&amp;what=left&amp;item={$sub->odid}\"><img src=\"".$OUTPUT->pix_url('t/left').'"></a>' : '' ;
+                $up = ($i) ? "<a href=\"view.php?id={$cm->id}&amp;operator=hierarchize&amp;what=up&amp;item={$sub->odid}\">".$OUTPUT->pix_icon('t/up', '', 'core').'</a>' : '' ;
+                $down = ($i < count($subs) - 1) ? "<a href=\"view.php?id={$cm->id}&amp;operator=hierarchize&amp;what=down&amp;item={$sub->odid}\">".$OUTPUT->pix_icon('t/down', '', 'core').'</a>' : '' ;
+                $left = ($indent > 25) ? "<a href=\"view.php?id={$cm->id}&amp;operator=hierarchize&amp;what=left&amp;item={$sub->odid}\">".$OUTPUT->pix_icon('t/left', '', 'core').'</a>' : '' ;
                 if ((isset($configdata->maxarity) && $configdata->maxarity && $subscount >= $configdata->maxarity) || (isset($configdata->maxlevels) && $configdata->maxlevels && $level >= $configdata->maxlevels)) {
                     $right = '';
                 } else {
-                    $right = ($i) ? "<a href=\"view.php?id={$cm->id}&amp;operator=hierarchize&amp;what=right&amp;item={$sub->odid}\"><img src=\"".$OUTPUT->pix_url('t/right').'"></a>' : '' ;
+                    $right = ($i) ? "<a href=\"view.php?id={$cm->id}&amp;operator=hierarchize&amp;what=right&amp;item={$sub->odid}\">".$OUTPUT->pix_url('t/right', '', 'core').'</a>' : '' ;
                 }
                 $str .= '<td>';
                 $str .= '<table cellspacing="3">';

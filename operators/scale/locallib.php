@@ -190,7 +190,7 @@ function scale_display(&$cognitivefactory, $userid, $groupid, $return = false) {
             $str .= $scaled->response;
             $str .= '</td>';
             $str .= '<td align="left">';
-            $str .= '<div style="position:relative;left:'.$offset.'px"><img src="'.$OUTPUT->pix_url('transparent', 'cognitiveoperator_scale').'" style="width:'.$relwidth.'px" class="'.$bargraphclass.'" />'.$value.'</div>';
+            $str .= '<div style="position:relative;left:'.$offset.'px"><img src="'.$OUTPUT->image_url('transparent', 'cognitiveoperator_scale').'" style="width:'.$relwidth.'px" class="'.$bargraphclass.'" />'.$value.'</div>';
             $str .= '</td>';
             $str .= '</tr>';
             $i++;

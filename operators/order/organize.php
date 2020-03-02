@@ -24,7 +24,7 @@ if (!@$current_operator->configdata->blindness) {
 
 $totalspan = 4;
 
-echo $OUTPUT->heading("<img src=\"".$OUTPUT->pix_url('enabled_small', 'cognitiveoperator_order')."\" align=\"left\" width=\"40\" /> " . get_string('puttingideasinorder','cognitiveoperator_order'));
+echo $OUTPUT->heading($OUTPUT->pix_icon('enabled_small', '', 'cognitiveoperator_order').' '.get_string('puttingideasinorder','cognitiveoperator_order'));
 ?>
 <center>
 <?php
@@ -87,8 +87,8 @@ function markunsaved() {
 if ($responses) {
     $i = 0;
     foreach ($responses as $response) {
-        $up = ($i) ? "<a href=\"javascript:up('{$i}')\"><img src=\"".$OUTPUT->pix_url('t/up').'"></a>' : '' ;
-        $down = ($i < count($responses) - 1) ? "<a href=\"javascript:down('{$i}')\"><img src=\"".$OUTPUT->pix_url('t/down').'"></a>' : '' ;
+        $up = ($i) ? "<a href=\"javascript:up('{$i}')\">".$OUTPUT->pix_icon('t/up', '', 'core').'</a>' : '' ;
+        $down = ($i < count($responses) - 1) ? "<a href=\"javascript:down('{$i}')\">".$OUTPUT->pix_url('t/down', '', 'core').'</a>' : '' ;
         $field = "<input type=\"hidden\" name=\"order_{$i}\" value=\"{$response->id}\" />";
 ?>
         <tr>

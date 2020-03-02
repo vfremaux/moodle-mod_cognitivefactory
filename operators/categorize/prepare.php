@@ -29,7 +29,7 @@ if ($data = $form->get_data()) {
     cognitivefactory_save_operatorconfig($cognitivefactory->id, $data);
 }
 
-echo "<img src=\"".$OUTPUT->pix_url('enabled', 'cognitiveoperator_'.$page).'" align="left" />';
+echo $OUTPUT->pix_icon('enabled', '', 'cognitiveoperator_'.$page);
 
 if (count($categories)) {
     $table = new html_table();
@@ -39,8 +39,8 @@ if (count($categories)) {
     $table->size = array('70%', '20%');
     foreach ($categories as $category) {
         if (($USER->id == $category->userid) || !$cognitivefactory->privacy) {
-            $action = "<a href=\"view.php?id={$cm->id}&amp;operator=categorize&amp;categoryid={$category->id}&amp;what=update\"><img src=\"".$OUTPUT->pix_url('t/edit').'" /></a>';
-            $action .= "&nbsp;<a href=\"view.php?id={$cm->id}&amp;operator=categorize&amp;categoryid={$category->id}&amp;what=delete\"><img src=\"".$OUTPUT->pix_url('t/delete').'" /></a>';
+            $action = "<a href=\"view.php?id={$cm->id}&amp;operator=categorize&amp;categoryid={$category->id}&amp;what=update\">".$OUTPUT->pix_url('t/edit', get_string('edit'), 'core').'</a>';
+            $action .= "&nbsp;<a href=\"view.php?id={$cm->id}&amp;operator=categorize&amp;categoryid={$category->id}&amp;what=delete\">".$OUTPUT->pix_icon('t/delete', get_string('delete'), 'core').'</a>';
         } else {
             $action = '';
         }

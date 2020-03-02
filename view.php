@@ -95,7 +95,6 @@ $PAGE->set_title($course->shortname.': '.format_string($cognitivefactory->name))
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_focuscontrol('');
 $PAGE->set_cacheable(true);
-$PAGE->set_button($OUTPUT->update_module_button($cm->id, 'cognitivefactory'));
 
 $out = $OUTPUT->header();
 
