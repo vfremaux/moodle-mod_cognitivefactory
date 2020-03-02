@@ -1,0 +1,5 @@
+.cognitiveoperator-locate-spot { background-color : #5CCA59 ; border : 1px solid #217218 }
+.cognitiveoperator-locate-spot1 { background-color : #FFFF00 ; border : 1px solid #968612 }
+.cognitiveoperator-locate-axis { background-color : #091C09 }
+.cognitiveoperator-locate-inbounds { background-color : #68FA58 ; border : 1px solid #008000 ; opacity : .5 ; filter: alpha(opacity=50)}
+.cognitiveoperator-locate-outbounds { background-color : #FF8080 ; border : 1px solid #A00707 ; opacity : .5 ; filter: alpha(opacity=50)}
